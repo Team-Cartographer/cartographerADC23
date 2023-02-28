@@ -21,6 +21,7 @@ def show_error(err_type, type):
 #IMPORTANT PATHING
 parent_path = os.getcwd()
 data_path = os.path.join(parent_path, 'Data')
+images_path = os.path.join(data_path, 'Images')
 appfiles_path = os.path.join(parent_path, 'App Files')
 archive_path = os.path.join(appfiles_path, 'Archived Files')
 
@@ -55,6 +56,7 @@ if __name__ == '__main__':
         os.mkdir(data_path)
         os.mkdir(appfiles_path)
         os.mkdir(archive_path)
+        os.mkdir(images_path)
     else:
         show_error("Folder Already Exists on " + parent_path + '\nFiles have been updated.', 'Update')
 

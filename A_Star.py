@@ -1,4 +1,3 @@
-import os
 from PIL import Image
 import heapq
 import math
@@ -77,7 +76,7 @@ def astar(grid, start, goal):
 
 # Test Case
 
-csv_path = os.getcwd() + "/Processed Data/Astar Data.csv"
+csv_path = fc.data_path + "/AstarData.csv"
 csv_path = csv_path.replace("\\", "/")
 with open(csv_path, mode="r") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
@@ -90,7 +89,7 @@ final_path = astar(grid, (950, 343, get_height_and_slope(950, 343, grid)[0],
                           get_height_and_slope(950, 343, grid)[1]), (3, 287, -19.375, 13.0))
 print("Final Path: ", final_path)
 
-data_path = os.getcwd() + "/Processed Data/Rectangular Coordinate Data.csv"
+data_path = fc.data_path + "/RectangularCoordinateData.csv"
 data_path = data_path.replace("\\", "/")
 with open(data_path) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
@@ -103,7 +102,7 @@ def add_pixel(img, x, y, color):
 
 
 def update_image(x, y):
-    path = "C:/Users/Owner/Desktop/heightmap_test1.jpg"
+    path = fc.images_path + "/heightmap_test1.jpg"
     img = Image.open(path)
     color = (255, 0, 0)
 

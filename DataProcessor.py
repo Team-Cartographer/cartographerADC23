@@ -1,11 +1,10 @@
 # This program takes the files from the csv and repackages them as an array of objects
 
 import csv
-import os
 import FolderCreator as fc
 from numpy import cos, sin
 
-pathfile_path = os.path.join(fc.appfiles_path, 'Paths to Data.txt')
+pathfile_path = fc.appfiles_path + '\Paths to Data.txt'
 with open(pathfile_path, mode="r") as f:
     paths = csv.reader(f, delimiter=',')
     f.close()
@@ -74,7 +73,7 @@ def get_z_coord(lat, long, rad):  # long is technically not used here. I kept it
 
 
 def write_rect_file(data_arr):
-    rect_coord_path = fc.data_path + "/ProcessedCoordinateData.csv"  # Processed Data Folder given from FolderCreator.py
+    rect_coord_path = fc.data_path + "/RectangularCoordinateData.csv"  # Processed Data Folder given from FolderCreator.py
 
     with open(rect_coord_path, mode="w", newline="") as datafile:
         csv_writer = csv.writer(datafile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -97,7 +96,7 @@ def write_rect_file(data_arr):
 
 # TODO: finish astar data function
 def write_astar_data(data_arr):
-    astar_data_path = fc.data_path + "/Astar Data.csv"  # Processed Data Folder given from FolderCreator.py
+    astar_data_path = fc.data_path + "/AstarData.csv"  # Processed Data Folder given from FolderCreator.py
 
     with open(astar_data_path, mode="w", newline="") as astar_data_file:
 

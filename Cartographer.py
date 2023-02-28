@@ -3,14 +3,14 @@
 import csv
 import pygame
 from pygame import gfxdraw
-import os
+import FolderCreator as fc
 
 from PIL import Image, ImageDraw
 
 #Change from 1277 to 4000 for Regional Data File
 SIZE_CONSTANT = 1277
 
-rect_coord_path = "C:/Users/ashwa/Desktop/ADCLander/ProcessedData/ProcessedCoordinateData.csv"
+rect_coord_path = fc.data_path + "/RectangularCoordinateData.csv"
 rect_coord_path = rect_coord_path.replace("\\", "/")
 with open(rect_coord_path, mode="r") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
@@ -77,11 +77,11 @@ def draw_slopes(isPygame):
 
 canvas = Image.new('RGB', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
 draw_points(False)
-canvas.save('C:/Users/ashwa/Desktop/heightmap_test.jpg')
+canvas.save(fc.images_path + '/heightmap_test.jpg')
 draw_slopes(False)
-canvas.save('C:/Users/ashwa/Desktop/slopemap_test.jpg')
+canvas.save(fc.images_path + '/slopemap_test.jpg')
 draw_colors(False)
-canvas.save('C:/Users/ashwa/Desktop/color_heights_test.jpg')
+canvas.save(fc.images_path + '/color_heights_test.jpg')
 
 ###
 
