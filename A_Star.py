@@ -1,3 +1,4 @@
+import os
 from PIL import Image
 import heapq
 import math
