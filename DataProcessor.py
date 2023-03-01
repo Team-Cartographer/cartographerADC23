@@ -4,19 +4,23 @@ import csv
 import FolderCreator as fc
 from numpy import cos, sin
 
+
 pathfile_path = fc.appfiles_path + '\Paths to Data.txt'
 with open(pathfile_path, mode="r") as f:
-    paths = csv.reader(f, delimiter=',')
+
+    paths = list(csv.reader(f, delimiter='\n'))
+    for i in range(len(paths)):
+        paths[i] = paths[i][0]
+
     f.close()
-    while True:
-        pass
 
 
-DISTANCE_BETWEEN_POINTS = paths[4].rstrip("\n")
-latitude_path = paths[0].replace("\\", "/").rstrip("\n")
-longitude_path = paths[1].replace("\\", "/").rstrip("\n")
-height_path = paths[2].replace("\\", "/").rstrip("\n")
-slope_path = paths[3].replace("\\", "/").rstrip("\n")
+
+DISTANCE_BETWEEN_POINTS = str(paths[4]).rstrip("\n")
+latitude_path = str(paths[0]).replace("\\", "/").rstrip("\n")
+longitude_path = str(paths[1]).replace("\\", "/").rstrip("\n")
+height_path = str(paths[2]).replace("\\", "/").rstrip("\n")
+slope_path = str(paths[3]).replace("\\", "/").rstrip("\n")
 
 # Creates Lists of each Data Type from the Paths Given.
 with open(latitude_path) as csv_file:
@@ -61,15 +65,15 @@ def generate_data_array():
 
 # Helper Functions for Math
 def get_x_coord(lat, long, rad):  # takes in degrees latitude and longitude
-    return rad * cos(lat) * cos(long)
+    return float(rad) * cos(float(lat)) * cos(float(long))
 
 
 def get_y_coord(lat, long, rad):
-    return rad * cos(lat) * sin(long)
+    return float(rad) * cos(float(lat)) * sin(float(long))
 
 
 def get_z_coord(lat, long, rad):  # long is technically not used here. I kept it for consistency. -JL
-    return rad * sin(lat)
+    return float(rad) * sin(float(lat))
 
 
 def write_rect_file(data_arr):
@@ -83,7 +87,7 @@ def write_rect_file(data_arr):
             long = data_arr[i][1]
             height = data_arr[i][2]
             slope = data_arr[i][3]
-            radius = lunar_rad + height
+            radius = lunar_rad + float(height)
 
             x = get_x_coord(lat, long, radius)
             y = get_y_coord(lat, long, radius)
