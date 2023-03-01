@@ -51,9 +51,9 @@ for y in range(height):
     for x in range(width):
         # Get the RGB values of the pixel at (x, y)
 
-        #if y == height//2:
-        #    print('Halfway There')
-        #    print("Woah!!! Livin' on a prayer!")
+        if y == height//2:
+            print('Halfway There')
+            print("Woah!!! Livin' on a prayer!")
         color = image.getpixel((x, y))
         rgb_values.append(getBestColor(color))
 

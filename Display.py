@@ -10,7 +10,7 @@ ground = Entity(
     # model = 'testBlenderProgram'
     model=Terrain(heightmap='htmap6'),
     texture='moon9',
-    #collider='box',
+    #collider='mesh',
     collider='box',
     scale=(1240, 150, 1240)
 )
