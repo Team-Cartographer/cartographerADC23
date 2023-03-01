@@ -109,7 +109,7 @@ def write_astar_data(data_arr):
     return astar_data_path
 
 
-
+# Deprecated
 def write_misc_file(min_height):
     misc_path = fc.data_path + "/MiscData.csv"
 
@@ -125,34 +125,46 @@ def write_misc_file(min_height):
 
 # Helper Methods for Finding Maximums and Minimums of Each Attribute of <DataArray>
 def find_max_value(data_arr, attr):
-    tmp_max = float(data_arr[0][attr])
-    for i in range(len(data_arr)):
-        if float(data_arr[i][attr]) > tmp_max:
-            tmp_max = float(data_arr[i][attr])
-    return tmp_max
-
-
+    return max(data_arr[attr])
 def find_min_value(data_arr, attr):
-    tmp_min = float(data_arr[0][attr])
-    for i in range(len(data_arr)):
-        if float(data_arr[i][attr]) < tmp_min:
-            tmp_min = float(data_arr[i][attr])
-    return tmp_min
+    return min(data_arr[attr])
+
 
 
 # Latitude is DataArr[0], Longitude is DataArr[1], Height is DataArr[2], Slope is DataArr[3]
 def find_min_height(data_arr):
     return find_min_value(data_arr, 2)
-def find_max_height(data_arr):
-    return find_max_value(data_arr, 2)
-def find_max_lon(data_arr):
-    return find_max_value(data_arr, 1)
 def find_min_lon(data_arr):
     return find_min_value(data_arr, 1)
-def find_max_lat(data_arr):
-    return find_max_value(data_arr, 0)
 def find_min_lat(data_arr):
     return find_min_value(data_arr, 0)
+def find_min_slope(data_arr):
+    return find_min_value(data_arr, 3)
+
+#TODO: new file that puts minimum of lat/long/height/slope and then scale it
+def write_zeroed_file():
+    adjusted_path = fc.data_path + "/AdjustedCoordinateData.csv"
+    min_lat = abs(float(find_min_lat(dataArray)))
+    min_lon = abs(float(find_min_lon(dataArray)))
+    min_slope = abs(float(find_min_slope(dataArray)))
+    min_height = abs(float(find_min_height(dataArray)))
+    with open(adjusted_path, mode="w", newline="") as f:
+        csv_writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        for i in range(len(dataArray)):
+            lunar_rad = (1737.4 * 1000)  # converts provided lunar rad data to meters
+            lat = float(dataArray[i][0]) + min_lat
+            long = float(dataArray[i][1]) + min_lon
+            height = float(dataArray[i][2]) + min_height
+            slope = float(dataArray[i][3]) + min_slope
+            radius = lunar_rad + float(height)
+
+            x = get_x_coord(lat, long, radius)
+            y = get_y_coord(lat, long, radius)
+            z = get_z_coord(lat, long, radius)
+
+            csv_writer.writerow([x, y, z, slope])
+        f.close()
+
 
 
 if __name__ == "__main__":
@@ -164,5 +176,6 @@ if __name__ == "__main__":
     # abs_zero_height_scale = (abs(absolute_max_height) + abs(absolute_min_height))
 
     rect_file_path = write_rect_file(dataArray)
+    adj_file_path = write_zeroed_file()
     # misc_path = write_misc_file(absolute_min_height)
     print("Data Processing Success")
