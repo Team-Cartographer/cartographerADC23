@@ -100,21 +100,6 @@ def write_rect_file(data_arr):
     return rect_coord_path, min_x, min_y, min_z
 
 
-'''
-def write_astar_data(data_arr, xmin, ymin, zmin):
-    astar_path = fc.data_path + "/AStarData.csv"
-    with open(astar_path, mode="w", newline="") as datafile:
-        csv_writer = csv.writer(datafile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-
-'''
-
-
-
-
-
-
-
-
 def write_zeroed_file(xmin, ymin, zmin, tmpArray):
     print("running wzf")
     adjArray = []
