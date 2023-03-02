@@ -2,7 +2,7 @@
 
 import csv
 import FolderCreator as fc
-from numpy import cos, sin
+from numpy import cos, sin, deg2rad
 
 pathfile_path = fc.appfiles_path + '\Paths to Data.txt'
 with open(pathfile_path, mode="r") as f:
@@ -11,7 +11,7 @@ with open(pathfile_path, mode="r") as f:
         paths[i] = paths[i][0]
     f.close()
 
-DISTANCE_BETWEEN_POINTS = str(paths[4]).rstrip("\n")
+DISTANCE_BETWEEN_POINTS = float(str(paths[4]).rstrip("\n"))
 latitude_path = str(paths[0]).replace("\\", "/").rstrip("\n")
 longitude_path = str(paths[1]).replace("\\", "/").rstrip("\n")
 height_path = str(paths[2]).replace("\\", "/").rstrip("\n")
@@ -59,19 +59,20 @@ def generate_data_array():
                 dataArray.append(tmp)
                 csv_writer.writerow(tmp)
     f.close()
+    print("Created RawDataArray.csv")
 
     return xy_dim, dataArrayPath
 
 
 # Helper Functions for Math
 def get_x_coord(lat, long, rad):  # takes in degrees latitude and longitude
-    return float(rad) * cos(float(lat)) * cos(float(long))
+    return float(rad) * cos(deg2rad(float(lat))) * cos(deg2rad(float(long)))
 
 def get_y_coord(lat, long, rad):
-    return float(rad) * cos(float(lat)) * sin(float(long))
+    return float(rad) * cos(deg2rad(float(lat))) * sin(deg2rad(float(long)))
 
 def get_z_coord(lat, rad):  # long is technically not used here. I kept it for consistency. -JL
-    return float(rad) * sin(float(lat))
+    return float(rad) * sin(deg2rad(float(lat)))
 
 
 def write_rect_file(data_arr):
@@ -87,9 +88,9 @@ def write_rect_file(data_arr):
             slope = float(data_arr[i][3])
             radius = lunar_rad + float(height)
 
-            x = float(get_x_coord(lat, long, radius))
-            y = float(get_y_coord(lat, long, radius))
-            z = float(get_z_coord(lat, radius))
+            x = float(get_x_coord(lat, long, radius))/DISTANCE_BETWEEN_POINTS
+            y = float(get_y_coord(lat, long, radius))/DISTANCE_BETWEEN_POINTS
+            z = float(get_z_coord(lat, radius))/DISTANCE_BETWEEN_POINTS
 
             csv_writer.writerow([x, y, z, slope])
             xs.append(x), ys.append(y), zs.append(z)
@@ -97,11 +98,12 @@ def write_rect_file(data_arr):
 
         datafile.close()
     min_x, min_y, min_z = abs(min(xs)), abs(min(ys)), abs(min(zs))
+    print("Created RectangularCoordinateData.csv")
     return rect_coord_path, min_x, min_y, min_z
 
 
 def write_zeroed_file(xmin, ymin, zmin, tmpArray):
-    print("running wzf")
+    #print("running wzf")
     adjArray = []
     for i in range(len(tmpArray)):
         tmp = [((tmpArray[i][0] + abs(xmin)) / 40) % 1277, ((tmpArray[i][1] + abs(ymin)) / 40) % 1277,
@@ -122,12 +124,13 @@ def write_zeroed_file(xmin, ymin, zmin, tmpArray):
 
 
     # Retrofitted A-Star Data
-    sorted_path = fc.data_path + "/SortedAdjustedCoordinateData.csv"
+    sorted_path = fc.data_path + "/AdjustedCoordinateData.csv"
     with open(sorted_path, mode="w", newline="") as f:
         csv_writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for row in array_to_be_written:
             csv_writer.writerow(row)
     f.close()
+    print("Created AdjustedCoordinateData.csv")
 
     return sorted_path
 
@@ -141,4 +144,4 @@ if __name__ == "__main__":
     rect_file_path, min_x, min_y, min_z, = write_rect_file(dataArray)
     sorted_file_path = write_zeroed_file(min_x, min_y, min_z, tmpDataArray)
 
-    # print("Data Processing Success")
+    print("Data Processing Success")
