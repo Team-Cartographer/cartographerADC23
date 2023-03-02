@@ -35,18 +35,18 @@ with open(slope_path) as csv_file:
 # Call from each file instead of class specific calls.
 def generate_data_array():
     if not len(longitude_list) == len(latitude_list) == len(height_list) == len(slope_list):
-        print("Number of rows are inconsistent")
+        fc.show_error("ADC App Data Processing Failure", f'Data List Row Lengths are Inconsistent.')
         return
 
     if not len(longitude_list[0]) == len(latitude_list[0]) == len(height_list[0]) == len(slope_list[0]):
-        print("Number of columns are inconsistent")
+        fc.show_error("ADC App Data Processing Failure", f'Data List Column Lengths are Inconsistent.')
         return
 
     rows = len(longitude_list)
     cols = len(longitude_list[0])
     xy_dim = len(longitude_list)
 
-    # Change to Archive Path for final build.
+    # Change to {fc.archive_path} for final build.
     dataArrayPath = fc.data_path + "/RawDataArray.csv"
 
     with open(dataArrayPath, mode="w", newline="") as f:
@@ -71,7 +71,7 @@ def get_x_coord(lat, long, rad):  # takes in degrees latitude and longitude
 def get_y_coord(lat, long, rad):
     return float(rad) * cos(deg2rad(float(lat))) * sin(deg2rad(float(long)))
 
-def get_z_coord(lat, rad):  # long is technically not used here. I kept it for consistency. -JL
+def get_z_coord(lat, rad):
     return float(rad) * sin(deg2rad(float(lat)))
 
 
@@ -102,12 +102,10 @@ def write_rect_file(data_arr):
     return rect_coord_path, min_x, min_y, min_z
 
 
-def write_zeroed_file(xmin, ymin, zmin, tmpArray):
-    #print("running wzf")
+def write_astar_file(xmin, ymin, zmin, tmpArray):
     adjArray = []
     for i in range(len(tmpArray)):
-        tmp = [((tmpArray[i][0] + abs(xmin)) / 40) % 1277, ((tmpArray[i][1] + abs(ymin)) / 40) % 1277,
-               ((tmpArray[i][2] + abs(zmin)) / 40) % 1277, tmpArray[i][3]]
+        tmp = [int(tmpArray[i][0]+xmin), int(tmpArray[i][1]+ymin), int(tmpArray[i][2]+zmin), tmpArray[i][3]]
         adjArray.append(tmp)
 
     sortedArray = sorted(adjArray, key=lambda x: x[1])
@@ -124,7 +122,7 @@ def write_zeroed_file(xmin, ymin, zmin, tmpArray):
 
 
     # Retrofitted A-Star Data
-    sorted_path = fc.data_path + "/AdjustedCoordinateData.csv"
+    sorted_path = fc.data_path + "/AStarRawData.csv"
     with open(sorted_path, mode="w", newline="") as f:
         csv_writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for row in array_to_be_written:
@@ -142,6 +140,6 @@ if __name__ == "__main__":
     x_and_y_dim, data_array_path = generate_data_array()
 
     rect_file_path, min_x, min_y, min_z, = write_rect_file(dataArray)
-    sorted_file_path = write_zeroed_file(min_x, min_y, min_z, tmpDataArray)
+    sorted_file_path = write_astar_file(min_x, min_y, min_z, tmpDataArray)
 
     print("Data Processing Success")

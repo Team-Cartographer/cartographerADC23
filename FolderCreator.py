@@ -13,10 +13,22 @@ def find_file(name, path):
         if name in files:
             return os.path.join(root, name)
 
-def show_error(err_type, type):
+# Since FolderCreator is used across each file, these helper methods allow
+# creating an error/info/warning popUp in each file.
+def show_error(err_type, msg):
     root = tk.Tk()
     root.withdraw()
-    messagebox.showerror('ADC Lander Installation ' + type, err_type)
+    messagebox.showerror(err_type, msg)
+
+def show_info(title, msg):
+    root = tk.Tk()
+    root.withdraw()
+    messagebox.showinfo(title, msg)
+
+def show_warning(title, msg):
+    root=tk.Tk()
+    root.withdraw()
+    messagebox.showwarning(title, msg)
 
 
 #IMPORTANT PATHING
@@ -49,7 +61,7 @@ def processPathData():
                 move(path_data_path, archive_path)
             f.close()
         except TypeError:
-            show_error('Please run PathFinder.exe First', 'Failure')
+            show_error('ADC App Installation Failure','Please run PathFinder.exe First')
             quit()
 
 if __name__ == '__main__':
@@ -59,7 +71,7 @@ if __name__ == '__main__':
         os.mkdir(archive_path)
         os.mkdir(images_path)
     else:
-        show_error("Folder Already Exists on " + parent_path + '\nFiles have been updated.', 'Update')
+        show_error( 'ADC App Installation Update', "Folder Already Exists on " + parent_path + '\nFiles have been updated.')
 
     processPathData()
 
