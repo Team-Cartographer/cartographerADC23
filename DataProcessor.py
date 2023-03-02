@@ -105,8 +105,7 @@ def write_rect_file(data_arr):
 def write_zeroed_file(xmin, ymin, zmin, tmpArray):
     adjArray = []
     for i in range(len(tmpArray)):
-        tmp = [((tmpArray[i][0] + xmin) / 40) % 1277, ((tmpArray[i][1] + ymin) / 40) % 1277,
-               ((tmpArray[i][2] + zmin) / 40) % 1277, tmpArray[i][3]]
+        tmp = [int(tmpArray[i][0]+xmin), int(tmpArray[i][1]+ymin), int(tmpArray[i][2]+zmin), tmpArray[i][3]]
         adjArray.append(tmp)
 
     sortedArray = sorted(adjArray, key=lambda x: x[1])
