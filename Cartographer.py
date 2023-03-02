@@ -2,13 +2,14 @@
 
 import csv
 import FolderCreator as fc
-
+from ast import literal_eval
 from PIL import Image
 
 #Change from 1277 to 4000 for Regional Data File
 SIZE_CONSTANT = 1277
 
 rect_coord_path = fc.data_path + "/RectangularCoordinateData.csv"
+adj_coord_path = fc.data_path + "/AdjustedCoordinateData.csv"
 rect_coord_path = rect_coord_path.replace("\\", "/")
 with open(rect_coord_path, mode="r") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
@@ -35,7 +36,7 @@ def draw_points():
         color = calculate_color(float(full_list[i][2]))
         x_pos = (i-1) % SIZE_CONSTANT
         y_pos = (i-1) // SIZE_CONSTANT
-        print(x_pos, y_pos)
+        #print(x_pos, y_pos)
         canvas.putpixel((int(x_pos), int(y_pos)), color)
         # note that there is a bit of data loss here.
         # Ideally, we'd make the final image have a size equal to the maximum span of the x and y data
@@ -46,7 +47,7 @@ def draw_colors():
         color = calc_rgb_color(float(full_list[i][2]))
         x_pos = (i-1) % SIZE_CONSTANT
         y_pos = (i-1)//SIZE_CONSTANT
-        print(x_pos, y_pos)
+        #print(x_pos, y_pos)
         canvas.putpixel((int(x_pos), int(y_pos)), color)
 
 
@@ -59,7 +60,7 @@ def draw_slopes():
             color = (0, 255, 0)
         x_pos = (i-1) % SIZE_CONSTANT
         y_pos = (i-1)//SIZE_CONSTANT
-        print(x_pos, y_pos)
+        #print(x_pos, y_pos)
         canvas.putpixel((int(x_pos), int(y_pos)), color)
 
 
@@ -68,13 +69,22 @@ def draw_path(path, image, color):
         image.putpixel(path[0], path[1], color)
     return image
 
+def chatgpt_heightmap_test():
+    with open(adj_coord_path, mode='r') as f:
+        rd = csv.reader(f, delimiter=',')
+        x = list(rd)
+        x = literal_eval(x)
+    print(literal_eval(x[0][0]))
+    print(int(x[0][0][3]))
+
 
 if __name__ == "__main__":
     canvas = Image.new('RGB', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
     draw_points()
-    canvas.save(fc.images_path + '/heightmap_test.jpg')
+    canvas.save(fc.images_path + '/ursina_heightmap.jpg')
     draw_slopes()
-    canvas.save(fc.images_path + '/slopemap_test.jpg')
+    canvas.save(fc.images_path + '/slopemap.jpg')
     draw_colors()
-    canvas.save(fc.images_path + '/color_heights_test.jpg')
+    canvas.save(fc.images_path + '/heightkey.jpg')
+
 
