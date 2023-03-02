@@ -3,6 +3,8 @@
 import csv
 import FolderCreator as fc
 from numpy import cos, sin, deg2rad
+import sys
+from ast import literal_eval
 
 pathfile_path = fc.appfiles_path + '\Paths to Data.txt'
 with open(pathfile_path, mode="r") as f:
@@ -120,17 +122,35 @@ def write_astar_file(xmin, ymin, zmin, tmpArray):
     for i in range(len(array_to_be_written)):
         array_to_be_written[i] = sorted(array_to_be_written[i], key=lambda x: x[0])
 
+    for i in range(len(array_to_be_written)):
+        for j in range(len(array_to_be_written[0])):
+            array_to_be_written[j][i][0] = i
+            array_to_be_written[j][i][1] = j
+
 
     # Retrofitted A-Star Data
-    sorted_path = fc.data_path + "/AStarRawData.csv"
-    with open(sorted_path, mode="w", newline="") as f:
+    astar_path = fc.data_path + "/AStarRawData.csv"
+    with open(astar_path, mode="w", newline="") as f:
         csv_writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for row in array_to_be_written:
             csv_writer.writerow(row)
     f.close()
-    print("Created AdjustedCoordinateData.csv")
+    print("Created AStarRawData.csv")
 
-    return sorted_path
+    return astar_path
+
+def test_astar_file():
+    astar_path = fc.data_path + "/AStarRawData.csv"
+    with open(astar_path, mode="r", newline="") as f:
+        astardata = list(csv.reader(f))
+
+    for j in range(len(astardata)):
+        for i in range(len(astardata[0])):
+            if literal_eval(astardata[j][i])[0] != i:
+                if literal_eval(astardata[j][i])[1] != j:
+                    print(astardata[j][i])
+                    print(i, j)
+                    sys.exit(2)
 
 
 if __name__ == "__main__":
@@ -141,5 +161,5 @@ if __name__ == "__main__":
 
     rect_file_path, min_x, min_y, min_z, = write_rect_file(dataArray)
     sorted_file_path = write_astar_file(min_x, min_y, min_z, tmpDataArray)
-
+    test_astar_file()
     print("Data Processing Success")
