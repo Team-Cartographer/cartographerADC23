@@ -102,7 +102,7 @@ def write_rect_file(data_arr):
     return rect_coord_path, min_x, min_y, min_z
 
 
-def write_zeroed_file(xmin, ymin, zmin, tmpArray):
+def write_astar_file(xmin, ymin, zmin, tmpArray):
     adjArray = []
     for i in range(len(tmpArray)):
         tmp = [int(tmpArray[i][0]+xmin), int(tmpArray[i][1]+ymin), int(tmpArray[i][2]+zmin), tmpArray[i][3]]
@@ -122,7 +122,7 @@ def write_zeroed_file(xmin, ymin, zmin, tmpArray):
 
 
     # Retrofitted A-Star Data
-    sorted_path = fc.data_path + "/AdjustedCoordinateData.csv"
+    sorted_path = fc.data_path + "/AStarRawData.csv"
     with open(sorted_path, mode="w", newline="") as f:
         csv_writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for row in array_to_be_written:
@@ -140,6 +140,6 @@ if __name__ == "__main__":
     x_and_y_dim, data_array_path = generate_data_array()
 
     rect_file_path, min_x, min_y, min_z, = write_rect_file(dataArray)
-    sorted_file_path = write_zeroed_file(min_x, min_y, min_z, tmpDataArray)
+    sorted_file_path = write_astar_file(min_x, min_y, min_z, tmpDataArray)
 
     print("Data Processing Success")
