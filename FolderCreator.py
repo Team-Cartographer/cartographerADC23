@@ -17,7 +17,7 @@ def show_error(err_type, type):
     root = tk.Tk()
     root.withdraw()
     messagebox.showerror('ADC Lander Installation ' + type, err_type)
-    messagebox.show
+
 
 #IMPORTANT PATHING
 parent_path = os.getcwd()
