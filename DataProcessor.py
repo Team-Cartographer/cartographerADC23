@@ -3,6 +3,7 @@
 import csv
 import FolderCreator as fc
 from numpy import cos, sin
+import numpy as np
 
 
 pathfile_path = fc.appfiles_path + '\Paths to Data.txt'
@@ -62,7 +63,6 @@ def generate_data_array():
                 csv_writer.writerow(tmp)
     f.close()
 
-
     return xy_dim, dataArrayPath
 
 
@@ -93,7 +93,7 @@ def write_rect_file(data_arr):
 
             csv_writer.writerow([x, y, z, slope])
             xs.append(x), ys.append(y), zs.append(z)
-            zeroArray.append([x, y, z, slope])
+            tmpDataArray.append([x, y, z, slope])
 
         datafile.close()
     min_x, min_y, min_z = abs(min(xs)), abs(min(ys)), abs(min(zs))
@@ -101,7 +101,7 @@ def write_rect_file(data_arr):
 
 # TODO: finish astar data function
 def write_astar_data(data_arr):
-    astar_data_path = fc.data_path + "/AstarData.csv"  # Processed Data Folder given from FolderCreator.py
+    astar_data_path = fc.data_path + "/A_StarData.csv"  # Processed Data Folder given from FolderCreator.py
 
     with open(astar_data_path, mode="w", newline="") as astar_data_file:
 
@@ -116,24 +116,32 @@ def find_max_value(data_arr, attr):
 def find_min_value(data_arr, attr):
     return min(data_arr[attr], axis='columns')
 
-def write_zeroed_file(xmin, ymin, zmin, zeroArray):
-    adjusted_path = fc.data_path + "/AdjustedCoordinateData.csv"
-    with open(adjusted_path, mode="w", newline="") as f:
-        csv_writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        for i in range(len(zeroArray)):
-            csv_writer.writerow([(zeroArray[i][0] + xmin)/40, (zeroArray[i][1] + ymin)/40,
-                                 (zeroArray[i][2] + zmin)/40, zeroArray[i][3]])
-        f.close()
+def write_zeroed_file(xmin, ymin, zmin, tmpArray):
+    adjArray = []
+    for i in range(len(tmpArray)):
+        tmp = [(tmpArray[i][0] + xmin)/40, (tmpArray[i][1] + ymin) / 40,
+               (tmpArray[i][2] + zmin) / 40, tmpArray[i][3]]
+        adjArray.append(tmp)
 
+    sortedArray = sorted(adjArray, key=lambda x: x[0])
+
+    sorted_path = fc.data_path + "/SortedAdjustedCoordinateData.csv"
+    with open(sorted_path, mode="w", newline="") as f:
+        csv_writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        for row in sortedArray:
+            csv_writer.writerow(row)
+    f.close()
+
+    return sorted_path
 
 
 if __name__ == "__main__":
     # Latitude is DataArr[0], Longitude is DataArr[1], Height is DataArr[2], Slope is DataArr[3]
     dataArray = []
-    zeroArray = []
+    tmpDataArray = []
     x_and_y_dim, data_array_path = generate_data_array()
 
     rect_file_path, min_x, min_y, min_z, = write_rect_file(dataArray)
-    adj_file_path = write_zeroed_file(min_x, min_y, min_z, zeroArray)
+    sorted_file_path = write_zeroed_file(min_x, min_y, min_z, tmpDataArray)
 
     # print("Data Processing Success")
