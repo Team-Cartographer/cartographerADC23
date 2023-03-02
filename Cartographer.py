@@ -1,11 +1,9 @@
 # This program is used to create the heightmap and slope map from the data
 
 import csv
-import pygame
-from pygame import gfxdraw
 import FolderCreator as fc
 
-from PIL import Image, ImageDraw
+from PIL import Image
 
 #Change from 1277 to 4000 for Regional Data File
 SIZE_CONSTANT = 1277
@@ -32,33 +30,27 @@ def calc_rgb_color(height):
     return (int(r), int(g), int(b))
 
 
-def draw_points(isPygame):
+def draw_points():
     for i in range(1, len(full_list)):
         color = calculate_color(float(full_list[i][2]))
         x_pos = (i-1) % SIZE_CONSTANT
         y_pos = (i-1) // SIZE_CONSTANT
         print(x_pos, y_pos)
-        if isPygame:
-            gfxdraw.pixel(screen, int(x_pos), int(y_pos), color)
-        else:
-            canvas.putpixel((int(x_pos), int(y_pos)), color)
+        canvas.putpixel((int(x_pos), int(y_pos)), color)
         # note that there is a bit of data loss here.
         # Ideally, we'd make the final image have a size equal to the maximum span of the x and y data
 
 
-def draw_colors(isPygame):
+def draw_colors():
     for i in range(1, len(full_list)):
         color = calc_rgb_color(float(full_list[i][2]))
         x_pos = (i-1) % SIZE_CONSTANT
         y_pos = (i-1)//SIZE_CONSTANT
         print(x_pos, y_pos)
-        if isPygame:
-            gfxdraw.pixel(screen, int(x_pos), int(y_pos), color)
-        else:
-            canvas.putpixel((int(x_pos), int(y_pos)), color)
+        canvas.putpixel((int(x_pos), int(y_pos)), color)
 
 
-def draw_slopes(isPygame):
+def draw_slopes():
     for i in range(1, len(full_list)):
         color = (255, 0, 0)
         if float(full_list[i][3]) < 20:
@@ -68,51 +60,21 @@ def draw_slopes(isPygame):
         x_pos = (i-1) % SIZE_CONSTANT
         y_pos = (i-1)//SIZE_CONSTANT
         print(x_pos, y_pos)
-        if isPygame:
-            gfxdraw.pixel(screen, int(x_pos), int(y_pos), color)
-        else:
-            canvas.putpixel((int(x_pos), int(y_pos)), color)
-
-###
-
-canvas = Image.new('RGB', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
-draw_points(False)
-canvas.save(fc.images_path + '/heightmap_test.jpg')
-draw_slopes(False)
-canvas.save(fc.images_path + '/slopemap_test.jpg')
-draw_colors(False)
-canvas.save(fc.images_path + '/color_heights_test.jpg')
-
-###
-
-print("initiating pygame")
-pygame.init()
-screen = pygame.display.set_mode((SIZE_CONSTANT, SIZE_CONSTANT))
-
-done = True
-clock = pygame.time.Clock()
-while not done:
-    recent_key = "h"
-
-    for event in pygame.event.get():
-
-        if event.type == pygame.QUIT:
-            done = True
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_h:
-                recent_key = "h"
-            elif event.key == pygame.K_s:
-                recent_key = "s"
-            elif event.key == pygame.K_c:
-                recent_key = "c"
-
-        if recent_key == "h":
-            draw_points(True)
-        elif recent_key == "c":
-            draw_colors(True)
-        else:
-            draw_slopes(True)
+        canvas.putpixel((int(x_pos), int(y_pos)), color)
 
 
-    pygame.display.flip()
-    clock.tick(60)
+def draw_path(path, image, color):
+    for i in range(len(path)):
+        image.putpixel(path[0], path[1], color)
+    return image
+
+
+if __name__=="__main__":
+    canvas = Image.new('RGB', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
+    draw_points()
+    canvas.save(fc.images_path + '/heightmap_test.jpg')
+    draw_slopes()
+    canvas.save(fc.images_path + '/slopemap_test.jpg')
+    draw_colors()
+    canvas.save(fc.images_path + '/color_heights_test.jpg')
+
