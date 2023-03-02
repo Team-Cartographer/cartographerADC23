@@ -3,11 +3,8 @@
 import csv
 import FolderCreator as fc
 from numpy import cos, sin
-import numpy as np
-
 
 pathfile_path = fc.appfiles_path + '\Paths to Data.txt'
-
 with open(pathfile_path, mode="r") as f:
     paths = list(csv.reader(f, delimiter='\n'))
     for i in range(len(paths)):
@@ -99,23 +96,6 @@ def write_rect_file(data_arr):
     min_x, min_y, min_z = abs(min(xs)), abs(min(ys)), abs(min(zs))
     return rect_coord_path, min_x, min_y, min_z
 
-# TODO: finish astar data function
-def write_astar_data(data_arr):
-    astar_data_path = fc.data_path + "/A_StarData.csv"  # Processed Data Folder given from FolderCreator.py
-
-    with open(astar_data_path, mode="w", newline="") as astar_data_file:
-
-        astar_data_file.close()
-
-    return astar_data_path
-
-
-# Helper Methods for Finding Maximums and Minimums of Each Attribute of <DataArray>
-def find_max_value(data_arr, attr):
-    return max(data_arr[attr], axis='columns')
-def find_min_value(data_arr, attr):
-    return min(data_arr[attr], axis='columns')
-
 def write_zeroed_file(xmin, ymin, zmin, tmpArray):
     adjArray = []
     for i in range(len(tmpArray)):
@@ -125,6 +105,7 @@ def write_zeroed_file(xmin, ymin, zmin, tmpArray):
 
     sortedArray = sorted(adjArray, key=lambda x: x[0])
 
+    # Retrofitted A-Star Data
     sorted_path = fc.data_path + "/SortedAdjustedCoordinateData.csv"
     with open(sorted_path, mode="w", newline="") as f:
         csv_writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
