@@ -15,6 +15,7 @@ ground = Entity(
     scale=(1240, 150, 1240)
 )
 
+# TODO Fix Ship Entity
 '''
 ship = Entity(
     model='C:/Users/ashwa/Downloads/lunar_lander.blend',
