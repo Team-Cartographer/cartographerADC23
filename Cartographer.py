@@ -69,7 +69,7 @@ def draw_path(path, image, color):
     return image
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     canvas = Image.new('RGB', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
     draw_points()
     canvas.save(fc.images_path + '/heightmap_test.jpg')
