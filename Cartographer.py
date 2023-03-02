@@ -9,7 +9,7 @@ from PIL import Image
 SIZE_CONSTANT = 1277
 
 rect_coord_path = fc.data_path + "/RectangularCoordinateData.csv"
-adj_coord_path = fc.data_path + "/AdjustedCoordinateData.csv"
+adj_coord_path = fc.data_path + "/AStarData.csv"
 rect_coord_path = rect_coord_path.replace("\\", "/")
 with open(rect_coord_path, mode="r") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
