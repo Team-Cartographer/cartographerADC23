@@ -8,12 +8,16 @@ from PIL import Image
 #Change from 1277 to 4000 for Regional Data File
 SIZE_CONSTANT = 1277
 
-rect_coord_path = fc.data_path + "/RectangularCoordinateData.csv"
-adj_coord_path = fc.data_path + "/AdjustedCoordinateData.csv"
-rect_coord_path = rect_coord_path.replace("\\", "/")
-with open(rect_coord_path, mode="r") as csv_file:
+astar_data_path = fc.data_path + "/AStarRawData.csv"
+with open(astar_data_path, mode="r") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     full_list = list(csv_reader)
+
+misc_path = fc.data_path + "/MiscData.csv"
+with open(misc_path, mode="r") as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=',')
+    max_z = list(csv_reader)
+    print(max_z)
 
 
 def calculate_color(height):
@@ -21,25 +25,26 @@ def calculate_color(height):
     return int(color), int(color), int(color)
 
 def calc_rgb_color(height):
-    r,g,b = 0,0,0
-    if (height+2872)/4830 <= 1/3:
-        b = (height+2872)*255/4830
-    elif (height+2872)/4830 <= 2/3:
-        g = (height+2872)*255/4830
+    r, g, b = 0, 0, 0
+    if height/max_z <= 1/3:
+        b = height*255/max_z
+    elif height/max_z <= 2/3:
+        g = height*255/max_z
     else:
-        r = (height+2872)*255/4830
+        r = height*255/max_z
     return (int(r), int(g), int(b))
 
 
 def draw_points():
-    for i in range(1, len(full_list)):
-        color = calculate_color(float(full_list[i][2]))
-        x_pos = (i-1) % SIZE_CONSTANT
-        y_pos = (i-1) // SIZE_CONSTANT
-        #print(x_pos, y_pos)
-        canvas.putpixel((int(x_pos), int(y_pos)), color)
-        # note that there is a bit of data loss here.
-        # Ideally, we'd make the final image have a size equal to the maximum span of the x and y data
+    for i in range(len(full_list)):
+        for j in range(len(full_list[i])):
+            color = calculate_color(float(literal_eval(full_list[j][i])[2]))
+            x_pos = j
+            y_pos = i
+            #print(x_pos, y_pos)
+            canvas.putpixel((int(x_pos), int(y_pos)), color)
+            # note that there is a bit of data loss here.
+            # Ideally, we'd make the final image have a size equal to the maximum span of the x and y data
 
 
 def draw_colors():
@@ -69,22 +74,14 @@ def draw_path(path, image, color):
         image.putpixel(path[0], path[1], color)
     return image
 
-def chatgpt_heightmap_test():
-    with open(adj_coord_path, mode='r') as f:
-        rd = csv.reader(f, delimiter=',')
-        x = list(rd)
-        x = literal_eval(x)
-    print(literal_eval(x[0][0]))
-    print(int(x[0][0][3]))
-
 
 if __name__ == "__main__":
     canvas = Image.new('RGB', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
     draw_points()
     canvas.save(fc.images_path + '/ursina_heightmap.jpg')
-    draw_slopes()
-    canvas.save(fc.images_path + '/slopemap.jpg')
-    draw_colors()
-    canvas.save(fc.images_path + '/heightkey.jpg')
+    #draw_slopes()
+    #canvas.save(fc.images_path + '/slopemap.jpg')
+    #draw_colors()
+    #canvas.save(fc.images_path + '/heightkey.jpg')
 
 
