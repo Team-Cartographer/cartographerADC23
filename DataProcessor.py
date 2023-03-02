@@ -71,7 +71,7 @@ def get_x_coord(lat, long, rad):  # takes in degrees latitude and longitude
     return float(rad) * cos(float(lat)) * cos(float(long))
 def get_y_coord(lat, long, rad):
     return float(rad) * cos(float(lat)) * sin(float(long))
-def get_z_coord(lat, long, rad):  # long is technically not used here. I kept it for consistency. -JL
+def get_z_coord(lat, rad):  # long is technically not used here. I kept it for consistency. -JL
     return float(rad) * sin(float(lat))
 
 def write_rect_file(data_arr):
@@ -89,7 +89,7 @@ def write_rect_file(data_arr):
 
             x = float(get_x_coord(lat, long, radius))
             y = float(get_y_coord(lat, long, radius))
-            z = float(get_z_coord(lat, long, radius))
+            z = float(get_z_coord(lat, radius))
 
             csv_writer.writerow([x, y, z, slope])
             xs.append(x), ys.append(y), zs.append(z)
