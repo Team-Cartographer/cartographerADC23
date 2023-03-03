@@ -11,10 +11,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 def find_file(name, path):
     for root, dirs, files in os.walk(path):
         if name in files:
             return os.path.join(root, name)
+
 
 # Since FolderCreator is used across each file, these helper methods allow
 # creating an error/info/warning popUp in each file.
@@ -23,13 +25,15 @@ def show_error(err_type, msg):
     root.withdraw()
     messagebox.showerror(err_type, msg)
 
+
 def show_info(title, msg):
     root = tk.Tk()
     root.withdraw()
     messagebox.showinfo(title, msg)
 
+
 def show_warning(title, msg):
-    root=tk.Tk()
+    root = tk.Tk()
     root.withdraw()
     messagebox.showwarning(title, msg)
 
@@ -55,14 +59,15 @@ def get_slope_file_path():
 parent_path = os.getcwd()
 data_path = os.path.join(parent_path, 'Data')
 images_path = os.path.join(data_path, 'Images')
-appfiles_path = os.path.join(parent_path, 'App Files')
-archive_path = os.path.join(appfiles_path, 'Archived Files')
+app_files_path = os.path.join(parent_path, 'App Files')
+archive_path = os.path.join(app_files_path, 'Archived Files')
+
 
 ###################
 
 
-def processPathData():
-    pathfile_path = os.path.join(appfiles_path, "Paths to Data.txt")
+def process_path_data():
+    pathfile_path = os.path.join(app_files_path, "Paths to Data.txt")
     with open(pathfile_path, 'w') as f:
         try:
             path_data_path = find_file(name='PathData.csv', path=os.getcwd())
@@ -82,22 +87,20 @@ def processPathData():
                 move(path_data_path, archive_path)
             f.close()
         except TypeError:
-            show_error('ADC App Installation Failure','Please run PathFinder.exe First')
+            show_error('ADC App Installation Failure', 'Please run PathFinder.exe First')
             quit()
 
 
 if __name__ == '__main__':
     if not os.path.exists(os.path.join(parent_path, 'Data')):
         os.mkdir(data_path)
-        os.mkdir(appfiles_path)
+        os.mkdir(app_files_path)
         os.mkdir(archive_path)
         os.mkdir(images_path)
     else:
-        show_error( 'ADC App Installation Update', "Folder Already Exists on " + parent_path + '\nFiles have been updated.')
+        show_error('ADC App Installation Update',
+                   "Folder Already Exists on " + parent_path + '\nFiles have been updated.')
 
-    processPathData()
+    process_path_data()
 
-
-#print("Installation Success")
-
-
+# print("Installation Success")
