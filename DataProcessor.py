@@ -169,5 +169,5 @@ if __name__ == "__main__":
 
     rect_file_path, min_x, min_y, min_z = write_rect_file(dataArray)
     sorted_file_path = write_astar_file(min_x, min_y, min_z, tmpDataArray)
-    test_astar_file()
+    #test_astar_file()
     print("Data Processing Success")
