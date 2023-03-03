@@ -90,13 +90,13 @@ def draw_path(path, image, color):
 
 
 if __name__ == "__main__":
-    canvas = Image.new('RGB', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
+    canvas = Image.new('RGBA', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
     draw_points()
-    canvas.save(fc.images_path + '/ursina_heightmap.jpg')
-    print("Created ursina_heightmap.jpg")
+    canvas.save(fc.images_path + '/ursina_heightmap.png')
+    print("Created ursina_heightmap.png")
     draw_slopes()
-    canvas.save(fc.images_path + '/slopemap.jpg')
-    print("Created slopemap.jpg")
+    canvas.save(fc.images_path + '/slopemap.png')
+    print("Created slopemap.png")
     draw_colors()
-    canvas.save(fc.images_path + '/heightkey.jpg')
-    print("Created heightkey.jpg")
+    canvas.save(fc.images_path + '/heightkey.png')
+    print("Created heightkey.png")
