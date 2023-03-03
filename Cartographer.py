@@ -18,7 +18,7 @@ misc_path = fc.data_path + "/MiscData.csv"
 with open(misc_path, mode="r") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     max_z = float(list(csv_reader)[0][0])
-    print(max_z)
+    #print(max_z)
     csv_file.close()
 
 
@@ -84,10 +84,10 @@ if __name__ == "__main__":
     canvas = Image.new('RGB', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
     draw_points()
     canvas.save(fc.images_path + '/ursina_heightmap.jpg')
-    print("finished heightmap")
+    print("Created ursina_heightmap.jpg")
     draw_slopes()
     canvas.save(fc.images_path + '/slopemap.jpg')
-    print("finished slopes")
+    print("Created slopemap.jpg")
     draw_colors()
     canvas.save(fc.images_path + '/heightkey.jpg')
-    print("finished key")
+    print("Created heightkey.jpg")
