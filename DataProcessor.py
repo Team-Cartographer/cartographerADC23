@@ -19,7 +19,6 @@ height_list = file2list(Fc.get_height_file_path())
 slope_list = file2list(Fc.get_slope_file_path())
 
 
-# Call from each file instead of class specific calls.
 def generate_data_array():
     if not len(longitude_list) == len(latitude_list) == len(height_list) == len(slope_list):
         Fc.show_error("ADC App Data Processing Failure", f'Data List Row Lengths are Inconsistent.')
@@ -50,10 +49,10 @@ def generate_data_array():
                 total_index = rows * cols
                 current_index = (row * cols) + data_pt + 1
                 percentage = ((current_index / total_index) * 100)
-                print(f"\rCreating RawDataArray.csv: { current_index}/{total_index} ({percentage:.2f}%)", end="")
+               # print(f"\rCreating RawDataArray.csv: {current_index}/{total_index} ({percentage:.2f}%)", end="")
 
     f.close()
-    print("\nCreated RawDataArray.csv")
+    print("Created RawDataArray.csv")
 
     return xy_dim, data_array_path_
 
@@ -74,9 +73,10 @@ def get_z_coord(lat, rad):
 def write_rect_file(data_arr):
     rect_coord_path = Fc.data_path + "/RectangularCoordinateData.csv"
     xs, ys, zs, = [], [], []
+    length = len(data_arr)
     with open(rect_coord_path, mode="w", newline="") as datafile:
         csv_writer = csv.writer(datafile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        for i in range(len(data_arr)):
+        for i in range(length):
             lunar_rad = (1737.4 * 1000)  # converts provided lunar rad data to meters
             lat = data_arr[i][0]
             long = data_arr[i][1]
@@ -92,11 +92,11 @@ def write_rect_file(data_arr):
             xs.append(x), ys.append(y), zs.append(z)
             tmpDataArray.append([x, y, z, slope])
 
-            print(f"\rCreating RectangularCoordinateData.csv: {i}/{len(data_arr)} ({i/len(data_arr)*100:.2f}%)", end="")
+            #print(f"\rCreating RectangularCoordinateData.csv: {i}/{length} ({i/length*100:.2f}%)", end="")
 
         datafile.close()
     min_x_, min_y_, min_z_ = abs(min(xs)), abs(min(ys)), abs(min(zs))
-    print("\nCreated RectangularCoordinateData.csv")
+    print("Created RectangularCoordinateData.csv")
     return rect_coord_path, min_x_, min_y_, min_z_
 
 
