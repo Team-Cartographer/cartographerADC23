@@ -6,7 +6,9 @@ from numpy import cos, sin, deg2rad
 import sys
 from ast import literal_eval
 
-pathfile_path = fc.appfiles_path + '\Paths to Data.txt'
+pathfile_path = (fc.appfiles_path + '/Paths to Data.txt').replace("\\", "/")
+
+
 with open(pathfile_path, mode="r") as f:
     paths = list(csv.reader(f, delimiter='\n'))
     for i in range(len(paths)):
