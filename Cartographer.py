@@ -12,26 +12,29 @@ astar_data_path = fc.data_path + "/AStarRawData.csv"
 with open(astar_data_path, mode="r") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     full_list = list(csv_reader)
+    csv_file.close()
 
 misc_path = fc.data_path + "/MiscData.csv"
 with open(misc_path, mode="r") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
-    max_z = list(csv_reader)
+    max_z = float(list(csv_reader)[0][0])
     print(max_z)
+    csv_file.close()
 
 
 def calculate_color(height):
-    color = ((height+2872)*255/4830)
+    color = 255 - (height * 255 / max_z)
     return int(color), int(color), int(color)
+
 
 def calc_rgb_color(height):
     r, g, b = 0, 0, 0
-    if height/max_z <= 1/3:
-        b = height*255/max_z
-    elif height/max_z <= 2/3:
-        g = height*255/max_z
+    if height / max_z <= 1/3:
+        b = height * 255 / max_z
+    elif height / max_z <= 2/3:
+        g = height * 255 / max_z
     else:
-        r = height*255/max_z
+        r = height * 255 / max_z
     return (int(r), int(g), int(b))
 
 
@@ -48,25 +51,27 @@ def draw_points():
 
 
 def draw_colors():
-    for i in range(1, len(full_list)):
-        color = calc_rgb_color(float(full_list[i][2]))
-        x_pos = (i-1) % SIZE_CONSTANT
-        y_pos = (i-1)//SIZE_CONSTANT
-        #print(x_pos, y_pos)
-        canvas.putpixel((int(x_pos), int(y_pos)), color)
+    for i in range(len(full_list)):
+        for j in range(len(full_list[i])):
+            color = calc_rgb_color(float(literal_eval(full_list[j][i])[2]))
+            x_pos = j
+            y_pos = i
+            # print(x_pos, y_pos)
+            canvas.putpixel((int(x_pos), int(y_pos)), color)
 
 
 def draw_slopes():
-    for i in range(1, len(full_list)):
-        color = (255, 0, 0)
-        if float(full_list[i][3]) < 20:
-            color = (255, 255, 0)
-        if float(full_list[i][3]) < 8:
-            color = (0, 255, 0)
-        x_pos = (i-1) % SIZE_CONSTANT
-        y_pos = (i-1)//SIZE_CONSTANT
-        #print(x_pos, y_pos)
-        canvas.putpixel((int(x_pos), int(y_pos)), color)
+    for i in range(len(full_list)):
+        for j in range(len(full_list[i])):
+            color = (255, 0, 0)
+            if float(literal_eval(full_list[j][i])[3]) < 20:
+                color = (255, 255, 0)
+            if float(literal_eval(full_list[j][i])[3]) < 8:
+                color = (0, 255, 0)
+            x_pos = j
+            y_pos = i
+            #print(x_pos, y_pos)
+            canvas.putpixel((int(x_pos), int(y_pos)), color)
 
 
 def draw_path(path, image, color):
@@ -79,9 +84,10 @@ if __name__ == "__main__":
     canvas = Image.new('RGB', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
     draw_points()
     canvas.save(fc.images_path + '/ursina_heightmap.jpg')
-    #draw_slopes()
-    #canvas.save(fc.images_path + '/slopemap.jpg')
-    #draw_colors()
-    #canvas.save(fc.images_path + '/heightkey.jpg')
-
-
+    print("finished heightmap")
+    draw_slopes()
+    canvas.save(fc.images_path + '/slopemap.jpg')
+    print("finished slopes")
+    draw_colors()
+    canvas.save(fc.images_path + '/heightkey.jpg')
+    print("finished key")

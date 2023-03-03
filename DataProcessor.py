@@ -100,10 +100,12 @@ def write_rect_file(data_arr):
 
         datafile.close()
     min_x, min_y, min_z = abs(min(xs)), abs(min(ys)), abs(min(zs))
+
     misc_data_path = fc.data_path + "/MiscData.csv"
     with open(misc_data_path, mode="w", newline="") as datafile:
-        csv_writer = csv.writer(datafile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        csv_writer.writerow([abs(max(zs))])
+        csv_writer = csv.writer(datafile, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        csv_writer.writerow([str(round(abs(min_z)-abs(max(zs))))])
+        print(abs(min_z)-abs(max(zs)))
         datafile.close()
 
     print("Created RectangularCoordinateData.csv")
