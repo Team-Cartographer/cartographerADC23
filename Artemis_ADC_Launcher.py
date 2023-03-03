@@ -4,11 +4,14 @@ from subprocess import run
 
 code_path = os.getcwd()
 
-pathfinderpath = code_path + "/PathFinder.exe"
-pathfinder_program = run(["cmd", "/c", pathfinderpath])
+# runs PathFinder.exe
+pathfinder_path = code_path + "/PathFinder/PathFinder.exe"
+pathfinder_program = run(["cmd", "/c", pathfinder_path])
 
-foldercreator_path = code_path + "/FolderCreator.py"
-foldercreator_program = run(["cmd", "/c", foldercreator_path])
+
+# runs FolderCreator.py
+folder_creator_path = code_path + "/FolderCreator.py"
+folder_creator_program = run(["cmd", "/c", folder_creator_path])
 
 
 # runs DataProcessor.py
@@ -18,3 +21,7 @@ data_processor_program = run(["cmd", "/c", data_processor_path])
 # runs Cartographer.py
 cartographer_path = code_path + "/Cartographer.py"
 cartographer_program = run(["cmd", "/c", cartographer_path])
+
+# runs A_Star.py (Without quad trees)
+a_star_path = code_path + "A_Star.py"
+a_star_program = run(["cmd", "/c", a_star_path])
