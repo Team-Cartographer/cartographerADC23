@@ -4,9 +4,7 @@ import csv
 import FolderCreator as fc
 from ast import literal_eval
 from PIL import Image
-
-#Change from 1277 to 4000 for Regional Data File
-SIZE_CONSTANT = 1277
+import Constants as c
 
 astar_data_path = fc.data_path + "/AStarRawData.csv"
 with open(astar_data_path, mode="r") as csv_file:
@@ -78,7 +76,7 @@ def draw_path(path, image, color):
 
 
 if __name__ == "__main__":
-    canvas = Image.new('RGBA', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
+    canvas = Image.new('RGBA', (c.SIZE_CONSTANT, c.SIZE_CONSTANT), 'blue')
     draw_points()
     canvas.save(fc.images_path + '/RAW_heightmap.png') # must save here for a proper read from Ursina
     print("Created ursina_heightmap.png")
