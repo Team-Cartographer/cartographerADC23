@@ -81,14 +81,16 @@ if __name__ == "__main__":
     canvas.save(fc.images_path + '/RAW_heightmap.png') # must save here for a proper read from Ursina
     print("Created ursina_heightmap.png")
     draw_slopes()
-    canvas.save(fc.images_path + '/slopemap.png')
+    canvas.save(fc.parent_path + '/slopemap.png')
     print("Created slopemap.png")
     draw_colors()
-    canvas.save(fc.images_path + '/heightkey.png')
+    canvas.save(fc.parent_path + '/heightkey.png')
     print("Created heightkey.png")
 
-    rgb_img = Image.open(fc.images_path + '/RAW_heightmap.png')
-    rgba_img = rgb_img.resize((81, 81))
-    rgba_img.save(fc.parent_path + '/processed_heightmap.png')
+    upscaled = Image.open(fc.images_path + '/RAW_heightmap.png')
+    downscaled = upscaled.resize((81, 81))
+    downscaled.save(fc.parent_path + '/processed_heightmap.png')
+
+
 
 
