@@ -92,7 +92,7 @@ def draw_path(path, image, color):
 if __name__ == "__main__":
     canvas = Image.new('RGBA', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
     draw_points()
-    canvas.save(fc.images_path + '/ursina_heightmap.png')
+    canvas.save(fc.images_path + '/RAW_heightmap.png') # must save here for a proper read from Ursina
     print("Created ursina_heightmap.png")
     draw_slopes()
     canvas.save(fc.images_path + '/slopemap.png')
@@ -100,3 +100,9 @@ if __name__ == "__main__":
     draw_colors()
     canvas.save(fc.images_path + '/heightkey.png')
     print("Created heightkey.png")
+
+    rgb_img = Image.open(fc.images_path + '/RAW_heightmap.png')
+    rgba_img = rgb_img.resize((81, 81))
+    rgba_img.save(fc.parent_path + '/processed_heightmap.png')
+
+

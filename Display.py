@@ -2,21 +2,26 @@ from csv import reader as r
 import FolderCreator as fc
 import numpy as np
 from ursina import *
+from PIL import Image
 from ursina.prefabs.first_person_controller import FirstPersonController
 
-heightmap = fc.images_path + '/ursina_heightmap.jpg'
-slopemap = fc.images_path + '/slopemap.jpg'
-heightkey = fc.images_path + '/heightkey.jpg'
 app = Ursina()
 
+
 ground = Entity(
-    # model = 'testBlenderProgram'
-    model=Terrain(heightmap=heightmap),
+    model=Terrain(heightmap='processed_heightmap.png'),
     texture='grass',
-    #collider='mesh',
-    collider='box',
-    scale=(1240, 150, 1240)
-)
+    collider='mesh',
+    scale=(12770, 1000, 12770)
+    )
+
+
+
+
+slopemap = fc.images_path + '/slopemap.png'
+heightkey = fc.images_path + '/heightkey.png'
+
+
 
 # TODO Fix Ship Entity
 '''
@@ -42,7 +47,7 @@ t_info = Text(
     scale=1.1,
     color=color.black
 )
-
+'''
 latitudes, longitudes, heights, slopes = [], [], [], []
 with open('C:/Users/ashwa/Desktop/Regional Data Files/RegLat.csv') as csv_file:
     reads = r(csv_file)
@@ -60,7 +65,7 @@ with open('C:/Users/ashwa/Desktop/Regional Data Files/RegSlope.csv') as csv_file
     reads = r(csv_file)
     for row in reads:
         slopes.append(row)
-
+'''
 
 # Changes Sky Background to Black (0x000000)
 class Sky(Entity):
@@ -73,8 +78,8 @@ class Sky(Entity):
         self.world_position = camera.world_position
 
 Sky()
-'''
-player = FirstPersonController(position= (200, 1000, 200), speed=50, mouse_sensitivity=Vec2(25, 25))
+
+player = FirstPersonController(position= (200, 5000, 200), speed=250, mouse_sensitivity=Vec2(25, 25))
 
 # Shortcuts/Toggle Functions
 def input(key):
@@ -94,8 +99,8 @@ def input(key):
 
 def update():
     x, y, z = player.position.x, player.position.y, player.position.z
-
-    # Azimuth Angle and Elevation Calculation
+    '''
+    #Azimuth Angle and Elevation Calculation
     latE, longE = 29.5593, 95.0900 # Latitude and Longitude of Johnson Space Center.
     latM, longM = float(latitudes[int(x) + 620][int(abs(z-620))]), float(longitudes[int(x) + 620][int(abs(z-620))])
 
@@ -140,9 +145,6 @@ def update():
 
     if player.position.y < -50:
          player.set_position((200, 200, 200))
-
-'''
-EditorCamera()
-
+    '''
+#EditorCamera()
 app.run()
-
