@@ -1,36 +1,20 @@
-from csv import reader as r
 import FolderCreator as fc
 import numpy as np
 from ursina import *
-from PIL import Image
+from Helpers import file2list, calc_azimuth_and_elevation
 from ursina.prefabs.first_person_controller import FirstPersonController
 
 app = Ursina()
 
-
 ground = Entity(
     model=Terrain(heightmap='processed_heightmap.png'),
     texture='grass',
-    collider='mesh',
+    collider='box',
     scale=(12770, 1000, 12770)
     )
 
-
-
-
-slopemap = fc.images_path + '/slopemap.png'
-heightkey = fc.images_path + '/heightkey.png'
-
-
-
-# TODO Fix Ship Entity
-'''
-ship = Entity(
-    model='C:/Users/ashwa/Downloads/lunar_lander.blend',
-    collider='mesh',
-    scale=(100, 50, 100)
-)
-'''
+slopemap = fc.parent_path + '/slopemap.png'
+heightkey = fc.parent_path + '/heightkey.png'
 
 
 t_lat = Text(text='Latitude:', x=-.8, y=.45, scale=1.1)
@@ -42,30 +26,14 @@ t_elev = Text(text='Elevation:', x=-.8, y=.20, scale=1.1)
 
 t_info = Text(
     text='P for Path, R for Real, M for Moon, H for Heightmap, L for Slope Map, O for Reset',
-    x=-.15,
-    y=-.45,
-    scale=1.1,
-    color=color.black
+    x=-.15, y=-.45, scale=1.1, color=color.black
 )
-'''
-latitudes, longitudes, heights, slopes = [], [], [], []
-with open('C:/Users/ashwa/Desktop/Regional Data Files/RegLat.csv') as csv_file:
-    reads = r(csv_file)
-    for row in reads:
-        latitudes.append(row)
-with open('C:/Users/ashwa/Desktop/Regional Data Files/RegLong.csv') as csv_file:
-    reads = r(csv_file)
-    for row in reads:
-        longitudes.append(row)
-with open('C:/Users/ashwa/Desktop/Regional Data Files/RegHeight.csv') as csv_file:
-    reads = r(csv_file)
-    for row in reads:
-        heights.append(row)
-with open('C:/Users/ashwa/Desktop/Regional Data Files/RegSlope.csv') as csv_file:
-    reads = r(csv_file)
-    for row in reads:
-        slopes.append(row)
-'''
+
+latitudes = file2list(fc.get_latitude_file_path())
+longitudes = file2list(fc.get_longitude_file_path())
+heights = file2list(fc.get_height_file_path())
+slopes = file2list(fc.get_slope_file_path())
+
 
 # Changes Sky Background to Black (0x000000)
 class Sky(Entity):
@@ -84,11 +52,11 @@ player = FirstPersonController(position= (200, 5000, 200), speed=250, mouse_sens
 # Shortcuts/Toggle Functions
 def input(key):
     if key == 'o':
-        player.set_position((200, 200, 200))
+        player.set_position((200, 700, 200))
     if key == 'l':
-        ground.texture = 'slopemap_test'
+        ground.texture = 'slopemap.png'
     if key == 'h':
-        ground.texture = 'color_heights_test'
+        ground.texture = 'heightkey.png'
     if key == 'm':
         ground.texture = 'moon9'
     if key == 'r':
@@ -99,34 +67,8 @@ def input(key):
 
 def update():
     x, y, z = player.position.x, player.position.y, player.position.z
-    '''
-    #Azimuth Angle and Elevation Calculation
-    latE, longE = 29.5593, 95.0900 # Latitude and Longitude of Johnson Space Center.
-    latM, longM = float(latitudes[int(x) + 620][int(abs(z-620))]), float(longitudes[int(x) + 620][int(abs(z-620))])
 
-    rad_earth = 6378000
-    xE = rad_earth * cos(latE) * cos(longE)
-    yE = rad_earth * cos(latE) * sin(longE)
-    zE = rad_earth * sin(latE)
-
-    xM = latM * cos(float(longM) * math.pi / 180)
-    yM = latM * sin(float(longM) * math.pi / 180)
-    zM = float(heights[int(x) + 620][int(abs(z-620))])
-
-    resultant_vector = [xE-xM, yE-yM, zE-zM]
-
-    range = sqrt(resultant_vector[0] ** 2 + resultant_vector[1] ** 2 + resultant_vector[2] ** 2)
-
-    rz = resultant_vector[0] * cos(latM) * cos(longM) + resultant_vector[1] * cos(latM) * cos(longM) + resultant_vector[2] * sin(latM)
-
-    c1 = sin(longE - longM) * cos(latE)
-    c2 = (cos(latM) * sin(latE)) - (sin(latM) * cos(latE) * cos(longE - longM))
-
-    # Elevation Value
-    elev = np.arcsin(rz/range)
-
-    # Azimuth Angle Value
-    azimuth = np.arctan2(c1, c2)
+    #azimuth, elevation = calc_azimuth_and_elevation(x, y, z, latitudes, longitudes, heights, slopes)
 
     #for scale testing
     #print(f'x = {x}, y = {y}, z = {z}')
@@ -136,15 +78,16 @@ def update():
     t_lon.text = 'Longitude: ' + longitudes[int(x) + 620][int(abs(z-620))]
     t_ht.text = 'Height: ' + heights[int(x) + 620][int(abs(z-620))]
     t_slope.text = 'Slope: ' + slopes[int(x) + 620][int(abs(z-620))]
-    t_azi.text = 'Azimuth: ' + str(azimuth)
-    if str(elev) == 'nan':
-        t_elev.text = 'Elevation: 0'
-    else:
-        t_elev.text = 'Elevation: ' + str(elev)
+    #t_azi.text = 'Azimuth: ' + str(azimuth)
+    #if str(elevation) == 'nan':
+    #    t_elev.text = 'Elevation: 0'
+    #else:
+    #    t_elev.text = 'Elevation: ' + str(elevation)
 
 
     if player.position.y < -50:
          player.set_position((200, 200, 200))
-    '''
+
+
 #EditorCamera()
 app.run()
