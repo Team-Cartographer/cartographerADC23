@@ -36,7 +36,6 @@ def getBestColor(pixel: tuple) -> tuple:
     return mincolor
 
 
-
 # Open the image
 image = Image.open('C:/Users/ashwa/Desktop/image.png')
 image = image.convert("RGB")
