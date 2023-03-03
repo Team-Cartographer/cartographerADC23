@@ -1,15 +1,18 @@
 from csv import reader as r
+import FolderCreator as fc
 import numpy as np
 from ursina import *
 from ursina.prefabs.first_person_controller import FirstPersonController
 
-
+heightmap = fc.images_path + '/ursina_heightmap.jpg'
+slopemap = fc.images_path + '/slopemap.jpg'
+heightkey = fc.images_path + '/heightkey.jpg'
 app = Ursina()
 
 ground = Entity(
     # model = 'testBlenderProgram'
-    model=Terrain(heightmap='htmap6'),
-    texture='moon9',
+    model=Terrain(heightmap=heightmap),
+    texture='grass',
     #collider='mesh',
     collider='box',
     scale=(1240, 150, 1240)
@@ -41,19 +44,19 @@ t_info = Text(
 )
 
 latitudes, longitudes, heights, slopes = [], [], [], []
-with open('C:/Users/ashwa/Downloads/RegLat.csv') as csv_file:
+with open('C:/Users/ashwa/Desktop/Regional Data Files/RegLat.csv') as csv_file:
     reads = r(csv_file)
     for row in reads:
         latitudes.append(row)
-with open('C:/Users/ashwa/Downloads/RegLong.csv') as csv_file:
+with open('C:/Users/ashwa/Desktop/Regional Data Files/RegLong.csv') as csv_file:
     reads = r(csv_file)
     for row in reads:
         longitudes.append(row)
-with open('C:/Users/ashwa/Downloads/RegHeight.csv') as csv_file:
+with open('C:/Users/ashwa/Desktop/Regional Data Files/RegHeight.csv') as csv_file:
     reads = r(csv_file)
     for row in reads:
         heights.append(row)
-with open('C:/Users/ashwa/Downloads/RegSlope.csv') as csv_file:
+with open('C:/Users/ashwa/Desktop/Regional Data Files/RegSlope.csv') as csv_file:
     reads = r(csv_file)
     for row in reads:
         slopes.append(row)
@@ -70,7 +73,7 @@ class Sky(Entity):
         self.world_position = camera.world_position
 
 Sky()
-
+'''
 player = FirstPersonController(position= (200, 1000, 200), speed=50, mouse_sensitivity=Vec2(25, 25))
 
 # Shortcuts/Toggle Functions
@@ -138,8 +141,8 @@ def update():
     if player.position.y < -50:
          player.set_position((200, 200, 200))
 
-
-#EditorCamera()
+'''
+EditorCamera()
 
 app.run()
 

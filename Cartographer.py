@@ -49,6 +49,9 @@ def draw_points():
             # note that there is a bit of data loss here.
             # Ideally, we'd make the final image have a size equal to the maximum span of the x and y data
 
+    #canvas.transpose(method=Image.FLIP_TOP_BOTTOM)
+    #canvas.show()
+
 
 def draw_colors():
     for i in range(len(full_list)):
@@ -58,6 +61,9 @@ def draw_colors():
             y_pos = i
             # print(x_pos, y_pos)
             canvas.putpixel((int(x_pos), int(y_pos)), color)
+
+    #canvas.transpose(method=Image.FLIP_TOP_BOTTOM)
+    #canvas.show()
 
 
 def draw_slopes():
@@ -72,6 +78,9 @@ def draw_slopes():
             y_pos = i
             #print(x_pos, y_pos)
             canvas.putpixel((int(x_pos), int(y_pos)), color)
+
+    #canvas.transpose(method=Image.FLIP_TOP_BOTTOM)
+    #canvas.show()
 
 
 def draw_path(path, image, color):
