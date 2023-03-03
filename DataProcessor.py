@@ -6,29 +6,16 @@ import csv
 import sys
 
 import FolderCreator as fc
+from Helpers import file2list
 import Constants
-
-latitude_path = fc.get_latitude_file_path()
-longitude_path = fc.get_longitude_file_path()
-height_path = fc.get_height_file_path()
-slope_path = fc.get_slope_file_path()
 
 DISTANCE_BETWEEN_POINTS = Constants.DISTANCE_BETWEEN_POINTS
 
 # Creates Lists of each Data Type from the Paths Given.
-with open(latitude_path) as csv_file:
-    latitude_list = list(csv.reader(csv_file, delimiter=','))
-    csv_file.close()
-with open(longitude_path) as csv_file:
-    longitude_list = list(csv.reader(csv_file, delimiter=','))
-    csv_file.close()
-with open(height_path) as csv_file:
-    height_list = list(csv.reader(csv_file, delimiter=','))
-    csv_file.close()
-with open(slope_path) as csv_file:
-    slope_list = list(csv.reader(csv_file, delimiter=','))
-    csv_file.close()
-
+latitude_list = file2list(fc.get_latitude_file_path())
+longitude_list = file2list(fc.get_longitude_file_path())
+height_list = file2list(fc.get_height_file_path())
+slope_list = file2list(fc.get_slope_file_path())
 
 # Call from each file instead of class specific calls.
 def generate_data_array():
@@ -74,7 +61,7 @@ def get_z_coord(lat, rad):
 
 
 def write_rect_file(data_arr):
-    rect_coord_path = fc.data_path + "/RectangularCoordinateData.csv"  # Processed Data Folder given from FolderCreator.py
+    rect_coord_path = fc.data_path + "/RectangularCoordinateData.csv" # Processed Data Folder given from FolderCreator.py
     xs, ys, zs, = [], [], []
     with open(rect_coord_path, mode="w", newline="") as datafile:
         csv_writer = csv.writer(datafile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
