@@ -7,6 +7,9 @@ import csv
 import tkinter as tk
 from tkinter import messagebox
 from shutil import move
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def find_file(name, path):
     for root, dirs, files in os.walk(path):
@@ -31,7 +34,24 @@ def show_warning(title, msg):
     messagebox.showwarning(title, msg)
 
 
-#IMPORTANT PATHING
+# Helper functions to get file paths from .env
+def get_latitude_file_path():
+    return os.getenv('LATITUDE_FILE_PATH').replace("\\", "/")
+
+
+def get_longitude_file_path():
+    return os.getenv('LONGITUDE_FILE_PATH').replace("\\", "/")
+
+
+def get_height_file_path():
+    return os.getenv('HEIGHT_FILE_PATH').replace("\\", "/")
+
+
+def get_slope_file_path():
+    return os.getenv('SLOPE_FILE_PATH').replace("\\", "/")
+
+
+# IMPORTANT PATHING
 parent_path = os.getcwd()
 data_path = os.path.join(parent_path, 'Data')
 images_path = os.path.join(data_path, 'Images')
@@ -39,6 +59,7 @@ appfiles_path = os.path.join(parent_path, 'App Files')
 archive_path = os.path.join(appfiles_path, 'Archived Files')
 
 ###################
+
 
 def processPathData():
     pathfile_path = os.path.join(appfiles_path, "Paths to Data.txt")
@@ -63,6 +84,7 @@ def processPathData():
         except TypeError:
             show_error('ADC App Installation Failure','Please run PathFinder.exe First')
             quit()
+
 
 if __name__ == '__main__':
     if not os.path.exists(os.path.join(parent_path, 'Data')):

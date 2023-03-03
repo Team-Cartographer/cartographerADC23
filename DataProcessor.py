@@ -1,25 +1,19 @@
 # This program takes the files from the csv and repackages them as an array of objects
 
-import csv
-import FolderCreator as fc
 from numpy import cos, sin, deg2rad
-import sys
 from ast import literal_eval
+import csv
+import sys
 
-pathfile_path = (fc.appfiles_path + '/Paths to Data.txt').replace("\\", "/")
+import FolderCreator as fc
+import Constants
 
+latitude_path = fc.get_latitude_file_path()
+longitude_path = fc.get_longitude_file_path()
+height_path = fc.get_height_file_path()
+slope_path = fc.get_slope_file_path()
 
-with open(pathfile_path, mode="r") as f:
-    paths = list(csv.reader(f, delimiter='\n'))
-    for i in range(len(paths)):
-        paths[i] = paths[i][0]
-    f.close()
-
-DISTANCE_BETWEEN_POINTS = float(str(paths[4]).rstrip("\n"))
-latitude_path = str(paths[0]).replace("\\", "/").rstrip("\n")
-longitude_path = str(paths[1]).replace("\\", "/").rstrip("\n")
-height_path = str(paths[2]).replace("\\", "/").rstrip("\n")
-slope_path = str(paths[3]).replace("\\", "/").rstrip("\n")
+DISTANCE_BETWEEN_POINTS = Constants.DISTANCE_BETWEEN_POINTS
 
 # Creates Lists of each Data Type from the Paths Given.
 with open(latitude_path) as csv_file:
