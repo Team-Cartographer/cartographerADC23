@@ -1,4 +1,5 @@
 # This program takes the files from the csv and repackages them as an array of objects
+import time
 
 from numpy import cos, sin, deg2rad
 from ast import literal_eval
@@ -44,8 +45,15 @@ def generate_data_array():
                        slope_list[row][data_pt]]
                 dataArray.append(tmp)
                 csv_writer.writerow(tmp)
+
+                # Log
+                total_index = rows * cols
+                current_index = (row * cols) + data_pt + 1
+                percentage = ((current_index / total_index) * 100)
+                print(f"\rCreating RawDataArray.csv: { current_index}/{total_index} ({percentage:.2f}%)", end="")
+
     f.close()
-    print("Created RawDataArray.csv")
+    print("\nCreated RawDataArray.csv")
 
     return xy_dim, data_array_path_
 
@@ -84,9 +92,11 @@ def write_rect_file(data_arr):
             xs.append(x), ys.append(y), zs.append(z)
             tmpDataArray.append([x, y, z, slope])
 
+            print(f"\rCreating RectangularCoordinateData.csv: {i}/{len(data_arr)} ({i/len(data_arr)*100:.2f}%)", end="")
+
         datafile.close()
     min_x_, min_y_, min_z_ = abs(min(xs)), abs(min(ys)), abs(min(zs))
-    print("Created RectangularCoordinateData.csv")
+    print("\nCreated RectangularCoordinateData.csv")
     return rect_coord_path, min_x_, min_y_, min_z_
 
 
