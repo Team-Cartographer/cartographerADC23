@@ -1,24 +1,15 @@
 # This program is used to create the heightmap and slope map from the data
 
-import csv
 import FolderCreator as fc
 from ast import literal_eval
 from PIL import Image
-import Constants as c
+from Helpers import file2list
 
 astar_data_path = fc.data_path + "/AStarRawData.csv"
-with open(astar_data_path, mode="r") as csv_file:
-    csv_reader = csv.reader(csv_file, delimiter=',')
-    full_list = list(csv_reader)
-    csv_file.close()
+full_list = file2list(astar_data_path)
 
-misc_path = fc.data_path + "/MiscData.csv"
-with open(misc_path, mode="r") as csv_file:
-    csv_reader = csv.reader(csv_file, delimiter=',')
-    max_z = float(list(csv_reader)[0][0])
-    #print(max_z)
-    csv_file.close()
-
+max_z = fc.get_max_z()
+SIZE_CONSTANT = fc.get_size_constant()
 
 def calculate_color(height):
     color = 255 - (height * 255 / max_z)
@@ -76,10 +67,10 @@ def draw_path(path, image, color):
 
 
 if __name__ == "__main__":
-    canvas = Image.new('RGBA', (c.SIZE_CONSTANT, c.SIZE_CONSTANT), 'blue')
+    canvas = Image.new('RGBA', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
     draw_points()
     canvas.save(fc.images_path + '/RAW_heightmap.png') # must save here for a proper read from Ursina
-    print("Created ursina_heightmap.png")
+    print("Created RAW_heightmap.png")
     draw_slopes()
     canvas.save(fc.parent_path + '/slopemap.png')
     print("Created slopemap.png")
@@ -87,9 +78,13 @@ if __name__ == "__main__":
     canvas.save(fc.parent_path + '/heightkey.png')
     print("Created heightkey.png")
 
+    # Image Scaling for Faster Ursina Runs
     upscaled = Image.open(fc.images_path + '/RAW_heightmap.png')
     downscaled = upscaled.resize((81, 81))
     downscaled.save(fc.parent_path + '/processed_heightmap.png')
+    print("Created processed_heightmap.png")
+
+    print("Cartographer Success")
 
 
 

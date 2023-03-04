@@ -1,31 +1,30 @@
 # This program takes the files from the csv and repackages them as an array of objects
-import time
 
+import os
 from numpy import cos, sin, deg2rad
 from ast import literal_eval
 import csv
-import sys
-
-import FolderCreator as Fc
+from sys import exit
+import FolderCreator as fc
 from Helpers import file2list
-import Constants
+from dotenv import set_key
 
-DISTANCE_BETWEEN_POINTS = Constants.DISTANCE_BETWEEN_POINTS
+DISTANCE_BETWEEN_POINTS = fc.get_dist_between_ponts()
 
 # Creates Lists of each Data Type from the Paths Given.
-latitude_list = file2list(Fc.get_latitude_file_path())
-longitude_list = file2list(Fc.get_longitude_file_path())
-height_list = file2list(Fc.get_height_file_path())
-slope_list = file2list(Fc.get_slope_file_path())
+latitude_list = file2list(fc.get_latitude_file_path())
+longitude_list = file2list(fc.get_longitude_file_path())
+height_list = file2list(fc.get_height_file_path())
+slope_list = file2list(fc.get_slope_file_path())
 
 
 def generate_data_array():
     if not len(longitude_list) == len(latitude_list) == len(height_list) == len(slope_list):
-        Fc.show_error("ADC App Data Processing Failure", f'Data List Row Lengths are Inconsistent.')
+        fc.show_error("ADC App Data Processing Failure", f'Data List Row Lengths are Inconsistent.')
         return
 
     if not len(longitude_list[0]) == len(latitude_list[0]) == len(height_list[0]) == len(slope_list[0]):
-        Fc.show_error("ADC App Data Processing Failure", f'Data List Column Lengths are Inconsistent.')
+        fc.show_error("ADC App Data Processing Failure", f'Data List Column Lengths are Inconsistent.')
         return
 
     rows = len(longitude_list)
@@ -33,7 +32,7 @@ def generate_data_array():
     xy_dim = len(longitude_list)
 
     # Change to {fc.archive_path} for final build.
-    data_array_path_ = Fc.data_path + "/RawDataArray.csv"
+    data_array_path_ = fc.data_path + "/RawDataArray.csv"
 
     with open(data_array_path_, mode="w", newline="") as f:
         csv_writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -46,10 +45,10 @@ def generate_data_array():
                 csv_writer.writerow(tmp)
 
                 # Log
-                total_index = rows * cols
-                current_index = (row * cols) + data_pt + 1
-                percentage = ((current_index / total_index) * 100)
-               # print(f"\rCreating RawDataArray.csv: {current_index}/{total_index} ({percentage:.2f}%)", end="")
+                #total_index = rows * cols
+                #current_index = (row * cols) + data_pt + 1
+                #percentage = ((current_index / total_index) * 100)
+                # print(f"\rCreating RawDataArray.csv: {current_index}/{total_index} ({percentage:.2f}%)", end="")
 
     f.close()
     print("Created RawDataArray.csv")
@@ -71,7 +70,7 @@ def get_z_coord(lat, rad):
 
 
 def write_rect_file(data_arr):
-    rect_coord_path = Fc.data_path + "/RectangularCoordinateData.csv"
+    rect_coord_path = fc.data_path + "/RectangularCoordinateData.csv"
     xs, ys, zs, = [], [], []
     length = len(data_arr)
     with open(rect_coord_path, mode="w", newline="") as datafile:
@@ -96,13 +95,8 @@ def write_rect_file(data_arr):
 
         datafile.close()
     min_x_, min_y_, min_z_ = abs(min(xs)), abs(min(ys)), abs(min(zs))
-
-    misc_data_path = Fc.data_path + "/MiscData.csv"
-    with open(misc_data_path, mode="w", newline="") as datafile:
-        csv_writer = csv.writer(datafile, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        csv_writer.writerow([str(round(abs(min_z_) - abs(max(zs))))])
-        datafile.close()
-        print("Created MiscData.csv")
+    max_z = str(round(abs(min_z_) - abs(max(zs))))
+    set_key('.env', 'MAX_Z', max_z)
 
     print("Created RectangularCoordinateData.csv")
     return rect_coord_path, min_x_, min_y_, min_z_
@@ -133,7 +127,7 @@ def write_astar_file(min_x_, min_y_, min_z_, temp_array):
             array_to_be_written[j][i][1] = j
 
     # Retrofitted A-Star Data
-    astar_path = Fc.data_path + "/AStarRawData.csv"
+    astar_path = fc.data_path + "/AStarRawData.csv"
     with open(astar_path, mode="w", newline="") as f:
         csv_writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for row in array_to_be_written:
@@ -145,7 +139,7 @@ def write_astar_file(min_x_, min_y_, min_z_, temp_array):
 
 
 def test_astar_file():
-    astar_path = Fc.data_path + "/AStarRawData.csv"
+    astar_path = fc.data_path + "/AStarRawData.csv"
     with open(astar_path, mode="r", newline="") as f:
         astar_data = list(csv.reader(f))
 
@@ -155,7 +149,7 @@ def test_astar_file():
                 if literal_eval(astar_data[j][i])[1] != j:
                     print(astar_data[j][i])
                     print(i, j)
-                    sys.exit(2)
+                    exit(2)
 
 
 if __name__ == "__main__":
