@@ -1,7 +1,6 @@
 import FolderCreator as fc
-import numpy as np
 from ursina import *
-from Helpers import file2list, calc_azimuth_and_elevation
+from Helpers import file2list, calc_azimuth_and_elevation, latitude_from_rect, longitude_from_rect, slope_from_rect, height_from_rect
 from ursina.prefabs.first_person_controller import FirstPersonController
 from ast import literal_eval
 
@@ -101,8 +100,6 @@ astar_array = file2list(fc.data_path + "/AStarRawData.csv")
 def update():
     x, y, z = player.position.x, player.position.y, player.position.z
 
-    x, z = x/10, z/10
-
     if held_keys['left shift']:
         player.speed = 500
     else:
@@ -115,14 +112,16 @@ def update():
     #print(f'\rx = {x}, y = {y}, z = {z}')
     editor_cam_player_loc.position = (x/3.33, 350, z/3.33)
 
-    height = fc.get_max_z() - literal_eval(astar_array[int(x)+638][int(z)+638])[2]
+    # Corrected X and Z values for Calculations
+    x, z = int(x / 10) + 638, int(z / 10) + 638
+    height = fc.get_max_z() - literal_eval(astar_array[x][z])[2]
 
 
     # Updating Variables
-    t_lat.text = 'Latitude: '
-    t_lon.text = 'Longitude: '
+    t_lat.text = 'Latitude: ' + str(latitude_from_rect(x, z))
+    t_lon.text = 'Longitude: ' + str(-1*longitude_from_rect(x, z))
     t_ht.text = 'Height: ' + str(height)
-    t_slope.text = 'Slope: '
+    t_slope.text = 'Slope: ' + str(slope_from_rect(x, z))
     #t_azi.text = 'Azimuth: ' + str(azimuth)
     #if str(elevation) == 'nan':
     #    t_elev.text = 'Elevation: 0'
@@ -146,7 +145,6 @@ def start_game():
     t_info.enabled = True
     t_elev.enabled = True
     t_start_menu.enabled = False
-    sky.color='000F2B'
 
 
 t_start_menu = Text(text="Welcome to Team Cartographer's 2023 NASA ADC Application", x=-0.35, y=0.08)
