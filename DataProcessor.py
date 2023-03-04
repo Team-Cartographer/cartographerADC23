@@ -9,7 +9,7 @@ import FolderCreator as fc
 from Helpers import file2list
 from dotenv import set_key
 
-DISTANCE_BETWEEN_POINTS = fc.get_dist_between_ponts()
+DISTANCE_BETWEEN_POINTS = fc.get_dist_between_points()
 
 # Creates Lists of each Data Type from the Paths Given.
 latitude_list = file2list(fc.get_latitude_file_path())

@@ -37,7 +37,7 @@ def get_height_file_path():
 def get_slope_file_path():
     return os.getenv('SLOPE_FILE_PATH').replace("\\", "/")
 
-def get_dist_between_ponts():
+def get_dist_between_points():
     return int(os.getenv('DISTANCE_BETWEEN_POINTS'))
 
 def get_size_constant():

@@ -85,7 +85,3 @@ if __name__ == "__main__":
     print("Created processed_heightmap.png")
 
     print("Cartographer Success")
-
-
-
-
