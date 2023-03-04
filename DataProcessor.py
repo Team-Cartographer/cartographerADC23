@@ -44,12 +44,6 @@ def generate_data_array():
                 dataArray.append(tmp)
                 csv_writer.writerow(tmp)
 
-                # Log
-                #total_index = rows * cols
-                #current_index = (row * cols) + data_pt + 1
-                #percentage = ((current_index / total_index) * 100)
-                # print(f"\rCreating RawDataArray.csv: {current_index}/{total_index} ({percentage:.2f}%)", end="")
-
     f.close()
     print("Created RawDataArray.csv")
 
@@ -89,8 +83,6 @@ def write_rect_file(data_arr):
             csv_writer.writerow([x, y, z, slope])
             xs.append(x), ys.append(y), zs.append(z)
             tmpDataArray.append([x, y, z, slope])
-
-            #print(f"\rCreating RectangularCoordinateData.csv: {i}/{length} ({i/length*100:.2f}%)", end="")
 
         datafile.close()
     min_x_, min_y_, min_z_ = abs(min(xs)), abs(min(ys)), abs(min(zs))
