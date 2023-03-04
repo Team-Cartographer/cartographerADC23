@@ -3,6 +3,7 @@ import numpy as np
 from ursina import *
 from Helpers import file2list, calc_azimuth_and_elevation
 from ursina.prefabs.first_person_controller import FirstPersonController
+from ast import literal_eval
 
 app = Ursina()
 window.title = 'ADCLander'
@@ -96,8 +97,11 @@ def input(key):
     if held_keys['left shift', 'q']:
         exit(0)
 
+astar_array = file2list(fc.data_path + "/AStarRawData.csv")
+
 def update():
     x, y, z = player.position.x, player.position.y, player.position.z
+    x, z = x/10, z/10
     if held_keys['left shift']:
         player.speed = 500
     else:
@@ -110,12 +114,13 @@ def update():
     print(f'\rx = {x}, y = {y}, z = {z}')
     editor_cam_player_loc.position = (x/3.33, 350, z/3.33)
 
+    height =  fc.get_max_z() - literal_eval(astar_array[int(x)+638][int(z)+638])[2]
 
 
     # Updating Variables
     t_lat.text = 'Latitude: '
     t_lon.text = 'Longitude: '
-    t_ht.text = 'Height: '
+    t_ht.text = 'Height: ' + str(height)
     t_slope.text = 'Slope: '
     #t_azi.text = 'Azimuth: ' + str(azimuth)
     #if str(elevation) == 'nan':
