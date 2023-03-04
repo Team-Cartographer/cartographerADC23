@@ -4,9 +4,9 @@ from subprocess import run
 
 code_path = os.getcwd()
 
-# runs PathFinder.exe
-pathfinder_path = code_path + "/PathFinder/PathFinder.exe"
-pathfinder_program = run(["cmd", "/c", pathfinder_path])
+# runs PathFetcher.exe
+pathfetcher_path = code_path + "/PathFetcher/PathFetcher.exe"
+pathfetcher_program = run(["cmd", "/c", pathfetcher_path])
 
 
 # runs FolderCreator.py
