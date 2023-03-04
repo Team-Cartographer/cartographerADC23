@@ -9,6 +9,8 @@ from shutil import move
 from dotenv import load_dotenv
 from Helpers import find_file, show_error
 
+dotenv_path = (os.getcwd() + "/PathFetcher/.env").replace("\\", "/")
+dotenv_path = move(dotenv_path, os.getcwd())
 load_dotenv()
 
 
