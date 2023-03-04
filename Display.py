@@ -6,8 +6,8 @@ from ursina.prefabs.first_person_controller import FirstPersonController
 
 app = Ursina()
 window.title = 'ADCLander'
-Y_HEIGHT = 90
-RESET_LOC = (0, 1000, 0)
+Y_HEIGHT = 90  # Default Value
+RESET_LOC = (0, 1000, 0)  # Default PLAYER Value
 SIZE_CONSTANT = fc.get_size_constant()
 
 
