@@ -1,6 +1,5 @@
 # This program takes the files from the csv and repackages them as an array of objects
 
-import os
 from numpy import cos, sin, deg2rad
 from ast import literal_eval
 import csv
