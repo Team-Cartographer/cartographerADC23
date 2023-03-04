@@ -5,13 +5,33 @@ from Helpers import file2list, calc_azimuth_and_elevation
 from ursina.prefabs.first_person_controller import FirstPersonController
 
 app = Ursina()
+window.title = 'ADCLander'
+Y_HEIGHT = 90
+RESET_LOC = (0, 1000, 0)
+SIZE_CONSTANT = fc.get_size_constant()
 
-ground = Entity(
+ground_player = Entity(
     model=Terrain(heightmap='processed_heightmap.png'),
-    texture='grass',
+    texture='moon_surface_texture.png',
     collider='box',
-    scale=(12770, 1000, 12770)
+    scale=(SIZE_CONSTANT*10, 1000, SIZE_CONSTANT*10),
+    enabled=True
     )
+
+ground_perspective = Entity(
+    model=Terrain(heightmap='processed_heightmap.png'),
+    texture='moon_surface_texture.png',
+    collider='box',
+    scale=(SIZE_CONSTANT*3, 360, SIZE_CONSTANT*3),
+    enabled=False
+    )
+
+player_location = Entity(
+    model='cube',
+    scale=(1, 1, 1),
+    color=color.red
+)
+
 
 slopemap = fc.parent_path + '/slopemap.png'
 heightkey = fc.parent_path + '/heightkey.png'
@@ -44,50 +64,61 @@ class Sky(Entity):
             setattr(self, key, value)
     def update(self):
         self.world_position = camera.world_position
-
 Sky()
 
-player = FirstPersonController(position= (200, 5000, 200), speed=250, mouse_sensitivity=Vec2(25, 25))
+ec = EditorCamera(enabled=False, zoom_speed=4, orthographic_fov=5000)
+
+player = FirstPersonController(position=RESET_LOC, speed=250, mouse_sensitivity=Vec2(25, 25), enabled=True)
 
 # Shortcuts/Toggle Functions
 def input(key):
-    if key == 'o':
-        player.set_position((200, 700, 200))
-    if key == 'l':
-        ground.texture = 'slopemap.png'
-    if key == 'h':
-        ground.texture = 'heightkey.png'
-    if key == 'm':
-        ground.texture = 'moon9'
     if key == 'r':
-        ground.texture = 'moon17'
-    if key == 'p':
-        ground.texture = 'LunarPath'
+        player.set_position(RESET_LOC)
+    if key == 'l':
+        ground_player.texture = 'slopemap.png'
+        ground_perspective.texture = 'slopemap.png'
+    if key == 'h':
+        ground_player.texture = 'heightkey.png'
+        ground_perspective.texture = 'heightkey.png'
+    if key == 'm':
+        ground_player.texture = 'moon_surface_texture.png'
+        ground_perspective.texture = 'moon_surface_texture.png'
+    if key == 'x':
+        player.enabled = not player.enabled
+        ec.enabled = not ec.enabled
+        ground_player.enabled = not ground_player.enabled
+        ground_perspective.enabled = not ground_perspective.enabled
+
 
 
 def update():
     x, y, z = player.position.x, player.position.y, player.position.z
+    if held_keys['left shift']:
+        player.speed = 500
+    else:
+        player.speed = 250
 
+    #TODO: FIX AZI AND ELEV AND LAT/LONG/HT/SLOPE CALCULATIONS
     #azimuth, elevation = calc_azimuth_and_elevation(x, y, z, latitudes, longitudes, heights, slopes)
 
     #for scale testing
-    #print(f'x = {x}, y = {y}, z = {z}')
+    print(f'x = {x}, y = {y}, z = {z}')
+    player_location.position = (x, y, z)
+
 
     # Updating Variables
-    t_lat.text = 'Latitude: ' + latitudes[int(x) + 620][int(abs(z-620))]
-    t_lon.text = 'Longitude: ' + longitudes[int(x) + 620][int(abs(z-620))]
-    t_ht.text = 'Height: ' + heights[int(x) + 620][int(abs(z-620))]
-    t_slope.text = 'Slope: ' + slopes[int(x) + 620][int(abs(z-620))]
+    t_lat.text = 'Latitude: '
+    t_lon.text = 'Longitude: '
+    t_ht.text = 'Height: '
+    t_slope.text = 'Slope: '
     #t_azi.text = 'Azimuth: ' + str(azimuth)
     #if str(elevation) == 'nan':
     #    t_elev.text = 'Elevation: 0'
     #else:
     #    t_elev.text = 'Elevation: ' + str(elevation)
 
-
     if player.position.y < -50:
-         player.set_position((200, 200, 200))
+         player.set_position(RESET_LOC)
 
 
-#EditorCamera()
 app.run()
