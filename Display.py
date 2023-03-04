@@ -93,6 +93,8 @@ def input(key):
         ground_player.enabled = not ground_player.enabled
         ground_perspective.enabled = not ground_perspective.enabled
         editor_cam_player_loc.enabled = not editor_cam_player_loc.enabled
+    if held_keys['left shift', 'q']:
+        exit(0)
 
 def update():
     x, y, z = player.position.x, player.position.y, player.position.z
@@ -137,8 +139,9 @@ def start_game():
     t_slope.enabled = True
     t_info.enabled = True
     t_elev.enabled = True
+    t_start_menu.enabled = False
 
-t_start_menu = Text(text='')
+t_start_menu = Text(text="Welcome to Team Cartographer's 2023 NASA ADC Application", x=-0.35, y=0.08)
 start_bot = Button(text='Click to Begin', color=color.gray, highlight_color=color.dark_gray, scale=(0.2, 0.05))
 start_bot.on_click = start_game
 
