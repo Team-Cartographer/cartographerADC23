@@ -1,4 +1,11 @@
-# This program takes the files from the csv and repackages them as an array of objects
+"""
+This program takes data from four csv files, latitude values, longitude values, height values, slope values. The
+program then repackages this data as an array of objects and writes it to a csv file named "RawDataArray.csv". The
+program then calculates the rectangular coordinates for each data point using formulas for converting latitude,
+longitude, and height to Cartesian coordinates. It then writes this data to a csv file named
+"RectangularCoordinateData.csv". Finally, the program sorts and formats the rectangular coordinate data in
+preparation for use in an A-star algorithm and writes it to a csv file named "AStarRawData.csv".
+"""
 
 from numpy import cos, sin, deg2rad
 from ast import literal_eval

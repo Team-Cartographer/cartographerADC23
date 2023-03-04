@@ -1,4 +1,14 @@
-# This program is used to create the heightmap and slope map from the data
+"""
+This program takes a CSV file containing terrain data and generates a heightmap and a slope map.
+
+The heightmap is a grayscale representation of the terrain's elevation, where lighter shades represent higher
+elevation and darker shades represent lower elevation.
+
+The slope map uses a color scheme to represent the steepness of the terrain, with green indicating gentle slopes,
+yellow indicating moderate slopes, and red indicating steep slopes.
+
+The program also downscales the final image to improve performance when used with the Ursina game engine.
+"""
 
 import FolderCreator as fc
 from ast import literal_eval
