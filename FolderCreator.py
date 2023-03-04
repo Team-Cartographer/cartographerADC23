@@ -3,14 +3,20 @@ FolderCreator.py makes folders and directories for all files for the FPA Team NA
 App Development Challenge Application.#
 """
 import os
-import csv
-
 from shutil import move
 from dotenv import load_dotenv
-from Helpers import find_file, show_error
+from Helpers import show_error, show_info
 
-dotenv_path = (os.getcwd() + "/PathFetcher/.env").replace("\\", "/")
-dotenv_path = move(dotenv_path, os.getcwd())
+# .env Loading and Processing
+if not os.path.exists(os.getcwd() + '/.env'):
+
+    if not os.path.exists(os.getcwd() + '/PathFetcher/.env'):
+        show_error("Failure", 'Please run PathFetcher.exe first.')
+        quit()
+
+    dotenv_path = (os.getcwd() + "/PathFetcher/.env").replace("\\", "/")
+    dotenv_path = move(dotenv_path, os.getcwd())
+
 load_dotenv()
 
 
@@ -39,34 +45,6 @@ app_files_path = os.path.join(parent_path, 'App Files')
 archive_path = os.path.join(app_files_path, 'Archived Files')
 
 
-###################
-
-
-def process_path_data():
-    pathfile_path = os.path.join(app_files_path, "Paths to Data.txt")
-    with open(pathfile_path, 'w') as f:
-        try:
-            path_data_path = find_file(name='PathData.csv', path=os.getcwd())
-
-            with open(path_data_path) as csv_file:
-                paths = list(csv.reader(csv_file, delimiter=','))
-                csv_file.close()
-                # Lat, Long, Height, Slope [In Order]
-                slash = "\\"
-                f.write(f'{str(paths[1])[2:-2].replace(slash, "/")}\n')
-                f.write(f'{str(paths[0])[2:-2].replace(slash, "/")}\n')
-                f.write(f'{str(paths[2])[2:-2].replace(slash, "/")}\n')
-                f.write(f'{str(paths[3])[2:-2].replace(slash, "/")}\n')
-                f.write(f'{int(str(paths[4])[2:-2])}\n')
-
-            if not os.path.exists(os.path.join(archive_path, path_data_path)):
-                move(path_data_path, archive_path)
-            f.close()
-        except TypeError:
-            show_error('ADC App Installation Failure', 'Please run PathFinder.exe First')
-            quit()
-
-
 if __name__ == '__main__':
     if not os.path.exists(os.path.join(parent_path, 'Data')):
         os.mkdir(data_path)
@@ -74,9 +52,6 @@ if __name__ == '__main__':
         os.mkdir(archive_path)
         os.mkdir(images_path)
     else:
-        show_error('ADC App Installation Update',
+        show_info('ADC App Installation Update',
                    "Folder Already Exists on " + parent_path + '\nFiles have been updated.')
 
-    process_path_data()
-
-# print("Installation Success")
