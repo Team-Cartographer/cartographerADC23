@@ -96,9 +96,9 @@ def write_rect_file(data_arr):
     min_x_, min_y_, min_z_ = abs(min(xs)), abs(min(ys)), abs(min(zs))
     max_z = str(round(abs(min_z_) - abs(max(zs))))
     set_key('.env', 'MAX_Z', max_z)
-    set_key('.env', 'MIN_Z', min_z_)
-    set_key('.env', 'MIN_X', min_x_)
-    set_key('.env', 'MIN_Y', min_y_)
+    set_key('.env', 'MIN_Z', str(min_z_))
+    set_key('.env', 'MIN_X', str(min_x_))
+    set_key('.env', 'MIN_Y', str(min_y_))
 
     print("Created RectangularCoordinateData.csv")
     return rect_coord_path, min_x_, min_y_, min_z_
