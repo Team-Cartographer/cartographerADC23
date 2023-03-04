@@ -1,6 +1,6 @@
 from PIL import Image
 import heapq
-import math
+from numpy import sqrt
 import csv
 from ast import literal_eval
 import FolderCreator as fc
@@ -32,7 +32,7 @@ def get_height_and_slope(x, y, grid):
 
 
 def distBtw(x1, y1, h1, x2, y2, h2):
-    return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2 + (h1 - h2) ** 2)
+    return sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2 + (h1 - h2) ** 2)
 
 
 def heuristic(x1, y1, x2, y2, h1, h2):

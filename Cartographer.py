@@ -11,6 +11,7 @@ full_list = file2list(astar_data_path)
 max_z = fc.get_max_z()
 SIZE_CONSTANT = fc.get_size_constant()
 
+
 def calculate_color(height):
     color = 255 - (height * 255 / max_z)
     return int(color), int(color), int(color)
