@@ -10,12 +10,14 @@ Y_HEIGHT = 90
 RESET_LOC = (0, 1000, 0)
 SIZE_CONSTANT = fc.get_size_constant()
 
+
+
 ground_player = Entity(
     model=Terrain(heightmap='processed_heightmap.png'),
     texture='moon_surface_texture.png',
     collider='box',
     scale=(SIZE_CONSTANT*10, 1000, SIZE_CONSTANT*10),
-    enabled=True
+    enabled=False
     )
 
 ground_perspective = Entity(
@@ -26,10 +28,11 @@ ground_perspective = Entity(
     enabled=False
     )
 
-player_location = Entity(
+editor_cam_player_loc = Entity(
     model='cube',
-    scale=(1, 1, 1),
-    color=color.red
+    scale=(15, 15, 15),
+    color=color.red,
+    enabled=False
 )
 
 
@@ -37,17 +40,17 @@ slopemap = fc.parent_path + '/slopemap.png'
 heightkey = fc.parent_path + '/heightkey.png'
 
 
-t_lat = Text(text='Latitude:', x=-.8, y=.45, scale=1.1)
-t_lon = Text(text='Longitude:', x=-.8, y=.40, scale=1.1)
-t_ht = Text(text='Height:', x=-.8, y=.35, scale=1.1)
-t_slope = Text(text='Slope:', x=-.8, y=.30, scale=1.1)
-t_azi = Text(text='Azimuth:', x=-.8, y=.25, scale=1.1)
-t_elev = Text(text='Elevation:', x=-.8, y=.20, scale=1.1)
+t_lat = Text(text='Latitude:', x=-.8, y=.45, scale=1.1, enabled=False)
+t_lon = Text(text='Longitude:', x=-.8, y=.40, scale=1.1, enabled=False)
+t_ht = Text(text='Height:', x=-.8, y=.35, scale=1.1, enabled=False)
+t_slope = Text(text='Slope:', x=-.8, y=.30, scale=1.1, enabled=False)
+t_azi = Text(text='Azimuth:', x=-.8, y=.25, scale=1.1, enabled=False)
+t_elev = Text(text='Elevation:', x=-.8, y=.20, scale=1.1, enabled=False)
 
 t_info = Text(
     text='P for Path, R for Real, M for Moon, H for Heightmap, L for Slope Map, O for Reset',
-    x=-.15, y=-.45, scale=1.1, color=color.black
-)
+    x=-.15, y=-.45, scale=1.1, color=color.black, enabled=False)
+
 
 latitudes = file2list(fc.get_latitude_file_path())
 longitudes = file2list(fc.get_longitude_file_path())
@@ -68,7 +71,8 @@ Sky()
 
 ec = EditorCamera(enabled=False, zoom_speed=4, orthographic_fov=5000)
 
-player = FirstPersonController(position=RESET_LOC, speed=250, mouse_sensitivity=Vec2(25, 25), enabled=True)
+player = FirstPersonController(position=RESET_LOC, speed=250, mouse_sensitivity=Vec2(25, 25), enabled=False)
+player.cursor.scale = 0.00000000001 # Hides the Cursor from the App Display
 
 # Shortcuts/Toggle Functions
 def input(key):
@@ -88,8 +92,7 @@ def input(key):
         ec.enabled = not ec.enabled
         ground_player.enabled = not ground_player.enabled
         ground_perspective.enabled = not ground_perspective.enabled
-
-
+        editor_cam_player_loc.enabled = not editor_cam_player_loc.enabled
 
 def update():
     x, y, z = player.position.x, player.position.y, player.position.z
@@ -102,8 +105,9 @@ def update():
     #azimuth, elevation = calc_azimuth_and_elevation(x, y, z, latitudes, longitudes, heights, slopes)
 
     #for scale testing
-    print(f'x = {x}, y = {y}, z = {z}')
-    player_location.position = (x, y, z)
+    print(f'\rx = {x}, y = {y}, z = {z}')
+    editor_cam_player_loc.position = (x/3.33, 350, z/3.33)
+
 
 
     # Updating Variables
@@ -119,6 +123,24 @@ def update():
 
     if player.position.y < -50:
          player.set_position(RESET_LOC)
+
+
+# Create Start Menu
+def start_game():
+    ground_player.enabled = True
+    player.enabled = True
+    start_bot.enabled = False
+    t_lat.enabled = True
+    t_lon.enabled = True
+    t_ht.enabled = True
+    t_azi.enabled = True
+    t_slope.enabled = True
+    t_info.enabled = True
+    t_elev.enabled = True
+
+t_start_menu = Text(text='')
+start_bot = Button(text='Click to Begin', color=color.gray, highlight_color=color.dark_gray, scale=(0.2, 0.05))
+start_bot.on_click = start_game
 
 
 app.run()
