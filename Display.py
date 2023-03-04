@@ -68,7 +68,7 @@ class Sky(Entity):
             setattr(self, key, value)
     def update(self):
         self.world_position = camera.world_position
-Sky()
+sky=Sky()
 
 ec = EditorCamera(enabled=False, zoom_speed=4, orthographic_fov=5000)
 
@@ -98,10 +98,11 @@ def input(key):
         exit(0)
 
 astar_array = file2list(fc.data_path + "/AStarRawData.csv")
-
 def update():
     x, y, z = player.position.x, player.position.y, player.position.z
+
     x, z = x/10, z/10
+
     if held_keys['left shift']:
         player.speed = 500
     else:
@@ -111,7 +112,7 @@ def update():
     #azimuth, elevation = calc_azimuth_and_elevation(x, y, z, latitudes, longitudes, heights, slopes)
 
     #for scale testing
-    print(f'\rx = {x}, y = {y}, z = {z}')
+    #print(f'\rx = {x}, y = {y}, z = {z}')
     editor_cam_player_loc.position = (x/3.33, 350, z/3.33)
 
     height = fc.get_max_z() - literal_eval(astar_array[int(x)+638][int(z)+638])[2]
@@ -145,6 +146,8 @@ def start_game():
     t_info.enabled = True
     t_elev.enabled = True
     t_start_menu.enabled = False
+    sky.color='000F2B'
+
 
 t_start_menu = Text(text="Welcome to Team Cartographer's 2023 NASA ADC Application", x=-0.35, y=0.08)
 start_bot = Button(text='Click to Begin', color=color.gray, highlight_color=color.dark_gray, scale=(0.2, 0.05))
