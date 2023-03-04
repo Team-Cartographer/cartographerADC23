@@ -25,7 +25,7 @@ def calc_rgb_color(height):
         g = height * 255 / max_z
     else:
         r = height * 255 / max_z
-    return (int(r), int(g), int(b))
+    return int(r), int(g), int(b)
 
 
 def draw_points():
@@ -39,6 +39,7 @@ def draw_points():
             # note that there is a bit of data loss here.
             # Ideally, we'd make the final image have a size equal to the maximum span of the x and y data
 
+
 def draw_colors():
     for i in range(len(full_list)):
         for j in range(len(full_list[i])):
@@ -47,6 +48,7 @@ def draw_colors():
             y_pos = i
             # print(x_pos, y_pos)
             canvas.putpixel((int(x_pos), int(y_pos)), color)
+
 
 def draw_slopes():
     for i in range(len(full_list)):
@@ -58,8 +60,9 @@ def draw_slopes():
                 color = (0, 255, 0)
             x_pos = j
             y_pos = i
-            #print(x_pos, y_pos)
+            # print(x_pos, y_pos)
             canvas.putpixel((int(x_pos), int(y_pos)), color)
+
 
 def draw_path(path, image, color):
     for i in range(len(path)):
@@ -70,7 +73,7 @@ def draw_path(path, image, color):
 if __name__ == "__main__":
     canvas = Image.new('RGBA', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
     draw_points()
-    canvas.save(fc.images_path + '/RAW_heightmap.png') # must save here for a proper read from Ursina
+    canvas.save(fc.images_path + '/RAW_heightmap.png')  # must save here for a proper read from Ursina
     print("Created RAW_heightmap.png")
     draw_slopes()
     canvas.save(fc.parent_path + '/slopemap.png')
