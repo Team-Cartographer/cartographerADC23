@@ -46,6 +46,16 @@ def get_size_constant():
 def get_max_z():
     return int(os.getenv("MAX_Z"))
 
+def get_min_z():
+    return int(os.getenv('MIN_Z'))
+
+def get_min_x():
+    return int(os.getenv('MIN_X'))
+
+def get_min_y():
+    return int(os.getenv('MIN_Y'))
+
+
 
 # IMPORTANT PATHING
 parent_path = os.getcwd()
