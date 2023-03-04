@@ -7,6 +7,7 @@ from sys import exit
 import FolderCreator as fc
 from Helpers import file2list
 from dotenv import set_key
+from Constants import LUNAR_RAD
 
 DISTANCE_BETWEEN_POINTS = fc.get_dist_between_points()
 
@@ -75,12 +76,11 @@ def write_rect_file(data_arr):
     with open(rect_coord_path, mode="w", newline="") as datafile:
         csv_writer = csv.writer(datafile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for i in range(length):
-            lunar_rad = (1737.4 * 1000)  # converts provided lunar rad data to meters
             lat = data_arr[i][0]
             long = data_arr[i][1]
             height = data_arr[i][2]
             slope = float(data_arr[i][3])
-            radius = lunar_rad + float(height)
+            radius = LUNAR_RAD + float(height)
 
             x = float(get_x_coord(lat, long, radius)) / DISTANCE_BETWEEN_POINTS
             y = float(get_y_coord(lat, long, radius)) / DISTANCE_BETWEEN_POINTS
