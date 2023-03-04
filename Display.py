@@ -114,7 +114,7 @@ def update():
     print(f'\rx = {x}, y = {y}, z = {z}')
     editor_cam_player_loc.position = (x/3.33, 350, z/3.33)
 
-    height =  fc.get_max_z() - literal_eval(astar_array[int(x)+638][int(z)+638])[2]
+    height = fc.get_max_z() - literal_eval(astar_array[int(x)+638][int(z)+638])[2]
 
 
     # Updating Variables
