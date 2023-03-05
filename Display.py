@@ -1,11 +1,8 @@
 import FolderCreator as fc
 from PIL import Image
 from ursina import *
-from utils import file2list, calc_azimuth_and_elevation
+from utils import file2list, calc_azimuth_and_elevation, latitude_from_rect, longitude_from_rect, get_radius, height_from_rect, slope_from_rect
 from ursina.prefabs.first_person_controller import FirstPersonController
-from ast import literal_eval
-astar_list = file2list(os.getcwd() + '/Data/AStarRawData.csv')
-from numpy import rad2deg, arccos
 from ursina import camera
 
 app = Ursina()
@@ -17,26 +14,6 @@ RESET_LOC = (0, Y_HEIGHT*8, 0)  # Default PLAYER Value
 SIZE_CONSTANT = fc.get_size_constant()
 EDITOR_SCALE_FACTOR = 3
 PLAYER_SCALE_FACTOR = 8
-
-def get_radius(x: float, y: float) -> float:
-    return sqrt((x**2) + (y**2))
-
-def latitude_from_rect(x: float, y: float, radius: float) -> float:
-    lat, _, _ = (radius/(30366 + (1/9))) - 90, x, y
-    return lat
-
-
-def longitude_from_rect(x: float, y: float, radius: float) -> float:
-    long, _ = rad2deg(arccos(x/radius)), y
-    return long
-
-# TODO check this equation. I don't think it's right so far
-def height_from_rect(x: float, y: float) -> float:
-    height = literal_eval(astar_list[y][x])[2]
-    height -= fc.get_min_z()
-
-def slope_from_rect(x: float, y: float) -> float:
-    return literal_eval(astar_list[y][x])[3]
 
 ground_player = Entity(
     model=Terrain(heightmap='processed_heightmap.png'),
@@ -60,7 +37,7 @@ editor_cam_player_loc = Entity(
     color=color.red,
     enabled=False
 )
-'''
+
 minimap = Entity(
     parent = camera.ui,
     model="quad",
@@ -71,16 +48,13 @@ minimap = Entity(
     enabled = False
 )
 
-map_overlay = Entity(
-    parent = camera.ui,
-    model="quad",
-    scale=(0.001, 0.001),
-    origin=(-0.5, 0.5),
-    position=window.top_left,
-    color=color.red,
-    enabled = False
-)
-'''
+mini_dot = Entity(
+    parent = minimap,
+    model='quad',
+    scale = (0.05, 0.05),
+    color = color.red
+    )
+
 slopemap = fc.parent_path + '/slopemap.png'
 heightkey = fc.parent_path + '/heightkey.png'
 
@@ -139,7 +113,7 @@ def input(key):
         ground_player.enabled = not ground_player.enabled
         ground_perspective.enabled = not ground_perspective.enabled
         editor_cam_player_loc.enabled = not editor_cam_player_loc.enabled
-        #minimap.enabled = not minimap.enabled
+        minimap.enabled = not minimap.enabled
     if held_keys['left shift', 'q']:
         exit(0)
     if key == 'escape' and pause_bot.enabled is False:
@@ -158,10 +132,7 @@ def input(key):
         pause_bot.enabled = True
         t_pause.enabled = True
         t_quit.enabled = True
-        #minimap.enabled = False
-
-
-astar_array = file2list(fc.data_path + "/AStarRawData.csv")
+        minimap.enabled = False
 
 def update():
 
@@ -175,11 +146,10 @@ def update():
     lat = str(latitude_from_rect(nx, nz, rad))
     long = str(-longitude_from_rect(nx, nz, rad))
     slope = str(slope_from_rect(nx, nz))
-    height = fc.get_max_z() - literal_eval(astar_array[nx][nz])[2]
-
+    height = str(height_from_rect(nx, nz))
 
     #TODO: FIX AZI AND ELEV AND LAT/LONG/HT/SLOPE CALCULATIONS
-    azimuth, elevation = calc_azimuth_and_elevation(float(lat), float(long), height)
+    azimuth, elevation = calc_azimuth_and_elevation(float(lat), float(long), float(height))
 
     #for scale testing
     #print(f'\rx = {x}, y = {y}, z = {z}')
@@ -191,7 +161,11 @@ def update():
     t_ht.text = 'Height: ' + str(height)
     t_slope.text = 'Slope: ' + slope
     t_azi.text = 'Azimuth: ' + str(azimuth)
-    t_elev.text = 'Elevation: ' + str(elevation)
+
+    if str(elevation) == 'nan':
+        t_elev.text = 'Elevation: 0'
+    else:
+        t_elev.text = 'Elevation: ' + str(elevation)
 
 
     # Map Failsafes
@@ -205,9 +179,8 @@ def update():
         player.speed = 300
 
 
-    mx, mz = int((x/10)/12+60), int((z/10)/12+60)
-    #map_overlay.position = (mx, mz)
-    #map_overlay.texture = fc.parent_path + "/layer2.png"
+    # TODO Fix Minimap Positioning
+    mx, mz = abs(int((x/10)/12-60)),(int((z/10)/12-60))
 
 
 
@@ -224,8 +197,7 @@ def start_game():
     t_info.enabled = True
     t_elev.enabled = True
     t_start_menu.enabled = False
-    #minimap.enabled = True
-    #map_overlay.enabled = True
+    minimap.enabled = True
 
 # Unpause Button Function
 def on_unpause():
@@ -242,7 +214,7 @@ def on_unpause():
     t_elev.enabled = True
     t_start_menu.enabled = False
     t_quit.enabled = False
-    #minimap.enabled = True
+    minimap.enabled = True
 
 
 
