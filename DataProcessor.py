@@ -12,7 +12,7 @@ from ast import literal_eval
 import csv
 from sys import exit
 import FolderCreator as fc
-from Helpers import file2list
+from utils import file2list
 from dotenv import set_key
 
 DISTANCE_BETWEEN_POINTS = fc.get_dist_between_points()

@@ -13,7 +13,7 @@ The program also downscales the final image to improve performance when used wit
 import FolderCreator as fc
 from ast import literal_eval
 from PIL import Image
-from Helpers import file2list
+from utils import file2list
 
 astar_data_path = fc.data_path + "/AStarRawData.csv"
 full_list = file2list(astar_data_path)
