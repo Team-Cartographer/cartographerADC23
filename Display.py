@@ -3,6 +3,8 @@ from ursina import *
 from Helpers import file2list, calc_azimuth_and_elevation, latitude_from_rect, longitude_from_rect, slope_from_rect, height_from_rect
 from ursina.prefabs.first_person_controller import FirstPersonController
 from ast import literal_eval
+astar_list = file2list(os.getcwd() + '/Data/AStarRawData.csv')
+from numpy import rad2deg, deg2rad, arccos, arcsin
 
 app = Ursina()
 window.title = 'ADCLander'
@@ -10,7 +12,24 @@ Y_HEIGHT = 90  # Default Value
 RESET_LOC = (0, 1000, 0)  # Default PLAYER Value
 SIZE_CONSTANT = fc.get_size_constant()
 
+def latitude_from_rect(x: float, y: float) -> float:
+    height = literal_eval(astar_list[y][x])[2]
+    lat = rad2deg(arcsin(height/((1737.4 * 1000) + height)))
+    return lat
 
+def longitude_from_rect(x: float, y: float) -> float:
+    height = literal_eval(astar_list[y][x])[2]
+    lat = latitude_from_rect(x, y)
+    long = rad2deg(arccos((x + round(int(fc.get_size_constant())/2))/(((1737.4 * 1000) + height)*cos(deg2rad(lat)))))
+    return long
+
+# TODO check this equation. I don't think it's right so far
+def height_from_rect(x: float, y: float) -> float:
+    height = literal_eval(astar_list[y][x])[2]
+    height -= fc.get_min_z()
+
+def slope_from_rect(x: float, y: float) -> float:
+    return literal_eval(astar_list[y][x])[3]
 
 ground_player = Entity(
     model=Terrain(heightmap='processed_heightmap.png'),

@@ -14,7 +14,6 @@ from sys import exit
 import FolderCreator as fc
 from Helpers import file2list
 from dotenv import set_key
-from Constants import LUNAR_RAD
 
 DISTANCE_BETWEEN_POINTS = fc.get_dist_between_points()
 
@@ -81,7 +80,7 @@ def write_rect_file(data_arr):
             long = data_arr[i][1]
             height = data_arr[i][2]
             slope = float(data_arr[i][3])
-            radius = LUNAR_RAD + float(height)
+            radius = fc.get_lunar_rad() + float(height)
 
             x = float(get_x_coord(lat, long, radius)) / DISTANCE_BETWEEN_POINTS
             y = float(get_y_coord(lat, long, radius)) / DISTANCE_BETWEEN_POINTS

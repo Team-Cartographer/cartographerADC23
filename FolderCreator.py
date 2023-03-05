@@ -61,6 +61,9 @@ def get_min_x():
 def get_min_y():
     return int(os.getenv('MIN_Y'))
 
+def get_lunar_rad():
+    return float(os.getenv('LUNAR_RAD'))
+
 
 # IMPORTANT PATHING
 parent_path = os.getcwd()
@@ -71,6 +74,7 @@ archive_path = os.path.join(app_files_path, 'Archived Files')
 
 if __name__ == '__main__':
     set_key('.env', 'SIZE_CONSTANT', '1277')
+    set_key('.env', 'LUNAR_RAD', str(1737.4 * 1000))
     if not os.path.exists(os.path.join(parent_path, 'Data')):
         os.mkdir(data_path)
         os.mkdir(app_files_path)

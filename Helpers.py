@@ -3,10 +3,8 @@ import tkinter as tk
 from tkinter import messagebox
 import os
 import numpy as np
-from numpy import cos, sin, sqrt, arccos, arcsin, rad2deg, deg2rad
+from numpy import cos, sin, sqrt
 from math import pi
-import FolderCreator as fc
-from ast import literal_eval
 
 
 def file2list(path):
@@ -15,10 +13,6 @@ def file2list(path):
         csv_file.close()
 
     return new_list
-
-
-astar_list = file2list(os.getcwd() + '/Data/AStarRawData.csv')
-
 
 def find_file(name, path):
     for root, dirs, files in os.walk(path):
@@ -77,25 +71,3 @@ def calc_azimuth_and_elevation(x, y, z, latitudes, longitudes, heights, slopes):
 
     return azimuth, elev
 
-
-def latitude_from_rect(x: float, y: float) -> float:
-    height = literal_eval(astar_list[y][x])[2]
-    lat = rad2deg(arcsin(height/((1737.4 * 1000) + height)))
-    return lat
-
-
-def longitude_from_rect(x: float, y: float) -> float:
-    height = literal_eval(astar_list[y][x])[2]
-    lat = latitude_from_rect(x, y)
-    long = rad2deg(arccos((x + round(int(fc.get_size_constant())/2))/(((1737.4 * 1000) + height)*cos(deg2rad(lat)))))
-    return long
-
-
-# TODO check this equation. I don't think it's right so far
-def height_from_rect(x: float, y: float) -> float:
-    height = literal_eval(astar_list[y][x])[2]
-    height -= fc.get_min_z()
-
-
-def slope_from_rect(x: float, y: float) -> float:
-    return literal_eval(astar_list[y][x])[3]
