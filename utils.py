@@ -40,10 +40,10 @@ def show_warning(title, msg):
     messagebox.showwarning(title, msg)
 
 
-def calc_azimuth_and_elevation(x, y, z, latitudes, longitudes, heights, slopes):
+def calc_azimuth_and_elevation(latitude, longitude, height):
     # Azimuth Angle and Elevation Calculation for Display.py
     lat_e, long_e = 29.5593, 95.0900  # Latitude and Longitude of Johnson Space Center.
-    lat_m, long_m = float(latitudes[int(x) + 620][int(abs(z - 620))]), float(longitudes[int(x) + 620][int(abs(z - 620))])
+    lat_m, long_m = latitude, longitude
 
     rad_earth = 6378000
     x_e = rad_earth * cos(lat_e) * cos(long_e)
@@ -52,7 +52,7 @@ def calc_azimuth_and_elevation(x, y, z, latitudes, longitudes, heights, slopes):
 
     x_m = lat_m * cos(float(long_m) * pi / 180)
     y_m = lat_m * sin(float(long_m) * pi / 180)
-    z_m = float(heights[int(x) + 620][int(abs(z - 620))])
+    z_m = height
 
     resultant_vector = [x_e - x_m, y_e - y_m, z_e - z_m]
 

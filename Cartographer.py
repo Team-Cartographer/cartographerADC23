@@ -12,7 +12,7 @@ The program also downscales the final image to improve performance when used wit
 
 import FolderCreator as fc
 from ast import literal_eval
-from PIL import Image
+from PIL import Image, ImageDraw
 from utils import file2list
 
 astar_data_path = fc.data_path + "/AStarRawData.csv"
@@ -81,6 +81,7 @@ def draw_path(path, image, color):
 
 
 if __name__ == "__main__":
+
     canvas = Image.new('RGBA', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
     draw_points()
     canvas.save(fc.images_path + '/RAW_heightmap.png')  # must save here for a proper read from Ursina
@@ -94,8 +95,19 @@ if __name__ == "__main__":
 
     # Image Scaling for Faster Ursina Runs
     upscaled = Image.open(fc.images_path + '/RAW_heightmap.png')
-    downscaled = upscaled.resize((81, 81))
+    downscaled = upscaled.resize((81, 81)) # 1/16th Scale
     downscaled.save(fc.parent_path + '/processed_heightmap.png')
     print("Created processed_heightmap.png")
+
+    map = Image.open('moon_surface_texture.png')
+    minimap = map.resize((120, 120)) # 1/10th Scale
+    minimap.save(fc.parent_path + '/minimap.png')
+    print("Created minimap.png")
+
+    #layer2 = Image.new('RGBA', (120, 120))
+    #for i in range(50, 60):
+    #    for j in range(50, 60):
+    #        layer2.putpixel((i, j), (255, 0, 0))
+    #layer2.save(fc.parent_path + '/layer2.png')
 
     print("Cartographer Success")
