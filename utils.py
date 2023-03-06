@@ -15,7 +15,10 @@ def file2list(path):
 
     return new_list
 
-astar_list = file2list(os.getcwd() + '/Data/AStarRawData.csv')
+try:
+    astar_list = file2list(os.getcwd() + '/Data/AStarRawData.csv')
+except FileNotFoundError:
+    pass
 
 def find_file(name, path):
     for root, dirs, files in os.walk(path):
