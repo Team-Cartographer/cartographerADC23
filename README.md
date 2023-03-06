@@ -16,10 +16,18 @@
 
 
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Welcome to the GitHub Repository for Team Cartographer's Application to the 2022-23 NASA App Development Challenge! 
+
+
+## Acknowledgements 
+- James Ristow, NASA Kennedy Space Center<br>
+- Alexandre Tolstenko Nogueira, Champlain College Division of IT and Science <br>
+- Dr. Brian Welch, NASA Goddard Flight Center<br>
+- Petter Amland, Creator of Python's Ursina Library<br>
+- Diana Ramirez, our ADC Lead Teacher<br>
+- Mrs. Leslie, Mr. Fawcett, Mr. Drake 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -28,11 +36,11 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-You need a windows pc lol :D
+This application will only work on Windows Operating Systems. For Mac Users, refer to installations of Virtual Machines or BootCamp to be able to run the app. 
 
 ### Installation
 
-1. Clone the repo
+1. Download the Repository 
    ```sh
    git clone https://github.com/abhi-arya1/NASA_ADC_APP.git
    ```
