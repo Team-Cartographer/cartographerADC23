@@ -45,7 +45,7 @@ minimap = Entity(
     origin=(-0.5, 0.5),
     position=window.top_left,
     texture='minimap.png',
-    enabled = False
+    enabled=False
 )
 
 mini_dot = Entity(
@@ -77,21 +77,12 @@ heights = file2list(fc.get_height_file_path())
 slopes = file2list(fc.get_slope_file_path())
 
 
-# Changes Sky Background to Black (0x000000)
-class Sky(Entity):
-    def __init__(self, **kwargs):
-        from ursina.shaders import unlit_shader
-        super().__init__(parent=render, name='sky', model='sky_dome', color='000000', scale=9900, shader=unlit_shader)
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-    def update(self):
-        self.world_position = camera.world_position
 sky = Sky()
+sky.color = '000000' # Black
 
+ec = EditorCamera(enabled=False, zoom_speed=5) # THIS MUST BE INITIALIZED BEFORE <player> OR ZOOMS WON'T WORK.
 
-player = FirstPersonController(position=RESET_LOC, speed=300, mouse_sensitivity=Vec2(25, 25), enabled=False)
-ec = EditorCamera(enabled=False, zoom_speed=5)
-
+player = FirstPersonController(position=RESET_LOC, speed=500, mouse_sensitivity=Vec2(25, 25), enabled=False)
 player.cursor.scale = 0.00000000001 # Hides the Cursor from the App Display
 
 # Shortcuts/Toggle Functions
@@ -153,19 +144,19 @@ def update():
 
     #for scale testing
     #print(f'\rx = {x}, y = {y}, z = {z}')
-    #editor_cam_player_loc.position = (x / 3.33, height*EDITOR_SCALE_FACTOR, z / 3.33)
+    editor_cam_player_loc.position = (x /(10/3), height, z /(10/3))
 
     # Updating Variables
-    t_lat.text = 'Latitude: ' + lat
-    t_lon.text = 'Longitude: ' + long
+    t_lat.text = f'Latitude: {lat}°'
+    t_lon.text = f'Longitude: {long}°'
     t_ht.text = 'Height: ' + str(height)
     t_slope.text = 'Slope: ' + slope
     t_azi.text = 'Azimuth: ' + str(azimuth)
 
     if str(elevation) == 'nan':
-        t_elev.text = 'Elevation: 0'
+        t_elev.text = 'Elevation: 0°'
     else:
-        t_elev.text = 'Elevation: ' + str(elevation)
+        t_elev.text = 'Elevation: ' + str(elevation) + '°'
 
 
     # Map Failsafes
@@ -176,7 +167,7 @@ def update():
     if held_keys['left shift']:
         player.speed = 1500
     else:
-        player.speed = 300
+        player.speed = 500
 
 
     # TODO Fix Minimap Positioning
@@ -217,8 +208,6 @@ def on_unpause():
     minimap.enabled = True
 
 
-
-
 t_start_menu = Text(text="Welcome to Team Cartographer's 2023 NASA ADC Application", x=-0.35, y=0.08)
 start_bot = Button(text='Click to Begin', color=color.gray, highlight_color=color.dark_gray, scale=(0.2, 0.05))
 start_bot.on_click = start_game
@@ -227,6 +216,5 @@ t_pause = Text(text="You are Currently Paused...", x=-0.16, y=0.08, enabled=Fals
 pause_bot = Button(text='Click to Unpause', color=color.gray, highlight_color=color.dark_gray, scale=(0.23, 0.05), enabled=False)
 t_quit = Text(text="Press 'LShift+Q' to quit.", x=-0.14, y=-0.06, enabled=False)
 pause_bot.on_click = on_unpause
-
 
 app.run()
