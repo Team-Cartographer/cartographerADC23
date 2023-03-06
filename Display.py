@@ -37,7 +37,7 @@ editor_cam_player_loc = Entity(
     scale=(20, 1000, 20),
     color=color.red,
     enabled=False,
-)
+    )
 
 minimap = Entity(
     parent = camera.ui,
@@ -48,7 +48,7 @@ minimap = Entity(
     position=window.top_left,
     texture='minimap.png',
     enabled=False
-)
+    )
 
 mini_dot = Entity(
     parent = minimap,
