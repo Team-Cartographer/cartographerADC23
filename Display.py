@@ -1,5 +1,4 @@
 import FolderCreator as fc
-from PIL import Image
 from ursina import *
 from utils import file2list, calc_azimuth_and_elevation, latitude_from_rect, longitude_from_rect, get_radius, height_from_rect, slope_from_rect
 from ursina.prefabs.first_person_controller import FirstPersonController
