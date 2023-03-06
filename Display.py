@@ -50,8 +50,9 @@ minimap = Entity(
 
 mini_dot = Entity(
     parent = minimap,
-    model='quad',
-    scale = (0.05, 0.05),
+    model='circle',
+    scale = (0.03, 0.03),
+    position = (0, 0, 0),
     color = color.red
     )
 
@@ -108,22 +109,24 @@ def input(key):
     if held_keys['left shift', 'q']:
         exit(0)
     if key == 'escape' and pause_bot.enabled is False:
-        t_lat.enabled = False
-        t_lon.enabled = False
-        t_ht.enabled = False
-        t_azi.enabled = False
-        t_slope.enabled = False
-        t_info.enabled = False
-        t_elev.enabled = False
-        player.enabled = False
-        ec.enabled = False
-        ground_player.enabled = False
-        ground_perspective.enabled = False
-        editor_cam_player_loc.enabled = False
-        pause_bot.enabled = True
-        t_pause.enabled = True
-        t_quit.enabled = True
-        minimap.enabled = False
+        t_lat.disable()
+        t_lon.disable()
+        t_ht.disable()
+        t_azi.disable()
+        t_slope.disable()
+        t_info.disable()
+        t_elev.disable()
+        player.disable()
+        ec.disable()
+        ground_player.disable()
+        ground_perspective.disable()
+        editor_cam_player_loc.disable()
+        minimap.disable()
+
+        pause_bot.enable()
+        t_pause.enable()
+        t_quit.enable()
+
 
 def update():
 
@@ -171,44 +174,47 @@ def update():
 
 
     # TODO Fix Minimap Positioning
-    mx, mz = abs(int((x/10)/12-60)),(int((z/10)/12-60))
+    mx, mz = x, z
+    mini_dot.position = (0.5, -0.5, 0) # Center of Minimap
 
 
 
 # Create Start Menu
 def start_game():
-    ground_player.enabled = True
-    player.enabled = True
-    start_bot.enabled = False
-    t_lat.enabled = True
-    t_lon.enabled = True
-    t_ht.enabled = True
-    t_azi.enabled = True
-    t_slope.enabled = True
-    t_info.enabled = True
-    t_elev.enabled = True
-    t_start_menu.enabled = False
-    minimap.enabled = True
+    ground_player.enable()
+    player.enable()
+    start_bot.disable()
+    t_lat.enable()
+    t_lon.enable()
+    t_ht.enable()
+    t_azi.enable()
+    t_slope.enable()
+    t_info.enable()
+    t_elev.enable()
+    t_start_menu.disable()
+    t_start_menu_creds.disable()
+    minimap.enable()
 
 # Unpause Button Function
 def on_unpause():
-    ground_player.enabled = True
-    player.enabled = True
-    pause_bot.enabled = False
-    t_pause.enabled = False
-    t_lat.enabled = True
-    t_lon.enabled = True
-    t_ht.enabled = True
-    t_azi.enabled = True
-    t_slope.enabled = True
-    t_info.enabled = True
-    t_elev.enabled = True
-    t_start_menu.enabled = False
-    t_quit.enabled = False
-    minimap.enabled = True
+    ground_player.enable()
+    player.enable()
+    pause_bot.disable()
+    t_pause.disable()
+    t_lat.enable()
+    t_lon.enable()
+    t_ht.enable()
+    t_azi.enable()
+    t_slope.enable()
+    t_info.enable()
+    t_elev.enable()
+    t_start_menu.disable()
+    t_quit.disable()
+    minimap.enable()
 
 
 t_start_menu = Text(text="Welcome to Team Cartographer's 2023 NASA ADC Application", x=-0.35, y=0.08)
+t_start_menu_creds = Text(text="https://github.com/abhi-arya1/cartographer \n \n    https://github.com/pokepetter/ursina", x=-0.27, y=-0.07, color=color.dark_gray)
 start_bot = Button(text='Click to Begin', color=color.gray, highlight_color=color.dark_gray, scale=(0.2, 0.05))
 start_bot.on_click = start_game
 
