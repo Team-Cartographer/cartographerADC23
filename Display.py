@@ -140,8 +140,10 @@ def update():
     if -6150 > player.position.x or player.position.x > 6150 or -6150 > player.position.z or player.position.z > 6150:
         player.set_position(RESET_LOC)
 
+    # Positions
     x, y, z = player.position.x, player.position.y, player.position.z
     t_pos.text = f'Position: ({int(x)}, {int(y)}, {int(z)})'
+    editor_cam_player_loc.position = (x / (10 / 3), 0, z / (10 / 3))
 
     # Corrected X and Z values for Calculations
     nx, nz = int(x/10+638), int(z/10+638)
@@ -150,27 +152,17 @@ def update():
     rad = get_radius(nx, nz)
     lat = str(latitude_from_rect(nx, nz, rad))
     long = str(-longitude_from_rect(nx, nz, rad))
-    slope = str(slope_from_rect(nx, nz))
-    height = str(height_from_rect(nx, nz))
-
-    #TODO: FIX AZI AND ELEV AND LAT/LONG/HT/SLOPE CALCULATIONS
-    azimuth, elevation = calc_azimuth_and_elevation(float(lat), float(long), float(height))
-
-    #Print Player Position
-    #print(f'({x}, {y}, {z})')
-    editor_cam_player_loc.position = (x / (10/3), 0, z / (10/3))
+    slope = slope_from_rect(nx, nz)
+    height = height_from_rect(nx, nz)
+    azimuth, elevation = calc_azimuth_and_elevation(float(lat), float(long), height)
 
     # Updating Variables
     t_lat.text = f'Latitude: {lat}°'
     t_lon.text = f'Longitude: {long}°'
-    t_ht.text = 'Height: ' + str(height)
-    t_slope.text = 'Slope: ' + slope
-    t_azi.text = 'Azimuth: ' + str(azimuth)
-
-    if str(elevation) == 'nan':
-        t_elev.text = 'Elevation: 0°'
-    else:
-        t_elev.text = 'Elevation: ' + str(elevation) + '°'
+    t_ht.text = 'Height: ' + str(height) + 'm'
+    t_slope.text = 'Slope: ' + str(slope) + '°'
+    t_azi.text = 'Azimuth: ' + str(azimuth) + '°'
+    t_elev.text = 'Elevation: ' + str(elevation) + '°'
 
     # Sprint Key
     if held_keys['left shift']:
@@ -179,6 +171,7 @@ def update():
         player.speed = 500
 
 
+    # Mini-Map Dot Positioning
     # TODO Fix Minimap Positioning
     mx, mz = (x+638)/10000, (z-638)/10000
     #print(f'({mx}, {mz})')
