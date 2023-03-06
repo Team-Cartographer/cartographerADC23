@@ -7,7 +7,7 @@ code_path = os.getcwd()
 # runs PathFetcher.exe
 print("Running path fetcher")
 pathfetcher_path = code_path + "/PathFetcher/PathFetcher.exe"
-pathfetcher_program = run(["cmd", "/c", pathfetcher_path])
+pathfetcher_program = run(["cmd", "/c", pathfetcher_path], capture_output=True)
 print("Finished path fetcher")
 
 print("Running folder creator")
@@ -30,6 +30,6 @@ print("Finished cartographer")
 
 print("Running A* (no quad trees)")
 # runs A_Star.py (Without quad trees)
-a_star_path = code_path + "A_Star.py"
+a_star_path = code_path + "/A_Star.py"
 a_star_program = run(["cmd", "/c", a_star_path])
 print("Finished A*")
