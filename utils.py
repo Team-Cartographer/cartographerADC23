@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 import os
 import numpy as np
-from numpy import cos, sin, sqrt, rad2deg, arccos, arcsin, deg2rad
+from numpy import cos, sin, sqrt, rad2deg, arccos, deg2rad
 from math import pi
 from ast import literal_eval
 
@@ -75,28 +75,28 @@ def get_z_coord(lat, rad):
 def calc_azimuth_and_elevation(latitude, longitude, height):
     # Azimuth Angle and Elevation Calculation for Display.py
     lat_e, long_e = 29.5593, 95.0900  # Latitude and Longitude of Johnson Space Center.
-    lat_m, long_m = latitude, longitude
+    lat_m, long_m = float(latitude), float(longitude)
 
     rad_earth = 6378000
     x_e = rad_earth * cos(lat_e) * cos(long_e)
     y_e = rad_earth * cos(lat_e) * sin(long_e)
     z_e = rad_earth * sin(lat_e)
 
-    x_m = lat_m * cos(float(long_m) * pi / 180)
-    y_m = lat_m * sin(float(long_m) * pi / 180)
-    z_m = height
+    x_m = lat_m * cos(long_m * pi / 180)
+    y_m = lat_m * sin(long_m * pi / 180)
+    z_m = float(height)
 
     resultant_vector = [x_e - x_m, y_e - y_m, z_e - z_m]
 
     range_ = sqrt(resultant_vector[0] ** 2 + resultant_vector[1] ** 2 + resultant_vector[2] ** 2)
 
-    rz = resultant_vector[0] * cos(lat_m) * cos(long_m) + resultant_vector[1] * cos(lat_m) * cos(long_m) + resultant_vector[2] * sin(lat_m)
+    rz = resultant_vector[0] * cos(lat_e) * cos(long_e) + resultant_vector[1] * cos(lat_e) * cos(long_e) + resultant_vector[2] * sin(lat_e)
 
     c1 = sin(long_e - long_m) * cos(lat_e)
     c2 = (cos(lat_m) * sin(lat_e)) - (sin(lat_m) * cos(lat_e) * cos(long_e - long_m))
 
     # Elevation Value
-    elev = np.arcsin2(rz / range_)
+    elev = np.arcsin(rz / range_)
 
     # Azimuth Angle Value
     azimuth = np.arctan2(c1, c2)

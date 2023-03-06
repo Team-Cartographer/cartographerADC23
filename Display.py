@@ -148,7 +148,7 @@ def update():
 
     #Print Player Position
     #print(f'({x}, {y}, {z})')
-    editor_cam_player_loc.position = (x /(10/3), 0, z /(10/3))
+    editor_cam_player_loc.position = (x / (10/3), 0, z / (10/3))
 
     # Updating Variables
     t_lat.text = f'Latitude: {lat}°'

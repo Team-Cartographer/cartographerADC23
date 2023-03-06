@@ -11,7 +11,7 @@ from ast import literal_eval
 import csv
 from sys import exit
 import FolderCreator as fc
-from utils import file2list, get_x_coord, get_y_coord, get_z_coord
+from utils import file2list, get_x_coord, get_y_coord, get_z_coord, calc_azimuth_and_elevation
 from dotenv import set_key
 
 DISTANCE_BETWEEN_POINTS = fc.get_dist_between_points()
@@ -70,10 +70,11 @@ def write_rect_file(data_arr):
             x = float(get_x_coord(lat, long, radius)) / DISTANCE_BETWEEN_POINTS
             y = float(get_y_coord(lat, long, radius)) / DISTANCE_BETWEEN_POINTS
             z = float(get_z_coord(lat, radius)) / DISTANCE_BETWEEN_POINTS
+            azi, elev = calc_azimuth_and_elevation(lat, long, height)
 
-            csv_writer.writerow([x, y, z, slope])
+            csv_writer.writerow([x, y, z, slope, azi, elev])
             xs.append(x), ys.append(y), zs.append(z)
-            tmpDataArray.append([x, y, z, slope])
+            tmpDataArray.append([x, y, z, slope, azi, elev])
 
         datafile.close()
     min_x_, min_y_, min_z_ = abs(min(xs)), abs(min(ys)), abs(min(zs))
@@ -91,7 +92,7 @@ def write_astar_file(min_x_, min_y_, min_z_, temp_array):
     adj_array = []
     for i in range(len(temp_array)):
         tmp = [int(temp_array[i][0] + min_x_), int(temp_array[i][1] + min_y_), int(temp_array[i][2] + min_z_),
-               temp_array[i][3]]
+               temp_array[i][3], int(temp_array[i][4]), int(temp_array[i][5])]
         adj_array.append(tmp)
 
     sorted_array = sorted(adj_array, key=lambda x: x[1])
