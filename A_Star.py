@@ -85,7 +85,7 @@ with open(csv_path, mode="r") as csv_file:
 
 grid = full_list
 
-final_path = astar(grid, (484, 650, get_height_and_slope(484, 650, grid)[0], get_height_and_slope(484, 650, grid)[1]),
+final_path = astar(grid, (971, 940, get_height_and_slope(971, 940, grid)[0], get_height_and_slope(971, 940, grid)[1]),
                    (862, 1123, get_height_and_slope(862, 1123, grid)[0], get_height_and_slope(862, 1123, grid)[1]))
 print("Final Path: ", final_path)
 
@@ -95,18 +95,19 @@ def add_pixel(img, x, y, color):
     return img
 
 
-def update_image(x, y):
-    path = fc.images_path + "/ursina_heightmap.png"
+def update_image(image_path: str, mvmt_path: list):
+    path = image_path
     img = Image.open(path)
     color = (0, 0, 128)
-
-    img = add_pixel(img, x, y, color)
-    img.save(path)
+    for i in range(len(mvmt_path)):
+        x = mvmt_path[0]
+        y = mvmt_path[1]
+        img = add_pixel(img, x, y, color)
+    img.save(fc.images_path + "/A_Star_heightmap.png")
 
 
 try:
-    for i in range(len(final_path)):
-        update_image(final_path[i][0], final_path[i][1])
+    update_image(fc.images_path + "/RAW_heightmap.png", final_path)
 except TypeError:
     print("Image not updated. No path to draw.")
     pass
