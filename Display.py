@@ -40,7 +40,7 @@ editor_cam_player_loc = Entity(
     )
 
 minimap = Entity(
-    parent = camera.ui,
+    parent=camera.ui,
     center=(0, 0, 0),
     model="quad",
     scale=(0.3, 0.3),
@@ -51,12 +51,12 @@ minimap = Entity(
     )
 
 mini_dot = Entity(
-    parent = minimap,
+    parent=minimap,
     model='circle',
-    scale = (0.03, 0.03),
-    position = (0, 0, 0),
-    color = color.red,
-    enabled = False
+    scale=(0.03, 0.03),
+    position=(0, 0, 0),
+    color=color.red,
+    enabled=False
     )
 
 slopemap = fc.parent_path + '/slopemap.png'
@@ -92,28 +92,35 @@ player.cursor.scale = 0.00000000001 # Hides the Cursor from the App Display
 
 # Shortcuts/Toggle Functions
 def input(key):
+
     if key == 'r':
         player.set_position(RESET_LOC)
+
     if key == 'l':
         ground_player.texture = 'slopemap.png'
         ground_perspective.texture = 'slopemap.png'
         editor_cam_player_loc.color = color.blue
+
     if key == 'h':
         ground_player.texture = 'heightkey.png'
         ground_perspective.texture = 'heightkey.png'
         editor_cam_player_loc.color = color.white
+
     if key == 'm':
         ground_player.texture = 'moon_surface_texture.png'
         ground_perspective.texture = 'moon_surface_texture.png'
         editor_cam_player_loc.color = color.red
+
     if key == 'x' and start_bot.enabled is False:
         player.enabled = not player.enabled
         ec.enabled = not ec.enabled
         ground_player.enabled = not ground_player.enabled
         ground_perspective.enabled = not ground_perspective.enabled
         editor_cam_player_loc.enabled = not editor_cam_player_loc.enabled
+
     if held_keys['left shift', 'q']:
         exit(0)
+
     if key == 'escape' and pause_bot.enabled is False:
         t_lat.disable()
         t_lon.disable()
@@ -130,10 +137,10 @@ def input(key):
         minimap.disable()
         mini_dot.disable()
         t_pos.disable()
-
         pause_bot.enable()
         t_pause.enable()
         t_quit.enable()
+
 
 def update():
     # Map Failsafe
