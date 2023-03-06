@@ -146,8 +146,8 @@ def update():
     #TODO: FIX AZI AND ELEV AND LAT/LONG/HT/SLOPE CALCULATIONS
     azimuth, elevation = calc_azimuth_and_elevation(float(lat), float(long), float(height))
 
-    #for scale testing
-    #print(f'\rx = {x}, y = {y}, z = {z}')
+    #Print Player Position
+    #print(f'({x}, {y}, {z})')
     editor_cam_player_loc.position = (x /(10/3), 0, z /(10/3))
 
     # Updating Variables
@@ -176,7 +176,7 @@ def update():
 
     # TODO Fix Minimap Positioning
     mx, mz = (x+638)/10000, (z-638)/10000
-    print(f'({mx}, {mz})')
+    #print(f'({mx}, {mz})')
     mini_dot.position = (mx, mz, 0)
 
 

@@ -96,7 +96,7 @@ def calc_azimuth_and_elevation(latitude, longitude, height):
     c2 = (cos(lat_m) * sin(lat_e)) - (sin(lat_m) * cos(lat_e) * cos(long_e - long_m))
 
     # Elevation Value
-    elev = np.arcsin(rz / range_)
+    elev = np.arcsin2(rz / range_)
 
     # Azimuth Angle Value
     azimuth = np.arctan2(c1, c2)
