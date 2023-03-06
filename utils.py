@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 import os
 import numpy as np
-from numpy import cos, sin, sqrt, rad2deg, arccos, arcsin
+from numpy import cos, sin, sqrt, rad2deg, arccos, arcsin, deg2rad
 from math import pi
 from ast import literal_eval
 
@@ -42,7 +42,7 @@ def show_warning(title, msg):
     root.withdraw()
     messagebox.showwarning(title, msg)
 
-# Display Calculations
+# Display Calculations (Helper Functions for Math)
 def get_radius(x: float, y: float) -> float:
     return sqrt((x**2) + (y**2))
 
@@ -60,6 +60,16 @@ def slope_from_rect(x: float, y: float) -> float:
 def height_from_rect(x: float, y: float) -> float:
     height = float(os.getenv("MAX_Z")) - literal_eval(astar_list[x][y])[2]
     return height
+
+def get_x_coord(lat, long, rad):  # takes in degrees latitude and longitude
+    return float(rad) * cos(deg2rad(float(lat))) * cos(deg2rad(float(long)))
+
+def get_y_coord(lat, long, rad):
+    return float(rad) * cos(deg2rad(float(lat))) * sin(deg2rad(float(long)))
+
+def get_z_coord(lat, rad):
+    return float(rad) * sin(deg2rad(float(lat)))
+
 
 
 def calc_azimuth_and_elevation(latitude, longitude, height):

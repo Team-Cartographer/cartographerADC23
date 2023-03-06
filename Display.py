@@ -32,13 +32,14 @@ ground_perspective = Entity(
 
 editor_cam_player_loc = Entity(
     model='cube',
-    scale=(20, 20, 20),
-    color=color.red,
-    enabled=False
+    scale=(20, 1000, 20),
+    color=color.green,
+    enabled=False,
 )
 
 minimap = Entity(
     parent = camera.ui,
+    center=(0, 0, 0),
     model="quad",
     scale=(0.3, 0.3),
     origin=(-0.5, 0.5),
@@ -52,7 +53,8 @@ mini_dot = Entity(
     model='circle',
     scale = (0.03, 0.03),
     position = (0, 0, 0),
-    color = color.red
+    color = color.red,
+    enabled = False
     )
 
 slopemap = fc.parent_path + '/slopemap.png'
@@ -104,7 +106,6 @@ def input(key):
         ground_player.enabled = not ground_player.enabled
         ground_perspective.enabled = not ground_perspective.enabled
         editor_cam_player_loc.enabled = not editor_cam_player_loc.enabled
-        minimap.enabled = not minimap.enabled
     if held_keys['left shift', 'q']:
         exit(0)
     if key == 'escape' and pause_bot.enabled is False:
@@ -121,6 +122,7 @@ def input(key):
         ground_perspective.disable()
         editor_cam_player_loc.disable()
         minimap.disable()
+        mini_dot.disable()
 
         pause_bot.enable()
         t_pause.enable()
@@ -146,7 +148,7 @@ def update():
 
     #for scale testing
     #print(f'\rx = {x}, y = {y}, z = {z}')
-    editor_cam_player_loc.position = (x /(10/3), height, z /(10/3))
+    editor_cam_player_loc.position = (x /(10/3), 0, z /(10/3))
 
     # Updating Variables
     t_lat.text = f'Latitude: {lat}°'
@@ -173,8 +175,9 @@ def update():
 
 
     # TODO Fix Minimap Positioning
-    mx, mz = x, z
-    mini_dot.position = (0.5, -0.5, 0) # Center of Minimap
+    mx, mz = (x+638)/10000, (z-638)/10000
+    print(f'({mx}, {mz})')
+    mini_dot.position = (mx, mz, 0)
 
 
 
@@ -193,6 +196,7 @@ def start_game():
     t_start_menu.disable()
     t_start_menu_creds.disable()
     minimap.enable()
+    mini_dot.enable()
 
 # Unpause Button Function
 def on_unpause():
@@ -210,6 +214,7 @@ def on_unpause():
     t_start_menu.disable()
     t_quit.disable()
     minimap.enable()
+    mini_dot.enable()
 
 
 t_start_menu = Text(text="Welcome to Team Cartographer's 2023 NASA ADC Application", x=-0.35, y=0.08)

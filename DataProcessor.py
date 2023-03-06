@@ -12,7 +12,7 @@ from ast import literal_eval
 import csv
 from sys import exit
 import FolderCreator as fc
-from utils import file2list
+from utils import file2list, get_x_coord, get_y_coord, get_z_coord
 from dotenv import set_key
 
 DISTANCE_BETWEEN_POINTS = fc.get_dist_between_points()
@@ -54,20 +54,6 @@ def generate_data_array():
     print("Created RawDataArray.csv")
 
     return xy_dim, data_array_path_
-
-
-# Helper Functions for Math
-def get_x_coord(lat, long, rad):  # takes in degrees latitude and longitude
-    return float(rad) * cos(deg2rad(float(lat))) * cos(deg2rad(float(long)))
-
-
-def get_y_coord(lat, long, rad):
-    return float(rad) * cos(deg2rad(float(lat))) * sin(deg2rad(float(long)))
-
-
-def get_z_coord(lat, rad):
-    return float(rad) * sin(deg2rad(float(lat)))
-
 
 def write_rect_file(data_arr):
     rect_coord_path = fc.data_path + "/RectangularCoordinateData.csv"

@@ -81,7 +81,7 @@ def draw_path(path, image, color):
 
 
 if __name__ == "__main__":
-    '''
+
     canvas = Image.new('RGBA', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
     draw_points()
     canvas.save(fc.images_path + '/RAW_heightmap.png')  # must save here for a proper read from Ursina
@@ -98,10 +98,9 @@ if __name__ == "__main__":
     downscaled = upscaled.resize((81, 81)) # 1/16th Scale
     downscaled.save(fc.parent_path + '/processed_heightmap.png')
     print("Created processed_heightmap.png")
-    '''
+
     map = Image.open('moon_surface_texture.png')
-    minimap = map.resize((120, 120)) # 1/10th Scale
-    #minimap = minimap.rotate(90)
+    minimap = map.resize((127, 127)) # 1/100th Scale
     minimap.save(fc.parent_path + '/minimap.png')
     print("Created minimap.png")
 
