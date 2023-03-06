@@ -2,10 +2,12 @@ import FolderCreator as fc
 from ursina import *
 from utils import file2list, calc_azimuth_and_elevation, latitude_from_rect, longitude_from_rect, get_radius, height_from_rect, slope_from_rect
 from ursina.prefabs.first_person_controller import FirstPersonController
-from ursina import camera
 
 app = Ursina()
-window.title = 'ADCLander'
+window.fps_counter.disable()
+window.set_title('Team Cartographer\'s ADC Application')
+window.cog_button.disable()
+window.exit_button.color = color.dark_gray
 
 # Display Specific Constants
 Y_HEIGHT = 128  # Default Value
@@ -33,7 +35,7 @@ ground_perspective = Entity(
 editor_cam_player_loc = Entity(
     model='cube',
     scale=(20, 1000, 20),
-    color=color.green,
+    color=color.red,
     enabled=False,
 )
 
@@ -67,6 +69,7 @@ t_ht = Text(text='Height:', x=-.54, y=.38, scale=1.1, enabled=False)
 t_slope = Text(text='Slope:', x=-.54, y=.33, scale=1.1, enabled=False)
 t_azi = Text(text='Azimuth:', x=-.54, y=.28, scale=1.1, enabled=False)
 t_elev = Text(text='Elevation:', x=-.54, y=.23, scale=1.1, enabled=False)
+t_pos = Text(text='positional data', x=-0.883, y=0.185, z=0, enabled=False)
 
 t_info = Text(
     text='M for Moon, L for Slopemap, H for Heightmap, Esc for Pause, X for Switch',
@@ -94,12 +97,15 @@ def input(key):
     if key == 'l':
         ground_player.texture = 'slopemap.png'
         ground_perspective.texture = 'slopemap.png'
+        editor_cam_player_loc.color = color.blue
     if key == 'h':
         ground_player.texture = 'heightkey.png'
         ground_perspective.texture = 'heightkey.png'
+        editor_cam_player_loc.color = color.white
     if key == 'm':
         ground_player.texture = 'moon_surface_texture.png'
         ground_perspective.texture = 'moon_surface_texture.png'
+        editor_cam_player_loc.color = color.red
     if key == 'x' and start_bot.enabled is False:
         player.enabled = not player.enabled
         ec.enabled = not ec.enabled
@@ -123,15 +129,19 @@ def input(key):
         editor_cam_player_loc.disable()
         minimap.disable()
         mini_dot.disable()
+        t_pos.disable()
 
         pause_bot.enable()
         t_pause.enable()
         t_quit.enable()
 
-
 def update():
+    # Map Failsafe
+    if -6150 > player.position.x or player.position.x > 6150 or -6150 > player.position.z or player.position.z > 6150:
+        player.set_position(RESET_LOC)
 
     x, y, z = player.position.x, player.position.y, player.position.z
+    t_pos.text = f'Position: ({int(x)}, {int(y)}, {int(z)})'
 
     # Corrected X and Z values for Calculations
     nx, nz = int(x/10+638), int(z/10+638)
@@ -161,11 +171,6 @@ def update():
         t_elev.text = 'Elevation: 0°'
     else:
         t_elev.text = 'Elevation: ' + str(elevation) + '°'
-
-
-    # Map Failsafes
-    if player.position.y < -50:
-         player.set_position(RESET_LOC)
 
     # Sprint Key
     if held_keys['left shift']:
@@ -197,6 +202,7 @@ def start_game():
     t_start_menu_creds.disable()
     minimap.enable()
     mini_dot.enable()
+    t_pos.enable()
 
 # Unpause Button Function
 def on_unpause():
@@ -215,10 +221,11 @@ def on_unpause():
     t_quit.disable()
     minimap.enable()
     mini_dot.enable()
+    t_pos.enable()
 
 
 t_start_menu = Text(text="Welcome to Team Cartographer's 2023 NASA ADC Application", x=-0.35, y=0.08)
-t_start_menu_creds = Text(text="https://github.com/abhi-arya1/cartographer \n \n    https://github.com/pokepetter/ursina", x=-0.27, y=-0.07, color=color.dark_gray)
+t_start_menu_creds = Text(text="https://github.com/abhi-arya1/NASA-ADC-App \n \n      https://github.com/pokepetter/ursina", x=-0.275, y=-0.07, color=color.dark_gray)
 start_bot = Button(text='Click to Begin', color=color.gray, highlight_color=color.dark_gray, scale=(0.2, 0.05))
 start_bot.on_click = start_game
 
