@@ -7,7 +7,6 @@ longitude, and height to Cartesian coordinates. It then writes this data to a cs
 preparation for use in an A-star algorithm and writes it to a csv file named "AStarRawData.csv".
 """
 
-from numpy import cos, sin, deg2rad
 from ast import literal_eval
 import csv
 from sys import exit
