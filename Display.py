@@ -10,7 +10,6 @@ window.set_title('Team Cartographer\'s ADC Application')
 window.cog_button.disable()
 window.exit_button.color = color.dark_gray
 
-
 # Display Specific Constants -------------
 Y_HEIGHT = 128  # Default Value
 RESET_LOC = (0, Y_HEIGHT*8, 0)  # Default PLAYER Positional Value
