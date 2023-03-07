@@ -97,7 +97,7 @@ t_info = Text(
 sky = Sky()
 sky.color = '000000' # Black
 
-ec = EditorCamera(enabled=False, zoom_speed=5) # Note: THIS MUST BE INITIALIZED BEFORE <player> OR ZOOMS WON'T WORK.
+ec = EditorCamera(enabled=False, zoom_speed=5, rotation_x=32.421871185302734, rotation_y=-26.388877868652344) # Note: THIS MUST BE INITIALIZED BEFORE <player> OR ZOOMS WON'T WORK.
 
 player = FirstPersonController(position=RESET_LOC, speed=500, mouse_sensitivity=Vec2(25, 25), enabled=False)
 player.cursor.scale = 0.00000000001 # Hides the Cursor from the App Display
