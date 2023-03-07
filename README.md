@@ -12,57 +12,52 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![product-screenshot]
+
+Welcome to the GitHub Repository for Team Cartographer's Application to the 2022-23 NASA App Development Challenge! Our team for this project from Anaheim, CA, is:<br>
+- <b> John B. ('23), Abhi A. ('23), Kion M. ('24), Kabir A. ('24), Natalie K. ('24), Chrysa N. ('24), Efe C. ('24) </b>
 
 
-
-Welcome to the GitHub Repository for Team Cartographer's Application to the 2022-23 NASA App Development Challenge! 
-
-
-## Acknowledgements 
+## Acknowledgements and Thanks to:
 - James Ristow, NASA Kennedy Space Center<br>
 - Alexandre Tolstenko Nogueira, Champlain College Division of IT and Science <br>
 - Dr. Brian Welch, NASA Goddard Flight Center<br>
-- Petter Amland, Creator of Python's Ursina Library<br>
+- Petter Amland, Creator of Python's <a href="https://www.ursinaengine.org/">Ursina</a> Library<br>
 - Diana Ramirez, our ADC Lead Teacher<br>
 - Mrs. Leslie, Mr. Fawcett, Mr. Drake 
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+Here are instructions on how to run the application locally. 
 
 ### Prerequisites
 
-This application will only work on Windows Operating Systems. For Mac Users, refer to installations of Virtual Machines or BootCamp to be able to run the app. 
+This application will only work on Windows Operating Systems with Python 3.9+. For Mac Users, refer to installations of Virtual Machines or BootCamp to be able to run the app. 
 
 ### Installation
 
-1. Download the Repository 
-   ```sh
-   git clone https://github.com/abhi-arya1/NASA_ADC_APP.git
-   ```
-2. STEP 2 TITLE
-   ```sh
-   NEXT STEP
-   ```
-3. STEP 2 TITLE `cool_stuff.js`
-   ```
-   AAAGAGGAGAGAGAGA
-   ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+1. Download the Repository
+2. Make sure you have any Regional Data Files from the <a href="https://www.nasa.gov/stem/nextgenstem/moon/nasa-2023-adc-handbook.html">ADC Website</a>
+3. Run <b>Artemis_ADC_Launcher.py</b>, and have fun exploring the moon!
 
 
 
-<!-- USAGE EXAMPLES -->
-## Usage
 
-//TODO: Explain how to switch between cameras, move, or init the app
+<i> Note that a mouse is required for app functions </i>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<!-- KEY BINDINGS -->
 
+## Button Functions 
 
-[product-screenshot]: ProductScreenshot.png
+- W, A, S, D -> General Movement
+- X -> Toggle First Person/3D Camera Views
+- L -> Toggle Slope Map
+- H -> Toggle Height Key Map
+- R -> Reset Player Location
+- M -> Reset Surface Texture
+- LShift -> (In First Person Only) Sprint
+- ESC -> Pause
+- LShift+Q -> Quit Application
+
