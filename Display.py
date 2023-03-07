@@ -10,12 +10,15 @@ window.set_title('Team Cartographer\'s ADC Application')
 window.cog_button.disable()
 window.exit_button.color = color.dark_gray
 
+
 # Display Specific Constants -------------
 Y_HEIGHT = 128  # Default Value
 RESET_LOC = (0, Y_HEIGHT*8, 0)  # Default PLAYER Positional Value
 SIZE_CONSTANT = fc.get_size_constant()
 EDITOR_SCALE_FACTOR = 3
 PLAYER_SCALE_FACTOR = 8
+
+
 
 # Declaration of Entities -------------
 
@@ -67,9 +70,13 @@ mini_dot = Entity(
     enabled=False
     )
 
+
+
 # Slope and Height Toggle Image Pathing -------------
 slopemap = fc.parent_path + '/slopemap.png'
 heightkey = fc.parent_path + '/heightkey.png'
+
+
 
 # Textboxes  -------------
 t_lat = Text(text='Latitude:', x=-.54, y=.48, scale=1.1, enabled=False)
@@ -94,6 +101,7 @@ ec = EditorCamera(enabled=False, zoom_speed=5) # Note: THIS MUST BE INITIALIZED 
 
 player = FirstPersonController(position=RESET_LOC, speed=500, mouse_sensitivity=Vec2(25, 25), enabled=False)
 player.cursor.scale = 0.00000000001 # Hides the Cursor from the App Display
+
 
 
 # Input Functions and Toggles -------------
@@ -153,6 +161,7 @@ def input(key):
         pause_bot.enable()
         t_pause.enable()
         t_quit.enable()
+
 
 
 # Game Loop Update() Functions -------------
@@ -216,6 +225,7 @@ def start_game():
     mini_dot.enable()
     t_pos.enable()
 
+
 # Unpause Button Function -------------
 def on_unpause():
     ground_player.enable()
@@ -235,17 +245,20 @@ def on_unpause():
     mini_dot.enable()
     t_pos.enable()
 
+
 # Start Menu Text and Buttons -------------
 t_start_menu = Text(text="Welcome to Team Cartographer's 2023 NASA ADC Application", x=-0.35, y=0.08)
 t_start_menu_creds = Text(text="https://github.com/abhi-arya1/NASA-ADC-App \n \n      https://github.com/pokepetter/ursina", x=-0.275, y=-0.07, color=color.dark_gray)
 start_bot = Button(text='Click to Begin', color=color.gray, highlight_color=color.dark_gray, scale=(0.2, 0.05))
 start_bot.on_click = start_game
 
+
 # Pause Menu Text and Buttons -------------
 t_pause = Text(text="You are Currently Paused...", x=-0.16, y=0.08, enabled=False)
 pause_bot = Button(text='Click to Unpause', color=color.gray, highlight_color=color.dark_gray, scale=(0.23, 0.05), enabled=False)
 t_quit = Text(text="Press 'LShift+Q' to quit.", x=-0.14, y=-0.06, enabled=False)
 pause_bot.on_click = on_unpause
+
 
 
 # Runs Display.py -------------
