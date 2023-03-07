@@ -99,7 +99,7 @@ if __name__ == "__main__":
     downscaled.save(fc.parent_path + '/processed_heightmap.png')
     print("Created processed_heightmap.png")
 
-    map = Image.open('Data/Images/moon_surface_texture.png')
+    map = Image.open('moon_surface_texture.png')
     minimap = map.resize((127, 127)) # 1/100th Scale
     minimap.save(fc.images_path + '/minimap.png')
     print("Created minimap.png")
