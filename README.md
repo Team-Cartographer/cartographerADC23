@@ -19,7 +19,7 @@ Welcome to the GitHub Repository for Team Cartographer's Application to the 2022
 
 ## Acknowledgements and Thanks to:
 - James Ristow, NASA Kennedy Space Center<br>
-- Alexandre Tolstenko Nogueira, Champlain College Division of IT and Science <br>
+- Alexandre Tolstenko, Champlain College Division of IT and Science <br>
 - Dr. Brian Welch, NASA Goddard Flight Center<br>
 - Petter Amland, Creator of Python's <a href="https://www.ursinaengine.org/">Ursina</a> Library<br>
 - Diana Ramirez, our ADC Lead Teacher<br>
