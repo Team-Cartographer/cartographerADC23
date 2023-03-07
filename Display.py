@@ -26,7 +26,7 @@ PLAYER_SCALE_FACTOR = 8
 ground_player = Entity(
     model=Terrain(heightmap='processed_heightmap.png'),
     texture='moon_surface_texture.png',
-    collider='mesh',
+    collider='box',
     scale=(SIZE_CONSTANT*10, Y_HEIGHT*PLAYER_SCALE_FACTOR, SIZE_CONSTANT*10),
     enabled=False
     )
