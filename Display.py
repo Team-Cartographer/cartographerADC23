@@ -69,14 +69,14 @@ mini_dot = Entity(
     enabled=False
     )
 
-color_key = Entity(
-    parent=camera.ui,
-    model='quad',
-    scale = (0.3, 0.11),
-    position=(-0.74, 0.09, 0),
-    texture='Images/slopeKey.png',
-    enabled=False
-)
+#color_key = Entity(
+#    parent=camera.ui,
+#    model='quad',
+#    scale = (0.3, 0.11),
+#    position=(-0.74, 0.09, 0),
+#    texture='Images/slopeKey.png',
+#    enabled=False
+#)
 
 
 
