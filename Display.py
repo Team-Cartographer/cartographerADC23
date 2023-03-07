@@ -82,7 +82,7 @@ color_key = Entity(
 
 # Slope and Height Toggle Image Pathing -------------
 slopemap = fc.parent_path + '/slopemap.png'
-heightkey = fc.parent_path + '/heightkey.png'
+heightkey = fc.parent_path + '/heightkey_surface.png'
 
 
 
@@ -129,8 +129,8 @@ def input(key):
 
     # Heightkey Toggle
     if key == 'h':
-        ground_player.texture = 'heightkey.png'
-        ground_perspective.texture = 'heightkey.png'
+        ground_player.texture = 'heightkey_surface.png'
+        ground_perspective.texture = 'heightkey_surface.png'
         editor_cam_player_loc.color = color.white
         color_key.enable()
         color_key.texture='Images/heightKey.png'
