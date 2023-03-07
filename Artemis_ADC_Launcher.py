@@ -1,9 +1,9 @@
 # This program is the central hub that the other programs are run from #
-import os
+from os import getcwd
 from subprocess import run
 from utils import show_info
 
-code_path = os.getcwd()
+code_path = getcwd()
 
 # runs PathFetcher.exe
 print("Running PathFetcher")
@@ -35,4 +35,4 @@ a_star_path = code_path + "/A_Star.py"
 a_star_program = run(["cmd", "/c", a_star_path])
 print("A* (no QuadTree) Success")
 
-#show_info('Installation Success', 'Please Run Display.py')
+show_info('Installation Success', 'Please Run Display.py')

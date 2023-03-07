@@ -179,10 +179,9 @@ def update():
 
 
     # Mini-Map Dot Positioning
-    # TODO Fix Minimap Positioning
-    mx, mz = (x+638)/10000, (z-638)/10000
+    mx, mz = (x/12760) + 0.5, (z/12760)-0.5
     #print(f'({mx}, {mz})')
-    mini_dot.position = (mx, mz, 0)
+    mini_dot.position = (mx, mz, 0) # 'z' is treated as 'y' in this case, since 2D objects have no 'y' axis
 
 
 
