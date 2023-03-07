@@ -11,7 +11,6 @@ window.cog_button.disable()
 window.exit_button.color = color.dark_gray
 
 # Display Specific Constants -------------
-
 Y_HEIGHT = 128  # Default Value
 RESET_LOC = (0, Y_HEIGHT*8, 0)  # Default PLAYER Positional Value
 SIZE_CONSTANT = fc.get_size_constant()
@@ -20,16 +19,16 @@ PLAYER_SCALE_FACTOR = 8
 
 # Declaration of Entities -------------
 
-# FirstPersonController Ground
+# FirstPersonController Ground Plane
 ground_player = Entity(
     model=Terrain(heightmap='processed_heightmap.png'),
     texture='moon_surface_texture.png',
-    collider='box',
+    collider='mesh',
     scale=(SIZE_CONSTANT*10, Y_HEIGHT*PLAYER_SCALE_FACTOR, SIZE_CONSTANT*10),
     enabled=False
     )
 
-# EditorCamera Ground
+# EditorCamera Ground Plane
 ground_perspective = Entity(
     model=Terrain(heightmap='processed_heightmap.png'),
     texture='moon_surface_texture.png',
@@ -46,7 +45,7 @@ editor_cam_player_loc = Entity(
     enabled=False,
     )
 
-# Minimap
+# Minimap Image
 minimap = Entity(
     parent=camera.ui,
     center=(0, 0, 0),
