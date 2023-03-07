@@ -69,6 +69,15 @@ mini_dot = Entity(
     enabled=False
     )
 
+color_key = Entity(
+    parent=camera.ui,
+    model='quad',
+    scale = (0.3, 0.11),
+    position=(-0.74, 0.09, 0),
+    texture='Images/slopeKey.png',
+    enabled=False
+)
+
 
 
 # Slope and Height Toggle Image Pathing -------------
@@ -115,18 +124,23 @@ def input(key):
         ground_player.texture = 'slopemap.png'
         ground_perspective.texture = 'slopemap.png'
         editor_cam_player_loc.color = color.blue
+        color_key.enable()
+        color_key.texture='Images/slopeKey.png'
 
     # Heightkey Toggle
     if key == 'h':
         ground_player.texture = 'heightkey.png'
         ground_perspective.texture = 'heightkey.png'
         editor_cam_player_loc.color = color.white
+        color_key.enable()
+        color_key.texture='Images/heightKey.png'
 
     # Moon Texture Toggle (Default)
     if key == 'm':
         ground_player.texture = 'moon_surface_texture.png'
         ground_perspective.texture = 'moon_surface_texture.png'
         editor_cam_player_loc.color = color.red
+        color_key.disable()
 
     # Toggle between Player and EditorCamera
     if key == 'x' and start_bot.enabled is False:
@@ -160,6 +174,7 @@ def input(key):
         pause_bot.enable()
         t_pause.enable()
         t_quit.enable()
+        color_key.disable()
 
 
 
@@ -190,8 +205,8 @@ def update():
     t_lon.text = f'Longitude: {long}°'
     t_ht.text = 'Height: ' + str(height) + 'm'
     t_slope.text = 'Slope: ' + str(slope) + '°'
-    t_azi.text = 'Azimuth: ' + str(azimuth) + '°'
-    t_elev.text = 'Elevation: ' + str(elevation) + '°'
+    t_azi.text = 'Azimuth: ' + str(round(azimuth, 1)) + '°'
+    t_elev.text = 'Elevation: ' + str(round(elevation, 1)) + '°'
 
     # Sprint Key
     if held_keys['left shift']:
@@ -243,6 +258,7 @@ def on_unpause():
     minimap.enable()
     mini_dot.enable()
     t_pos.enable()
+    color_key.enable()
 
 
 # Start Menu Text and Buttons -------------
