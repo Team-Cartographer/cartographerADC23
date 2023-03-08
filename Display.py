@@ -69,14 +69,14 @@ mini_dot = Entity(
     enabled=False
     )
 
-#color_key = Entity(
-#    parent=camera.ui,
-#    model='quad',
-#    scale = (0.3, 0.11),
-#    position=(-0.74, 0.09, 0),
-#    texture='Images/slopeKey.png',
-#    enabled=False
-#)
+color_key = Entity(
+    parent=camera.ui,
+    model='quad',
+    scale = (0.3, 0.11),
+    position=(-0.74, 0.09, 0),
+    texture='Images/slopeKey.png',
+    enabled=False
+)
 
 
 # Slope and Height Toggle Image Pathing -------------
@@ -124,23 +124,23 @@ def input(key):
         ground_player.texture = 'slopemap.png'
         ground_perspective.texture = 'slopemap.png'
         editor_cam_player_loc.color = color.blue
-        #color_key.enable()
-        #color_key.texture='Images/slopeKey.png'
+        color_key.enable()
+        color_key.texture='Images/slopeKey.png'
 
     # Heightkey Toggle
     if key == 'h':
         ground_player.texture = 'heightkey_surface.png'
         ground_perspective.texture = 'heightkey_surface.png'
         editor_cam_player_loc.color = color.white
-        #color_key.enable()
-        #color_key.texture='Images/heightKey.png'
+        color_key.enable()
+        color_key.texture='Images/heightKey.png'
 
     # Moon Texture Toggle (Default)
     if key == 'm':
         ground_player.texture = 'moon_surface_texture.png'
         ground_perspective.texture = 'moon_surface_texture.png'
         editor_cam_player_loc.color = color.red
-        #color_key.disable()
+        color_key.disable()
 
     # Toggle between Player and EditorCamera
     if key == 'x' and start_bot.enabled is False:
@@ -262,7 +262,7 @@ def on_unpause():
     minimap.enable()
     mini_dot.enable()
     t_pos.enable()
-    #color_key.enable()
+    color_key.enable()
 
 
 # Start Menu Text and Buttons -------------
