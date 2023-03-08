@@ -74,7 +74,7 @@ color_key = Entity(
     model='quad',
     scale = (0.3, 0.11),
     position=(-0.74, 0.09, 0),
-    texture='Images/slopeKey.png',
+    texture='slopeKey.png',
     enabled=False
 )
 
@@ -125,7 +125,7 @@ def input(key):
         ground_perspective.texture = 'slopemap.png'
         editor_cam_player_loc.color = color.blue
         color_key.enable()
-        color_key.texture='Images/slopeKey.png'
+        color_key.texture='slopeKey.png'
 
     # Heightkey Toggle
     if key == 'h':
@@ -133,7 +133,7 @@ def input(key):
         ground_perspective.texture = 'heightkey_surface.png'
         editor_cam_player_loc.color = color.white
         color_key.enable()
-        color_key.texture='Images/heightKey.png'
+        color_key.texture='heightKey.png'
 
     # Moon Texture Toggle (Default)
     if key == 'm':
