@@ -263,7 +263,6 @@ def on_unpause():
     minimap.enable()
     mini_dot.enable()
     t_pos.enable()
-    color_key.enable()
 
 
 # Start Menu Text and Buttons -------------
