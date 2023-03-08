@@ -12,10 +12,10 @@ window.exit_button.color = color.dark_gray
 
 # Display Specific Constants -------------
 Y_HEIGHT = 128  # Default Value
-RESET_LOC = (0, Y_HEIGHT*8, 0)  # Default PLAYER Positional Value
 SIZE_CONSTANT = fc.get_size_constant()
 EDITOR_SCALE_FACTOR = 3
 PLAYER_SCALE_FACTOR = 8
+RESET_LOC = (0, Y_HEIGHT*PLAYER_SCALE_FACTOR, 0)  # Default PLAYER Positional Value
 
 
 
@@ -107,6 +107,7 @@ sky.color = '000000' # Black
 ec = EditorCamera(enabled=False, zoom_speed=5, rotation_x=32.421871185302734, rotation_y=-26.388877868652344) # Note: THIS MUST BE INITIALIZED BEFORE <player> OR ZOOMS WON'T WORK.
 
 player = FirstPersonController(position=RESET_LOC, speed=500, mouse_sensitivity=Vec2(25, 25), enabled=False)
+#player.scale = (0.5, 1, 0.5)
 player.cursor.scale = 0.00000000001 # Hides the Cursor from the App Display
 
 

@@ -79,7 +79,7 @@ def get_azi_elev(x, y):
     data = literal_eval(astar_list[x][y])
     return round(data[4], 5), round(data[5], 5) # azimuth and elevation, respectively
 
-
+# Relative to Moon
 def calc_azimuth_and_elevation(latitude, longitude, height):
     # Azimuth Angle and Elevation Calculation for Display.py
     #latA, longA = deg2rad(-89.52), deg2rad(-112.17) # Center of Moon Ref. Loc
@@ -107,3 +107,45 @@ def calc_azimuth_and_elevation(latitude, longitude, height):
 
     return rad2deg(azi), rad2deg(elev)
 
+
+''' -> Relative to Earth 
+def calc_azimuth_and_elevation(moon_lat, moon_long, moon_height):
+    # Azimuth Angle and Elevation Calculation for Display.py
+
+    # B - earth
+    # A - moon
+
+    earth_radius = 1737.4 * 1000 + 41.4
+
+    earth_lat_rad = deg2rad(29.953)
+    earth_long_rad = deg2rad(95.0900)
+
+    moon_long_rad = deg2rad(float(moon_long))
+    moon_lat_rad = deg2rad(float(moon_lat))
+    moon_radius = 1737.4 * 1000 + float(moon_height)
+
+    # Azimuth Calculation
+    c1 = sin(moon_long_rad - earth_long_rad) * cos(moon_lat_rad)
+    c2 = (cos(earth_lat_rad) * sin(moon_lat_rad)) - (sin(earth_lat_rad) * cos(moon_lat_rad) * cos(moon_long_rad - earth_long_rad))
+    azi = atan2(c1, c2)
+
+    # Elevation Calculation
+    xA = get_x_coord(earth_lat_rad, earth_long_rad, earth_radius)
+    xB = get_x_coord(moon_lat_rad, moon_long_rad, moon_radius)
+
+    yA = get_y_coord(earth_lat_rad, earth_long_rad, earth_radius)
+    yB = get_y_coord(moon_lat_rad, moon_long_rad, moon_radius)
+
+    zA = get_z_coord(earth_lat_rad, earth_radius)
+    zB = get_z_coord(moon_lat_rad, moon_radius)
+
+    # dists = [xB-xA, yB-yA, zB-zA]
+    dists = [xA - xB, yA - yB, zA - zB]
+
+    range = sqrt(dists[0]** 2 + dists[1]**2 + dists[2]**2)
+    rz = dists[0] * cos(moon_lat_rad) * cos(moon_long_rad) + dists[1] * cos(moon_lat_rad) * sin(moon_long_rad) + dists[2] * sin(moon_lat_rad)
+
+    elev = asin(rz/range)
+
+    return rad2deg(azi), rad2deg(elev)
+'''
