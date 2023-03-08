@@ -83,9 +83,9 @@ def calc_azimuth_and_elevation(latitude, longitude, height):
     #latA, longA = deg2rad(-89.52), deg2rad(-112.17) # Center of Moon Ref. Loc
     radA = 1737.4 * 1000 + 41.4
     latA, longA = deg2rad(-89.54), deg2rad(0) #test2
-    longB = deg2rad(longitude)
-    latB = deg2rad(latitude)
-    radB = 1737.4 * 1000 + height
+    longB = deg2rad(float(longitude))
+    latB = deg2rad(float(latitude))
+    radB = 1737.4 * 1000 + float(height)
 
     # Azimuth Calculation
     c1 = sin(longB-longA) * cos(latB)
@@ -103,9 +103,7 @@ def calc_azimuth_and_elevation(latitude, longitude, height):
 
     elev = asin(rz/range)
 
-    elev = get_elev(xB, yB, zB, latB, longB)
-
-    return rad2deg(azi), elev
+    return rad2deg(azi), rad2deg(elev)
 
 
 def get_elev(x, y, z, lat, long):

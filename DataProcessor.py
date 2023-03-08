@@ -72,6 +72,9 @@ def write_rect_file(data_arr):
             z = float(get_z_coord(lat, radius)) / DISTANCE_BETWEEN_POINTS # essentially height
             azi, elev = calc_azimuth_and_elevation(lat, long, height)
 
+            if(elev < -7):
+                print(azi, elev)
+
             csv_writer.writerow([x, y, z, slope, azi, elev, lat, long])
             xs.append(x), ys.append(y), zs.append(z)
             tmpDataArray.append([x, y, z, slope, azi, elev, lat, long])
