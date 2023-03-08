@@ -85,7 +85,7 @@ with open(csv_path, mode="r") as csv_file:
 
 grid = full_list
 
-final_path = astarfinal_path = astar(grid, (971, 940, get_height_and_slope(971, 940, grid)[0], get_height_and_slope(971, 940, grid)[1]),
+final_path = astar(grid, (971, 940, get_height_and_slope(971, 940, grid)[0], get_height_and_slope(971, 940, grid)[1]),
                    (862, 1123, get_height_and_slope(862, 1123, grid)[0], get_height_and_slope(862, 1123, grid)[1]))
 print("Final Path: ", final_path)
 

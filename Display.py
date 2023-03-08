@@ -94,7 +94,8 @@ t_azi = Text(text='Azimuth:', x=-.54, y=.28, scale=1.1, enabled=False)
 t_elev = Text(text='Elevation:', x=-.54, y=.23, scale=1.1, enabled=False)
 t_pos = Text(text='positional data', x=-0.883, y=0.185, z=0, enabled=False)
 t_info = Text(
-    text='M for Moon, L for Slopemap, H for Heightmap, Esc for Pause, X for Switch',
+    #text='M for Moon, L for Slopemap, H for Heightmap, Esc for Pause, X for Switch',
+    text='',
     x=-.15, y=-.45, scale=1.1, color=color.black, enabled=False)
 
 
@@ -174,7 +175,7 @@ def input(key):
         pause_bot.enable()
         t_pause.enable()
         t_quit.enable()
-        #color_key.disable()
+        color_key.disable()
 
 
 
