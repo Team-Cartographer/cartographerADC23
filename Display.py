@@ -187,6 +187,7 @@ def update():
     x, y, z = player.position.x, player.position.y, player.position.z
 
     # Corrected X and Z values for Calculations
+    # Note that in Ursina, 'x' and 'z' are the Horizontal (Plane) Axes, and 'y' is vertical.
     nx, nz = int(x / 10 + 638), abs(int(z / 10 - 638))
     #print(f'({nx}, {nz})')
 
