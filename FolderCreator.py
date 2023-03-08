@@ -7,6 +7,7 @@ import os
 from shutil import move
 from dotenv import load_dotenv, set_key
 from utils import show_error, show_info
+from csv import reader
 
 # Setting up '.env' created by PathFetcher
 if not os.path.exists(os.getcwd() + '/.env'):
@@ -68,7 +69,9 @@ archive_path = os.path.join(app_files_path, 'Archived Files')
 # Creates directories and sets '.env' variables only if FolderCreator.py is running.
 # Otherwise, only helper methods are accessible.
 if __name__ == '__main__':
-    set_key('.env', 'SIZE_CONSTANT', '1277')
+    with open(get_slope_file_path()) as f:
+        size_cons = len(list(reader(f)))
+    set_key('.env', 'SIZE_CONSTANT', str(size_cons))
     set_key('.env', 'LUNAR_RAD', str(1737.4 * 1000))
     if not os.path.exists(os.path.join(parent_path, 'Data')):
         os.mkdir(data_path)

@@ -71,10 +71,6 @@ def write_rect_file(data_arr):
             y = float(get_y_coord(lat, long, radius)) / DISTANCE_BETWEEN_POINTS
             z = float(get_z_coord(lat, radius)) / DISTANCE_BETWEEN_POINTS # essentially height
             azi, elev = calc_azimuth_and_elevation(lat, long, height)
-
-            if(elev < -7):
-                print(azi, elev)
-
             csv_writer.writerow([x, y, z, slope, azi, elev, lat, long])
             xs.append(x), ys.append(y), zs.append(z)
             tmpDataArray.append([x, y, z, slope, azi, elev, lat, long])
@@ -96,8 +92,8 @@ def write_astar_file(min_x_, min_y_, min_z_, temp_array):
     for i in range(len(temp_array)):
         # x[0], y[1], z(height)[2], slope[3], azi[4], elev[5], lat[6], long[7]
         tmp = [int(temp_array[i][0] + min_x_), int(temp_array[i][1] + min_y_), int(temp_array[i][2] + min_z_),
-               temp_array[i][3], int(temp_array[i][4]), int(temp_array[i][5]), round(float(temp_array[i][6]),2),
-               round(float(temp_array[i][7]), 2)]
+               temp_array[i][3], temp_array[i][4], temp_array[i][5], temp_array[i][6],
+               temp_array[i][7]]
         adj_array.append(tmp)
 
     sorted_array = sorted(adj_array, key=lambda x: x[1])

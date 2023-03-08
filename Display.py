@@ -1,6 +1,6 @@
 import FolderCreator as fc
 from ursina import *
-from utils import calc_azimuth_and_elevation, latitude_from_rect, longitude_from_rect, get_radius, height_from_rect, slope_from_rect
+from utils import get_azi_elev, latitude_from_rect, longitude_from_rect, get_radius, height_from_rect, slope_from_rect, calc_azimuth_and_elevation
 from ursina.prefabs.first_person_controller import FirstPersonController
 
 # Window Declarations and Formatting -------------
@@ -189,7 +189,7 @@ def update():
 
     # Corrected X and Z values for Calculations
     nx, nz = int(x / 10 + 638), abs(int(z / 10 - 638))
-    print(f'({nx}, {nz})')
+    #print(f'({nx}, {nz})')
 
     t_pos.text = f'Position: ({int(x)}, {int(y)}, {int(z)})'
     editor_cam_player_loc.position = (x / (10 / 3), 0, z / (10 / 3))
@@ -197,19 +197,19 @@ def update():
 
     # Calculating Data
     rad = get_radius(nx, nz)
-    lat = latitude_from_rect(nx, nz, rad)
-    long = -longitude_from_rect(nx, nz, rad)
+    lat = float(latitude_from_rect(nx, nz, rad))
+    long = -float(longitude_from_rect(nx, nz, rad))
     slope = slope_from_rect(nx, nz)
     height = height_from_rect(nx, nz)
-    azimuth, elevation = calc_azimuth_and_elevation(lat, long, height)
+    azimuth, elevation = get_azi_elev(nx, nz)
 
     # Updating Variables
-    t_lat.text = f'Latitude: {lat}° S'
-    t_lon.text = f'Longitude: {long}° E'
+    t_lat.text = f'Latitude: {round(lat, 4)}° S'
+    t_lon.text = f'Longitude: {round(long, 4)}° E'
     t_ht.text = 'Height: ' + str(height) + 'm'
     t_slope.text = 'Slope: ' + str(slope) + '°'
-    t_azi.text = 'Azimuth: ' + str(round(azimuth, 1)) + '°'
-    t_elev.text = 'Elevation: ' + str(round(elevation, 1)) + '°'
+    t_azi.text = 'Azimuth: ' + str(round(azimuth, 4)) + '°'
+    t_elev.text = 'Elevation: ' + str(elevation) + '°'
 
     # Sprint Key
     if held_keys['left shift']:

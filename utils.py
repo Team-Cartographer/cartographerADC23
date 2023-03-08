@@ -2,9 +2,8 @@ import csv
 import tkinter as tk
 from tkinter import messagebox
 import os
-import numpy as np
-from numpy import rad2deg, arccos, deg2rad, sqrt
-from math import atan2, sin, cos, degrees, radians, asin, pi
+from numpy import rad2deg, deg2rad, sqrt
+from math import atan2, sin, cos, asin
 from ast import literal_eval
 
 
@@ -76,6 +75,9 @@ def get_y_coord(lat, long, rad):
 def get_z_coord(lat, rad):
     return float(rad) * sin(deg2rad(float(lat)))
 
+def get_azi_elev(x, y):
+    data = literal_eval(astar_list[x][y])
+    return round(data[4], 5), round(data[5], 5) # azimuth and elevation, respectively
 
 
 def calc_azimuth_and_elevation(latitude, longitude, height):
@@ -105,10 +107,3 @@ def calc_azimuth_and_elevation(latitude, longitude, height):
 
     return rad2deg(azi), rad2deg(elev)
 
-
-def get_elev(x, y, z, lat, long):
-    vec = [x - 361000000, y, z + 42100000]
-    dist = sqrt(vec[0] ** 2 + vec[1] ** 2 + vec[2] ** 2)
-    rz = float(vec[0] * cos(radians(lat)) * cos(radians(long)) + vec[1] *
-    cos(radians(lat)) * sin(radians(long)) + vec[2] * sin(radians(lat)))
-    return degrees(asin(rz / dist))
