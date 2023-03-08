@@ -44,10 +44,10 @@ def draw_points():
             color = calculate_color(float(literal_eval(full_list[j][i])[2]))
             x_pos = j
             y_pos = i
-            # print(x_pos, y_pos)
             canvas.putpixel((int(x_pos), int(y_pos)), color)
             # note that there is a bit of data loss here.
             # Ideally, we'd make the final image have a size equal to the maximum span of the x and y data
+
 
 
 def draw_colors():

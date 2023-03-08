@@ -186,23 +186,26 @@ def update():
 
     # Positions
     x, y, z = player.position.x, player.position.y, player.position.z
+
+    # Corrected X and Z values for Calculations
+    nx, nz = int(x / 10 + 638), abs(int(z / 10 - 638))
+    print(f'({nx}, {nz})')
+
     t_pos.text = f'Position: ({int(x)}, {int(y)}, {int(z)})'
     editor_cam_player_loc.position = (x / (10 / 3), 0, z / (10 / 3))
 
-    # Corrected X and Z values for Calculations
-    nx, nz = int(x/10+638), int(z/10+638)
 
     # Calculating Data
     rad = get_radius(nx, nz)
-    lat = str(latitude_from_rect(nx, nz, rad))
-    long = str(-longitude_from_rect(nx, nz, rad))
+    lat = latitude_from_rect(nx, nz, rad)
+    long = -longitude_from_rect(nx, nz, rad)
     slope = slope_from_rect(nx, nz)
     height = height_from_rect(nx, nz)
-    azimuth, elevation = calc_azimuth_and_elevation(float(lat), float(long), height)
+    azimuth, elevation = calc_azimuth_and_elevation(lat, long, height)
 
     # Updating Variables
-    t_lat.text = f'Latitude: {lat}°'
-    t_lon.text = f'Longitude: {long}°'
+    t_lat.text = f'Latitude: {lat}° S'
+    t_lon.text = f'Longitude: {long}° E'
     t_ht.text = 'Height: ' + str(height) + 'm'
     t_slope.text = 'Slope: ' + str(slope) + '°'
     t_azi.text = 'Azimuth: ' + str(round(azimuth, 1)) + '°'
@@ -216,8 +219,8 @@ def update():
 
 
     # Mini-Map Dot Positioning
-    mx, mz = (x/12760) + 0.5, (z/12760)-0.5
-    mini_dot.position = (mx, mz, 0) # 'z' is treated as 'y' in this case, since 2D objects have no 'y' axis
+    mx, mz = (x/12770) + 0.5, (z/12770)-0.5
+    mini_dot.position = (mx, mz, 0)
 
 
 
