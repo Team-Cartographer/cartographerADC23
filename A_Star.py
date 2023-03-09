@@ -72,7 +72,7 @@ def astar(grid, start, goal):
                     h = heuristic(x2, y2, goal[0], goal[1], h2, goal[2])
                     f = g + h
                     heapq.heappush(nodes, Node(x2, y2, h2, f, g, h, current))
-        print((len(visited))/(1277 ** 2), "% complete. Visited ", len(visited), " nodes")
+        print(f"\r{(len(visited))/(1277 ** 2)} % complete. Visited {len(visited)} nodes", end="")
     return None
 
 
@@ -86,6 +86,7 @@ def update_image(image_path: str, mvmt_path: list):
     img = Image.open(path)
     color = (0, 0, 128)
     for i in range(len(mvmt_path)):
+        print(f"\rUpdating image. {i/len(mvmt_path)}% complete", end="")
         x = mvmt_path[i][0]
         y = mvmt_path[i][1]
         img = add_pixel(img, x, y, color)
@@ -106,10 +107,11 @@ if __name__ == "__main__":
     final_path = astar(grid,
                        (971, 940, get_height_and_slope(971, 940, grid)[0], get_height_and_slope(971, 940, grid)[1]),
                        (862, 1123, get_height_and_slope(862, 1123, grid)[0], get_height_and_slope(862, 1123, grid)[1]))
-    print("Final Path: ", final_path)
+    print("\nFinal Path: ", final_path)
 
     try:
         update_image(fc.images_path + '/AStar_Texture.png', final_path)
+        print("\rImage has been updated")
     except TypeError:
         show_warning("A* Pathfinding Error", "No Valid Path found between points.")
         pass
