@@ -69,6 +69,7 @@ mini_dot = Entity(
     enabled=False
     )
 
+# Color Key Entity (Activates on Heightmap/Slopemap Toggle)
 color_key = Entity(
     parent=camera.ui,
     model='quad',
@@ -77,6 +78,15 @@ color_key = Entity(
     texture='slopeKey.png',
     enabled=False
 )
+
+# Earth Entity (Scales to Player Position)
+#earth = Entity(
+#    model='sphere',
+#    scale=(1000, 1000, 1000),
+#    position=(0, 600, -9000),
+#    texture='2k_earth_daymap.jpg',
+#    enabled=True
+#    )
 
 
 # Slope and Height Toggle Image Pathing -------------
@@ -227,6 +237,9 @@ def update():
     # Mini-Map Dot Positioning
     mx, mz = (x/12770) + 0.5, (z/12770)-0.5
     mini_dot.position = (mx, mz, 0)
+
+    # Earth Positioning
+    #earth.position = (earth.x, 400*(elevation), earth.z)
 
 
 
