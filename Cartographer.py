@@ -104,5 +104,9 @@ if __name__ == "__main__":
     minimap.save(fc.images_path + '/minimap.png')
     print("Created minimap.png")
 
+    img = Image.open('moon_surface_texture.png')
+    img = img.resize((1277, 1277))
+    img.save(fc.images_path + '/AStar_Texture.png')
+
 
     print("Cartographer Success")

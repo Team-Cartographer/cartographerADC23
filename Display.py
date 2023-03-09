@@ -136,6 +136,10 @@ def input(key):
         color_key.enable()
         color_key.texture='heightKey.png'
 
+    if key == 'p':
+        ground_player.texture = 'AStar_Path.png'
+        ground_perspective.texture = 'AStar_Path.png'
+
     # Moon Texture Toggle (Default)
     if key == 'm':
         ground_player.texture = 'moon_surface_texture.png'

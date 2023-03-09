@@ -3,6 +3,7 @@ import heapq
 from numpy import sqrt
 import csv
 from ast import literal_eval
+from utils import show_warning
 import FolderCreator as fc
 
 
@@ -100,14 +101,14 @@ def update_image(image_path: str, mvmt_path: list):
     img = Image.open(path)
     color = (0, 0, 128)
     for i in range(len(mvmt_path)):
-        x = mvmt_path[0]
-        y = mvmt_path[1]
+        x = mvmt_path[i][0]
+        y = mvmt_path[i][1]
         img = add_pixel(img, x, y, color)
-    img.save(fc.images_path + "/A_Star_heightmap.png")
+    img.save(fc.images_path + "/AStar_Path.png")
 
 
 try:
-    update_image(fc.images_path + "/RAW_heightmap.png", final_path)
+    update_image(fc.images_path + '/AStar_Texture.png', final_path)
 except TypeError:
-    print("Image not updated. No path to draw.")
+    show_warning("A* Pathfinding Error", "No Valid Path found between points.")
     pass
