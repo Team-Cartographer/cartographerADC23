@@ -11,7 +11,7 @@ from ast import literal_eval
 import csv
 from sys import exit
 import FolderCreator as fc
-from utils import file2list, get_x_coord, get_y_coord, get_z_coord, calc_azimuth_and_elevation
+from utils import file2list, get_x_coord, get_y_coord, get_z_coord, get_azimuth, get_elevation
 from dotenv import set_key
 
 DISTANCE_BETWEEN_POINTS = fc.get_dist_between_points()
@@ -65,12 +65,12 @@ def write_rect_file(data_arr):
             long = data_arr[i][1]
             height = data_arr[i][2]
             slope = float(data_arr[i][3])
-            radius = fc.get_lunar_rad() + float(height)
+            height = fc.get_lunar_rad() + float(height) # Technically Radius
 
-            x = float(get_x_coord(lat, long, radius)) / DISTANCE_BETWEEN_POINTS
-            y = float(get_y_coord(lat, long, radius)) / DISTANCE_BETWEEN_POINTS
-            z = float(get_z_coord(lat, radius)) / DISTANCE_BETWEEN_POINTS # essentially height
-            azi, elev = calc_azimuth_and_elevation(lat, long, height)
+            x = float(get_x_coord(lat, long, height)) / DISTANCE_BETWEEN_POINTS
+            y = float(get_y_coord(lat, long, height)) / DISTANCE_BETWEEN_POINTS
+            z = float(get_z_coord(lat, height)) / DISTANCE_BETWEEN_POINTS
+            azi, elev = get_azimuth(lat, long), get_elevation(lat, long, height)
             csv_writer.writerow([x, y, z, slope, azi, elev, lat, long])
             xs.append(x), ys.append(y), zs.append(z)
             tmpDataArray.append([x, y, z, slope, azi, elev, lat, long])

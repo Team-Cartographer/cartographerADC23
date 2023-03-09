@@ -211,7 +211,7 @@ def update():
     t_ht.text = 'Height: ' + str(height) + 'm'
     t_slope.text = 'Slope: ' + str(slope) + '°'
     t_azi.text = 'Azimuth: ' + str(round(azimuth, 4)) + '°'
-    t_elev.text = 'Elevation: ' + str(elevation) + '°'
+    t_elev.text = 'Elevation: ' + str(round(elevation, 4)) + '°'
 
     # Sprint Key
     if held_keys['left shift']:

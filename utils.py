@@ -79,73 +79,48 @@ def get_azi_elev(x, y):
     data = literal_eval(astar_list[x][y])
     return round(data[4], 5), round(data[5], 5) # azimuth and elevation, respectively
 
-# Relative to Moon
-def calc_azimuth_and_elevation(latitude, longitude, height):
+
+def get_azimuth(moon_lat, moon_long):
     # Azimuth Angle and Elevation Calculation for Display.py
-    #latA, longA = deg2rad(-89.52), deg2rad(-112.17) # Center of Moon Ref. Loc
-    radA = 1737.4 * 1000 + 41.4
-    latA, longA = deg2rad(-89.54), deg2rad(0) #test2
-    longB = deg2rad(float(longitude))
-    latB = deg2rad(float(latitude))
-    radB = 1737.4 * 1000 + float(height)
+
+    # True Lunar South Pole
+    lunar_south_pole_lat, lunar_south_pole_long = deg2rad(-89.54), deg2rad(0)
+    moon_lat_radian = deg2rad(float(moon_lat))
+    moon_long_radian = deg2rad(float(moon_long))
 
     # Azimuth Calculation
-    c1 = sin(longB-longA) * cos(latB)
-    c2 = (cos(latA) * sin(latB)) - (sin(latA) * cos(latB) * cos(longB-longA))
+    c1 = sin(moon_long_radian - lunar_south_pole_long) * cos(moon_lat_radian)
+    c2 = (cos(lunar_south_pole_lat) * sin(moon_lat_radian)) - (sin(lunar_south_pole_lat) * cos(moon_lat_radian) * cos(moon_long_radian - lunar_south_pole_long))
     azi = atan2(c1, c2)
 
+    return rad2deg(azi)
+
+
+def get_elevation(moon_lat, moon_long, moon_height):
     # Elevation Calculation
-    xA, xB = get_x_coord(latA, longA, radA), get_x_coord(latB, longB, radB)
-    yA, yB = get_y_coord(latA, longA, radA), get_y_coord(latB, longB, radB)
-    zA, zB = get_z_coord(latA, radA), get_z_coord(latB, radB)
-
-    dists = [xB-xA, yB-yA, zB-zA]
-    range = sqrt(dists[0]** 2 + dists[1]**2 + dists[2]**2)
-    rz = dists[0] * cos(latA) * cos(longA) + dists[1] * cos(latA) * sin(longA) + dists[2] * sin(latA)
-
-    elev = asin(rz/range)
-
-    return rad2deg(azi), rad2deg(elev)
+    # Earth Cartesian Position with respect to Lunar Fixed Frame at a single time instant
+    # [X, Y, Z] = [361000, 0, –42100] km.
 
 
-''' -> Relative to Earth 
-def calc_azimuth_and_elevation(moon_lat, moon_long, moon_height):
-    # Azimuth Angle and Elevation Calculation for Display.py
+    earth_x = 361000
+    earth_y = 0
+    earth_z = -42100
 
-    # B - earth
-    # A - moon
-
-    earth_radius = 1737.4 * 1000 + 41.4
-
-    earth_lat_rad = deg2rad(29.953)
-    earth_long_rad = deg2rad(95.0900)
-
-    moon_long_rad = deg2rad(float(moon_long))
     moon_lat_rad = deg2rad(float(moon_lat))
+    moon_long_rad = deg2rad(float(moon_long))
     moon_radius = 1737.4 * 1000 + float(moon_height)
 
-    # Azimuth Calculation
-    c1 = sin(moon_long_rad - earth_long_rad) * cos(moon_lat_rad)
-    c2 = (cos(earth_lat_rad) * sin(moon_lat_rad)) - (sin(earth_lat_rad) * cos(moon_lat_rad) * cos(moon_long_rad - earth_long_rad))
-    azi = atan2(c1, c2)
+    moon_x = get_x_coord(moon_lat, moon_long, moon_radius)
+    moon_y = get_y_coord(moon_lat, moon_long, moon_radius)
+    moon_z = get_z_coord(moon_lat, moon_long)
 
-    # Elevation Calculation
-    xA = get_x_coord(earth_lat_rad, earth_long_rad, earth_radius)
-    xB = get_x_coord(moon_lat_rad, moon_long_rad, moon_radius)
+    dists = [earth_x - moon_x, earth_y - moon_y, earth_z - moon_z]
+    range_ = sqrt((dists[0] ** 2) + (dists[1] ** 2) + (dists[2] ** 2))
 
-    yA = get_y_coord(earth_lat_rad, earth_long_rad, earth_radius)
-    yB = get_y_coord(moon_lat_rad, moon_long_rad, moon_radius)
+    rz = dists[0] * cos(moon_lat_rad) * cos(moon_long_rad) + dists[1] * cos(moon_lat_rad) * sin(moon_long_rad) + dists[
+        2] * sin(moon_lat_rad)
 
-    zA = get_z_coord(earth_lat_rad, earth_radius)
-    zB = get_z_coord(moon_lat_rad, moon_radius)
+    elev = asin(rz / range_)
 
-    # dists = [xB-xA, yB-yA, zB-zA]
-    dists = [xA - xB, yA - yB, zA - zB]
+    return rad2deg(elev)
 
-    range = sqrt(dists[0]** 2 + dists[1]**2 + dists[2]**2)
-    rz = dists[0] * cos(moon_lat_rad) * cos(moon_long_rad) + dists[1] * cos(moon_lat_rad) * sin(moon_long_rad) + dists[2] * sin(moon_lat_rad)
-
-    elev = asin(rz/range)
-
-    return rad2deg(azi), rad2deg(elev)
-'''
