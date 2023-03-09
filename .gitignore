@@ -2,6 +2,9 @@
 App Files/
 Data/
 
+#Images
+processed_heightmap.png
+
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
