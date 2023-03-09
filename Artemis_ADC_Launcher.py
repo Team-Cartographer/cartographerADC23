@@ -2,14 +2,14 @@ import sys
 import venv
 from os import getcwd, path
 from subprocess import run
-from utils import show_info
+
 
 
 # Create a new virtual environment
-venv.create('venv', with_pip=True)
+venv.create('subprocess_venv', with_pip=True)
 
 # Activate the virtual environment
-venv_folder = path.join(getcwd(), 'venv')
+venv_folder = path.join(getcwd(), 'subprocess_venv')
 activate_script = path.join(venv_folder, 'Scripts', 'activate.bat')
 run(f'cmd /c "{activate_script}"', shell=True, check=True)
 
@@ -22,6 +22,10 @@ run([sys.executable, '-m', 'pip', 'install', 'numpy'], check=True)
 print("Installed numpy")
 run([sys.executable, '-m', 'pip', 'install', 'ursina'], check=True)
 print("Installed ursina")
+
+
+from utils import show_info
+
 
 code_path = getcwd()
 
