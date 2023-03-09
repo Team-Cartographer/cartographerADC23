@@ -75,13 +75,14 @@ def get_y_coord(lat, long, rad):
 def get_z_coord(lat, rad):
     return float(rad) * sin(deg2rad(float(lat)))
 
+# ONLY FOR USE WITH Display.py
 def get_azi_elev(x, y):
     data = literal_eval(astar_list[x][y])
     return round(data[4], 5), round(data[5], 5) # azimuth and elevation, respectively
 
 
 def get_azimuth(moon_lat, moon_long):
-    # Azimuth Angle and Elevation Calculation for Display.py
+    # Azimuth Angle and Elevation Calculation for DataProcessor.py
 
     # True Lunar South Pole
     lunar_south_pole_lat, lunar_south_pole_long = deg2rad(-89.54), deg2rad(0)
@@ -97,7 +98,7 @@ def get_azimuth(moon_lat, moon_long):
 
 
 def get_elevation(moon_lat, moon_long, moon_height):
-    # Elevation Calculation
+    # Elevation Calculation for DataProcessor.py
     # Earth Cartesian Position with respect to Lunar Fixed Frame at a single time instant
     # [X, Y, Z] = [361000, 0, –42100] km.
 
