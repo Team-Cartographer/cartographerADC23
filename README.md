@@ -4,7 +4,7 @@
   <p align="center">
     <a href="https://www.instagram.com/fpa.cartographers/"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram"></a>
     <a href="https://www.nasa.gov/stem/nextgenstem/moon/app_challenge.html"><img src="https://i.ibb.co/Hg7ZFrY/Group-13-2.png" alt="Instagram"></a>
-    <a href="mailto:jbouyer151@students.fairmontschools.com,scelik913@students.fairmontschools.com,nkwok887@students.fairmontschools.com,aarya999@students.fairmontschools.com,kmanesh377@students.fairmontschools.com,kalkhairy608@students.fairmontschools.com,cdoan925@students.fairmontschools.com"><img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="e-mail"></a>
+    <a href="mailto:ADCTeamCartographer@gmail.com"><img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="e-mail"></a>
 
   </p>
 </div>
