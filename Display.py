@@ -84,7 +84,7 @@ color_key = Entity(
 #    model='sphere',
 #    scale=(1000, 1000, 1000),
 #    position=(0, 600, -9000),
-#    texture='2k_earth_daymap.jpg',
+#    texture='earth_texture.jpg',
 #    enabled=True
 #    )
 
