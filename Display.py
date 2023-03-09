@@ -295,6 +295,6 @@ pause_bot = Button(text='Click to Unpause', color=color.gray, highlight_color=co
 t_quit = Text(text="Press 'LShift+Q' to quit.", x=-0.14, y=-0.06, enabled=False)
 pause_bot.on_click = on_unpause
 
-
 # Runs Display.py -------------
-app.run(info=False)
+if __name__ == '__main__':
+    app.run(info=False)

@@ -59,6 +59,10 @@ a_star_path = code_path + "/A_Star.py"
 a_star_program = run([sys.executable, a_star_path])
 print("A* (no QuadTree) Success")
 
-show_info('Installation Success', 'Please Run Display.py')
+print("Running Display")
+display_path = code_path + '/Display.py'
+display_program = run([sys.executable, display_path])
+print('Ended Program')
+
 
 run('deactivate', shell=True, check=True)
