@@ -75,21 +75,6 @@ def astar(grid, start, goal):
         print((len(visited))/(1277 ** 2), "% complete. Visited ", len(visited), " nodes")
     return None
 
-# Test Case
-
-csv_path = fc.data_path + "/AStarRawData.csv"
-csv_path = csv_path.replace("\\", "/")
-with open(csv_path, mode="r") as csv_file:
-    csv_reader = csv.reader(csv_file, delimiter=',')
-    full_list = list(csv_reader)
-
-
-grid = full_list
-
-final_path = astar(grid, (971, 940, get_height_and_slope(971, 940, grid)[0], get_height_and_slope(971, 940, grid)[1]),
-                   (862, 1123, get_height_and_slope(862, 1123, grid)[0], get_height_and_slope(862, 1123, grid)[1]))
-print("Final Path: ", final_path)
-
 
 def add_pixel(img, x, y, color):
     img.putpixel((x, y), color)
@@ -107,8 +92,25 @@ def update_image(image_path: str, mvmt_path: list):
     img.save(fc.images_path + "/AStar_Path.png")
 
 
-try:
-    update_image(fc.images_path + '/AStar_Texture.png', final_path)
-except TypeError:
-    show_warning("A* Pathfinding Error", "No Valid Path found between points.")
-    pass
+if __name__ == "__main__":
+    # Test Case
+
+    csv_path = fc.data_path + "/AStarRawData.csv"
+    csv_path = csv_path.replace("\\", "/")
+    with open(csv_path, mode="r") as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        full_list = list(csv_reader)
+
+    grid = full_list
+
+    final_path = astar(grid,
+                       (971, 940, get_height_and_slope(971, 940, grid)[0], get_height_and_slope(971, 940, grid)[1]),
+                       (862, 1123, get_height_and_slope(862, 1123, grid)[0], get_height_and_slope(862, 1123, grid)[1]))
+    print("Final Path: ", final_path)
+
+    try:
+        update_image(fc.images_path + '/AStar_Texture.png', final_path)
+    except TypeError:
+        show_warning("A* Pathfinding Error", "No Valid Path found between points.")
+        pass
+
