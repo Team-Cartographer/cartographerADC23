@@ -57,6 +57,7 @@ This application will only work on Windows Operating Systems with Python 3.9+. F
 - H -> Toggle Height Key Map
 - R -> Reset Player Location
 - M -> Reset Surface Texture
+- P -> A* Path Generation Texture
 - LShift -> (In First Person Only) Sprint
 - ESC -> Pause
 - LShift+Q -> Quit Application
