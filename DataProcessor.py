@@ -74,6 +74,7 @@ def write_rect_file(data_arr):
             csv_writer.writerow([x, y, z, slope, azi, elev, lat, long])
             xs.append(x), ys.append(y), zs.append(z)
             tmpDataArray.append([x, y, z, slope, azi, elev, lat, long])
+            print(f"\rCreating RectangularCoordinateData.csv. {round(i / length, 8)}% complete", end="")
 
         datafile.close()
     min_x_, min_y_, min_z_ = abs(min(xs)), abs(min(ys)), abs(min(zs))
