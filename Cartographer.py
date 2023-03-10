@@ -47,7 +47,7 @@ def draw_points():
             canvas.putpixel((int(x_pos), int(y_pos)), color)
             # note that there is a bit of data loss here.
             # Ideally, we'd make the final image have a size equal to the maximum span of the x and y data
-            print(f"\rCreating Heightmap. {i / len(full_list)}% complete", end="")
+            print(f"\rCreating Heightmap. {round(i / len(full_list), 4)}% complete", end="")
 
 
 
@@ -59,7 +59,7 @@ def draw_colors():
             y_pos = i
             # print(x_pos, y_pos)
             canvas.putpixel((int(x_pos), int(y_pos)), color)
-            print(f"\rCreating Heightkey. {i / len(full_list)}% complete", end="")
+            print(f"\rCreating Heightkey. {round(i / len(full_list), 4)}% complete", end="")
 
 
 def draw_slopes():
@@ -74,14 +74,14 @@ def draw_slopes():
             y_pos = i
             # print(x_pos, y_pos)
             canvas.putpixel((int(x_pos), int(y_pos)), color)
-            print(f"\rCreating Slopemap. {i / len(full_list)}% complete", end="")
+            print(f"\rCreating Slopemap. {round(i / len(full_list), 4)}% complete", end="")
 
 
 
 def draw_path(path, image, color):
     for i in range(len(path)):
         image.putpixel(path[0], path[1], color)
-        print(f"\rCreating Path Image. {i / len(path)}% complete", end="")
+        print(f"\rCreating Path Image. {round(i / len(path), 4)}% complete", end="")
     return image
 
 
@@ -90,13 +90,13 @@ if __name__ == "__main__":
     canvas = Image.new('RGBA', (SIZE_CONSTANT, SIZE_CONSTANT), 'blue')
     draw_points()
     canvas.save(fc.images_path + '/RAW_heightmap.png')  # must save here for a proper read from Ursina
-    print("Created RAW_heightmap.png")
+    print("\nCreated RAW_heightmap.png")
     draw_slopes()
     canvas.save(fc.images_path + '/slopemap.png')
-    print("Created slopemap.png")
+    print("\nCreated slopemap.png")
     draw_colors()
     canvas.save(fc.images_path + '/heightkey_surface.png')
-    print("Created heightkey_surface.png")
+    print("\nCreated heightkey_surface.png")
 
     # Image Scaling for Faster Ursina Runs
     upscaled = Image.open(fc.images_path + '/RAW_heightmap.png')
