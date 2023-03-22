@@ -102,11 +102,31 @@ def update_image(image_path: str, mvmt_path: list):
     img.save(fm.images_path + "/AStar_Path.png")
 
 
+def div_10_points(final_path : list) -> list:
+    comm_points = []
+    dist = round(len(final_path) / 11)
+    for i in range(11):
+        comm_points.append(final_path[i * dist])
+
+    comm_points.pop(0)
+    return comm_points
+
+
+def line_to_earth(x, y):
+    m = (y-1250)/(x-638)
+    b = -m*x + y
+    return int(m), int(b)
+
+
 if __name__ == "__main__":
 
     (start_x, start_y), (goal_x, goal_y) = get_pathfinding_endpoints(fm.get_size_constant(), fm.images_path)
 
     grid = load_json(fm.data_path + "/AStarRawData.json")
+
+    # Testing. To be removed later
+    # start_x, start_y = 0, 0
+    # goal_x, goal_y = 100, 100
 
     start_node = Node(start_x, start_y)
     goal_node = Node(goal_x, goal_y)
@@ -114,6 +134,15 @@ if __name__ == "__main__":
     final_path = astar()
 
     if final_path is not None:
-        update_image(fm.images_path + '/AStar_Texture.png', final_path)
+        update_image(fm.images_path + '/moon_surface_texture.png', final_path)
     else:
         show_warning("A* Pathfinding Error", "No Valid Path found between points.")
+
+    # For Relative Earth position Pathfinding Calculation ---
+    divided_points = div_10_points(final_path)
+
+    m, b = line_to_earth(divided_points[0][0], divided_points[0][2])
+    # Slope of a line spanning from a point to the relative position of earth.
+    print(f'y = {m}x + {b}')
+
+

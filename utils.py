@@ -7,15 +7,32 @@ from math import atan2, sin, cos, asin, sqrt, radians, degrees
 from typing import Callable, Any
 from time import time
 from msgspec.json import decode
+import json
 import numpy as np
-
 from PIL import Image
+
+
+def timeit(method: Callable) -> Callable:
+    def timed(*args, **kw) -> Any:
+        time_start = time()
+        result = method(*args, **kw)
+        time_end = time()
+        print(f"Function '{method.__name__}' executed in {time_end - time_start:.3f}s")
+        return result
+
+    return timed
 
 
 def load_json(json_path: str) -> dict:
     with open(json_path, "rb") as f:
         json_data = decode(f.read())
     return json_data
+
+
+@timeit
+def push_to_json(json_path, json_data, custom_indent=4):
+    with open(json_path, 'w') as f:
+        json.dump(json_data, f, ensure_ascii=False, indent=custom_indent)
 
 
 def file2list(path):
@@ -160,25 +177,25 @@ def get_elevation(moon_lat, moon_long, moon_height):
     return degrees(elev)
 
 
-def resize(image_path: str, new_name: str, scale: float) -> str:
+def resize(image_path: str, new_name: str, scale: float, transpose=False) -> str:
+    start = time()
+
+    # Scale Images to Given Scale
     img = Image.open(f'{image_path}')
-    resized = img.resize((int(scale), int(scale)))  # 1/(scale) Scaling
+    img = img.resize((int(scale), int(scale)))  # 1/(scale) Scaling
 
+    if transpose:
+        # Transpose Images
+        img = img.transpose(method=Image.FLIP_TOP_BOTTOM).rotate(-90)
+
+    width, height = img.size
+    processed = img.crop((1, 1, width - 2, height - 2))
+
+    # Save Image and Return Path
     path = os.getcwd() + f'/Data/Images/{new_name}.png'
-    resized.save(path)
-    print(f"Created {new_name}.png")
+    processed.save(path)
+    print(f"Resized {new_name}.png in {round(time() - start, 2)}s")
     return path
-
-
-def timeit(method: Callable) -> Callable:
-    def timed(*args, **kw) -> Any:
-        time_start = time()
-        result = method(*args, **kw)
-        time_end = time()
-        print(f"\nFunction '{method.__name__}' executed in {time_end - time_start:.3f}s")
-        return result
-
-    return timed
 
 
 if __name__ == "__main__":

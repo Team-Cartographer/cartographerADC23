@@ -34,6 +34,8 @@ if not path.exists(venv_folder):
     print("Installed package: tqdm")
     run([sys.executable, '-m', 'pip', 'install', 'msgspec'], check=True)
     print("Installed package: msgspec")
+    run([sys.executable, '-m', 'pip', 'install', 'seaborn'], check=True)
+    print("Installed package: seaborn")
 
 
 code_path = getcwd()

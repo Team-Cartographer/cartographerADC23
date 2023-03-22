@@ -19,7 +19,7 @@ longitude_list: list = file2list(fm.get_longitude_file_path())
 height_list: list = file2list(fm.get_height_file_path())
 slope_list: list = file2list(fm.get_slope_file_path())
 
-data = load_json(fm.JSONPATH)
+data = load_json(fm.INFO_JSONPATH)
 
 @timeit
 def process_data():
@@ -99,8 +99,8 @@ def process_data():
             array_to_be_written[j][i][0] = i
             array_to_be_written[j][i][1] = j
 
-    fm.push_to_json(fm.data_path + "/AStarRawData.json", array_to_be_written, None)
-    fm.push_to_json(fm.JSONPATH, data)
+    fm.push_to_json(fm.ASTAR_JSONPATH, array_to_be_written)
+    fm.push_to_json(fm.INFO_JSONPATH, data)
 
 
 if __name__ == "__main__":
