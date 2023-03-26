@@ -1,8 +1,9 @@
 import FileManager as fm
 from utils import file2list, get_x_coord, get_y_coord, \
     get_z_coord, get_azimuth, get_elevation, timeit, \
-    load_json
+    load_json, push_to_json
 from tqdm import tqdm
+from math import radians, degrees
 
 # Get Constants
 
@@ -10,7 +11,7 @@ SIZE: int = fm.get_size_constant()
 LUNAR_RAD: float = fm.get_lunar_rad()
 
 # Legacy Constants
-#DISTANCE_BETWEEN_POINTS: int = fm.get_dist_between_points()
+# DISTANCE_BETWEEN_POINTS: int = fm.get_dist_between_points()
 
 
 # Creates Lists of each Data Type from the Paths Given.
@@ -20,6 +21,7 @@ height_list: list = file2list(fm.get_height_file_path())
 slope_list: list = file2list(fm.get_slope_file_path())
 
 data = load_json(fm.INFO_JSONPATH)
+
 
 @timeit
 def process_data():
@@ -48,16 +50,19 @@ def process_data():
 
             radius: float = LUNAR_RAD + float(height)
 
+            latitude = radians(latitude)
+            longitude = radians(longitude)
+
             x: float = float(get_x_coord(latitude, longitude, radius))
             y: float = float(get_y_coord(latitude, longitude, radius))
             z: float = float(get_z_coord(latitude, radius))
 
             azi: float = get_azimuth(latitude, longitude)
-            elev: float = get_elevation(latitude, longitude, radius)
+            elev: float = get_elevation(latitude, longitude, x, y, z)
 
             xs.append(x), ys.append(y), zs.append(z), heights.append(height)
 
-            a_star_data_array.append([x, y, z, slope, azi, elev, latitude, longitude, height])
+            a_star_data_array.append([x, y, z, slope, azi, elev, degrees(latitude), degrees(longitude), height])
 
     min_x_: float = abs(min(xs))
     min_y_: float = abs(min(ys))
@@ -99,8 +104,8 @@ def process_data():
             array_to_be_written[j][i][0] = i
             array_to_be_written[j][i][1] = j
 
-    fm.push_to_json(fm.ASTAR_JSONPATH, array_to_be_written)
-    fm.push_to_json(fm.INFO_JSONPATH, data)
+    push_to_json(fm.ASTAR_JSONPATH, array_to_be_written)
+    push_to_json(fm.INFO_JSONPATH, data)
 
 
 if __name__ == "__main__":

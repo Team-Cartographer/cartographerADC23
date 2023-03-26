@@ -55,13 +55,14 @@ def get_pathfinding_endpoints(SIZE_CONSTANT, IMAGES_PATH):
             sg.Button("Set", key="-StartIN-", enable_events=True)
         ],
         [
-            sg.Text("Current Start Position:"),
+            sg.Text("Current Goal Position:"),
             sg.Input(default_text="None", key="-GoalOUT-", disabled=True),
             sg.Button("Set", key="-GoalIN-", enable_events=True)
         ],
         [
             sg.Combo(["Moon Texture", "Slopemap", "Heightkey"], default_value="Moon Texture",
                      enable_events=True, key="-Map-"),
+            sg.Checkbox("Add comm checkpoints?", default=False, key="-CommIN-"),
             sg.OK("Submit", key="-Submit-")
         ]
     ]
@@ -141,12 +142,12 @@ def get_pathfinding_endpoints(SIZE_CONSTANT, IMAGES_PATH):
             if are_you_sure("Endpoint Submission", "Are you sure these are the points you want?"):
                 if values["-StartOUT-"] != "None" and values["-GoalOUT-"] != "None":
                     window.close()
-                    return eval(values["-StartOUT-"]), eval(values["-GoalOUT-"])
+                    return eval(values["-StartOUT-"]), eval(values["-GoalOUT-"]), bool(values["-CommIN-"])
                 else:
                     show_error("Incomplete Data Error", "Please select a start and end point")
 
 
 if __name__ == "__main__":
     # path_fetcher()
-    # get_pathfinding_endpoints()
+    # print(get_pathfinding_endpoints(1277, "C:/Users/Owner/PycharmProjects/NASA-ADC-App/Data/Images"))
     pass

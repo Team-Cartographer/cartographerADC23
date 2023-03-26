@@ -6,8 +6,7 @@ import os
 from math import atan2, sin, cos, asin, sqrt, radians, degrees
 from typing import Callable, Any
 from time import time
-from msgspec.json import decode
-import json
+import orjson as oj
 import numpy as np
 from PIL import Image
 
@@ -23,16 +22,18 @@ def timeit(method: Callable) -> Callable:
     return timed
 
 
-def load_json(json_path: str) -> dict:
-    with open(json_path, "rb") as f:
-        json_data = decode(f.read())
-    return json_data
+@timeit
+def load_json(json_path: str):
+    with open(json_path, 'rb') as f:
+        data = oj.loads(f.read())
+    return data
 
 
 @timeit
-def push_to_json(json_path, json_data, custom_indent=4):
-    with open(json_path, 'w') as f:
-        json.dump(json_data, f, ensure_ascii=False, indent=custom_indent)
+def push_to_json(json_path, json_data):
+    json_data = oj.dumps(json_data)
+    with open(json_path, 'wb') as f:
+        f.write(json_data)
 
 
 def file2list(path):
@@ -96,21 +97,21 @@ def slope_from_rect(x: float, y: float, data) -> float:
     return data[x][y][3]
 
 
-def height_from_rect(x: float, y: float, data, info_data) -> float:
+def height_from_rect(x: float, y: float, data) -> float:
     height = data[x][y][8]
     return height
 
 
 def get_x_coord(lat, long, rad):  # takes in degrees latitude and longitude
-    return rad * cos(radians(lat)) * cos(radians(long))
+    return rad * cos(lat) * cos(long)
 
 
 def get_y_coord(lat, long, rad):
-    return rad * cos(radians(lat)) * sin(radians(long))
+    return rad * cos(lat) * sin(long)
 
 
 def get_z_coord(lat, rad):
-    return rad * sin(radians(lat))
+    return rad * sin(lat)
 
 
 def get_specific_from_json(index, jsonpath):
@@ -120,7 +121,7 @@ def get_specific_from_json(index, jsonpath):
     return arr
 
 
-# ONLY FOR USE WITH DISPLAY.PY
+# ONLY FOR USE WITH DISPLAY.PY AND ASTAR.PY
 def get_azi_elev(x, y, data):
     row = data[x][y]
     return round(row[4], 5), round(row[5], 5)  # azimuth and elevation, respectively
@@ -137,8 +138,8 @@ def get_azimuth(moon_lat, moon_long):
 
     # True Lunar South Pole
     lunar_south_pole_lat, lunar_south_pole_long = radians(-89.54), radians(0)
-    moon_lat_radian = radians(moon_lat)
-    moon_long_radian = radians(moon_long)
+    moon_lat_radian = moon_lat
+    moon_long_radian = moon_long
 
     # Azimuth Calculation
     c1 = sin(moon_long_radian - lunar_south_pole_long) * cos(moon_lat_radian)
@@ -149,7 +150,8 @@ def get_azimuth(moon_lat, moon_long):
     return degrees(azi)
 
 
-def get_elevation(moon_lat, moon_long, moon_height):
+def get_elevation(moon_lat, moon_long, moon_x, moon_y, moon_z):
+    # Latitude and Longitude are already in radians.
     # Elevation Calculation for DataProcessor.py
     # Earth Cartesian Position with respect to Lunar Fixed Frame at a single time instant
     # [X, Y, Z] = [361000, 0, –42100] km.
@@ -158,19 +160,11 @@ def get_elevation(moon_lat, moon_long, moon_height):
     earth_y = 0
     earth_z = -42100
 
-    moon_lat_rad = radians(float(moon_lat))
-    moon_long_rad = radians(float(moon_long))
-    moon_radius = 1737.4 * 1000 + float(moon_height)
-
-    moon_x = get_x_coord(moon_lat, moon_long, moon_radius)
-    moon_y = get_y_coord(moon_lat, moon_long, moon_radius)
-    moon_z = get_z_coord(moon_lat, moon_long)
-
     dists = [earth_x - moon_x, earth_y - moon_y, earth_z - moon_z]
     range_ = sqrt((dists[0] ** 2) + (dists[1] ** 2) + (dists[2] ** 2))
 
-    rz = dists[0] * cos(moon_lat_rad) * cos(moon_long_rad) + dists[1] * cos(moon_lat_rad) * sin(moon_long_rad) + dists[
-        2] * sin(moon_lat_rad)
+    rz = dists[0] * cos(moon_lat) * cos(moon_long) + dists[1] * cos(moon_lat) * sin(moon_long) + dists[
+        2] * sin(moon_lat)
 
     elev = asin(rz / range_)
 
@@ -196,6 +190,43 @@ def resize(image_path: str, new_name: str, scale: float, transpose=False) -> str
     processed.save(path)
     print(f"Resized {new_name}.png in {round(time() - start, 2)}s")
     return path
+
+
+def find_point_on_segment(p1, p2, ratio):
+    return (p1[0] + (p2[0] - p1[0]) * ratio, p1[1] + (p2[1] - p1[1]) * ratio)
+
+
+def euclidean_distance(p1, p2):
+    return np.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
+
+# For A* Checkpoint Calculation
+def subdivide_path(points, sections=10):
+    # Calculate total length of the path
+    total_length = sum(euclidean_distance(points[i], points[i+1]) for i in range(len(points) - 1))
+    section_length = total_length / sections
+
+    # Iterate through the path and find the points at each section
+    section_points = []
+    current_length = 0
+    section = 1
+
+    for i in range(len(points) - 1):
+        segment_length = euclidean_distance(points[i], points[i + 1])
+        remaining_length = section_length * section - current_length
+
+        while remaining_length <= segment_length:
+            ratio = remaining_length / segment_length
+            point_on_segment = find_point_on_segment(points[i], points[i + 1], ratio)
+            section_points.append(point_on_segment)
+
+            section += 1
+            remaining_length = section_length * section - current_length
+
+        current_length += segment_length
+
+
+    intify = lambda arr: list(map(lambda x: (int(x[0]), int(x[1])), arr))
+    return intify(section_points)
 
 
 if __name__ == "__main__":

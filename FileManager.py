@@ -7,53 +7,28 @@ import os
 from utils import show_info, file2list, load_json, push_to_json
 import ui
 
+# Define Pathing
+parent_path: str = os.getcwd()
+data_path: str = os.path.join(parent_path, 'Data')
+images_path: str = os.path.join(data_path, 'Images')
+app_files_path: str = os.path.join(parent_path, 'App Files')
+
+
+# DEFINE CONSTANTS
 INFO_JSONPATH = os.getcwd() + '/info.json'
 ASTAR_JSONPATH = 'Data/AStarRawData.json'
+TEXTURE_PATH = images_path + '/moon_surface_texture.png'
+RAW_HEIGHTMAP_PATH = images_path + '/RAW_heightmap.png'
+PROCESSED_HEIGHTMAP_PATH = '/processed_heightmap.png'
+SLOPEMAP_PATH = images_path + '/slopemap.png'
+SURFACE_HEIGHTKEY_PATH = images_path + '/heightkey_surface.png'
+
+# Image Paths
+ASTAR_PATH = images_path + "/AStar_Path.png"
 
 
-# Currently Disabled as Saves are not a priority task.
-''' 
-class Save:
-    def __init__(self, name):
-        latpath, longpath, heightpath, slopepath, dist_between_points = path_fetcher()
-        self.json_path, self.folder_path, self.data = self.write_json(
-            latitude_path=latpath, longitude_path=longpath,
-            height_path=heightpath, slope_path=slopepath, dist=int(dist_between_points),
-            size_constant=len(file2list(latpath)), player_pos=None, name=name)
 
-        show_info("Save Success!",f'Saved {self.json_path}')
 
-    #def save(self):
-    
-    def write_json(self, latitude_path : str, longitude_path : str,
-               height_path : str, slope_path : str, dist : str,
-               size_constant : str , player_pos : str, name : str):
-
-    if not name:
-        name = 0
-
-    folder_path = os.getcwd() + f"/Save{name}"
-    if not os.path.exists(folder_path):
-        os.mkdir(os.getcwd() + f"/Save{name}")
-
-    data : dict = {
-        "LATITUDE_PATH": latitude_path,
-        "LONGITUDE_PATH": longitude_path,
-        "HEIGHT_PATH": height_path,
-        "SLOPE_PATH": slope_path,
-
-        "DIST_BETWEEN_POINTS": dist,
-        "SIZE_CONSTANT": size_constant,
-        "PLAYER_POSITION": player_pos
-    }
-
-    name : str = f"Save{name}" # Hardcoded to 0 for Testing.
-    jsonpath : str = os.path.join(folder_path, f'{name}.json')
-    with open(jsonpath, 'w') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
-
-    return jsonpath, folder_path, data
-'''
 
 # Sets up Json File.
 if not os.path.exists(os.getcwd() + '/info.json'):
@@ -103,11 +78,6 @@ def get_slope_file_path() -> str:
     return data["SLOPE_PATH"].replace("\\", "/")
 
 
-# Legacy
-#def get_dist_between_points() -> int:
-#    return data["DIST_BETWEEN_POINTS"]
-
-
 def get_size_constant() -> int:
     return data["SIZE_CONSTANT"]
 
@@ -144,12 +114,6 @@ def get_lunar_rad() -> float:
 def get_player_pos() -> tuple:
     return data["PLAYER_POSITION"]
 
-
-# IMPORTANT PATHING
-parent_path: str = os.getcwd()
-data_path: str = os.path.join(parent_path, 'Data')
-images_path: str = os.path.join(data_path, 'Images')
-app_files_path: str = os.path.join(parent_path, 'App Files')
 
 # Creates directories and sets 'info.json' variables only if FileManager.py is running.
 # Otherwise, only helper methods are accessible.

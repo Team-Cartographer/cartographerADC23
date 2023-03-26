@@ -9,12 +9,8 @@ from shutil import move
 from time import time
 import random
 
-max_z = fm.get_max_height()
-CALCULATION_CONS = 255 / max_z
-ONE_THIRD = 1 / 3
-TWO_THIRDS = 2 / 3
-SIZE_CONSTANT = fm.get_size_constant()
 
+SIZE_CONSTANT = fm.get_size_constant()
 Image.MAX_IMAGE_PIXELS = None
 
 
@@ -32,8 +28,8 @@ def sns_heatmap(arr, cmap, save):
     print(f'{save} created in {round(time()-start, 2)}s')
 
 
-heights = get_specific_from_json(8, fm.data_path + "/AStarRawData.json")
-slopes = get_specific_from_json(3, fm.data_path + "/AStarRawData.json")
+heights = get_specific_from_json(8, fm.ASTAR_JSONPATH)
+slopes = get_specific_from_json(3, fm.ASTAR_JSONPATH)
 
 
 def create_surface_texture():
@@ -45,7 +41,7 @@ def create_surface_texture():
             for i in range(int(slopes[y][x])):
                 color -= random.randint(2, 5)
             texture.putpixel((x, y), (color, color, color))
-    texture.save(fm.images_path + "/moon_surface_texture.png")
+    texture.save(fm.TEXTURE_PATH)
 
 
 # Creates RAW_Heightmap, Slopemap, and Heightkey
@@ -55,22 +51,22 @@ def draw_all():
     sns_heatmap(
         arr=heights,
         cmap="gist_gray",
-        save=fm.images_path + '/RAW_heightmap.png'
+        save=fm.RAW_HEIGHTMAP_PATH
     )
 
     # Creates Heightkey
-    #TODO Add Reduced Opacity Feature to Original Texture for this
+    # TODO Add Reduced Opacity Feature to Original Texture for this
     sns_heatmap(
         arr=heights,
         cmap='viridis',
-        save=fm.images_path + '/heightkey_surface.png'
+        save=fm.SURFACE_HEIGHTKEY_PATH
     )
 
     # Creates Slopemap
     sns_heatmap(
         arr=slopes,
         cmap='inferno',
-        save=fm.images_path + '/slopemap.png'
+        save=fm.SLOPEMAP_PATH
     )
 
     # Creates Surface Texture
@@ -93,15 +89,15 @@ if __name__ == "__main__":
 
     # Image Scaling for Faster Ursina Runs, as well as proper dimensions.
     proper_heightmap = resize(
-        image_path=fm.images_path + '/RAW_heightmap.png',
+        image_path=fm.RAW_HEIGHTMAP_PATH,
         new_name='processed_heightmap',
         scale=128,
         transpose=True
     )
-    move(fm.images_path + '/processed_heightmap.png', getcwd() + '/processed_heightmap.png')
+    move(fm.images_path + fm.PROCESSED_HEIGHTMAP_PATH, getcwd() + '/processed_heightmap.png')
 
     proper_surface_texture = resize(
-        image_path='Data/Images/moon_surface_texture.png',
+        image_path=fm.TEXTURE_PATH,
         new_name='moon_surface_texture',
         scale=SIZE_CONSTANT,
         transpose=True
