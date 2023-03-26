@@ -52,15 +52,17 @@ This application will only work on Windows Operating Systems with Python 3.9+. F
 
 <!-- KEY BINDINGS -->
 
-## Button Functions 
+## Button Functions
+
+Note that Key Bindings are not customizable. 
 
 - W, A, S, D -> General Movement
 - X -> Toggle First Person/3D Camera Views
-- L -> Toggle Slope Map
-- H -> Toggle Height Key Map
-- R -> Reset Player Location
-- M -> Reset Surface Texture
+- 1 -> Moon Texture
+- 2 -> Path Texture
+- 3 -> Heightmap
+- 4 -> Slopemap 
 - LShift -> (In First Person Only) Sprint
-- ESC -> Pause
+- ESC -> Pause/Main Menu Access
 - LShift+Q -> Quit Application
 
