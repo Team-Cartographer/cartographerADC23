@@ -9,7 +9,7 @@ from ursina.application import quit  # USE THIS, NOT PYTHON quit()
 from A_Star import run_astar
 
 # Window Declarations and Formatting -------------
-app = Ursina() #development_mode=False)
+app = Ursina(development_mode=False)
 window.set_title('Team Cartographer\'s ADC Application')
 window.cog_button.disable()
 window.exit_button.color = color.dark_gray
@@ -89,20 +89,20 @@ mini_dot = Entity(
 color_key = Entity(
     parent=camera.ui,
     model='quad',
-    scale = (0.3, 0.11),
-    position=(-0.74, 0.09, 0),
+    scale = (0.4, 0.11),
+    position=(-0.69, 0.09, 0),
     texture='slopeKey.png',
     enabled=False
 )
 
-# Earth Entity (Scales to Player Position)
-earth = Entity(
-   model='sphere',
-   scale=(500, 500, 500),
-   position=(0, 600, -9000),
-   texture='earth_texture.jpg',
-   enabled=True
-   )
+# # Earth Entity (Scales to Player Position)
+# earth = Entity(
+#    model='sphere',
+#    scale=(500, 500, 500),
+#    position=(0, 600, 1000),
+#    texture='earth_texture.jpg',
+#    enabled=True
+#    )
 
 
 # Slope and Height Toggle Image Pathing -------------
@@ -284,12 +284,12 @@ def update():
     mx, mz = (x/mmsc) + 0.5, (z/mmsc) - 0.5
     mini_dot.position = (mx, mz, 0)
 
-    # Earth Positioning (haha funny number)
-    earth.position = (earth.x, 420+elevation*100, earth.z)
-    if view_cam_player_loc.enabled is True:
-        earth.z = -4000
-    else:
-        earth.z = -9000
+    # # Earth Positioning (haha funny number)
+    # earth.position = (earth.x, 420+elevation*100, earth.z)
+    # if view_cam_player_loc.enabled is True:
+    #     earth.z = -4000
+    # else:
+    #     earth.z = -9000
 
 
 # Create Start Menu -------------

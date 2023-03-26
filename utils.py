@@ -4,15 +4,14 @@ import tkinter as tk
 from tkinter import messagebox
 import os
 from math import atan2, sin, cos, asin, sqrt, radians, degrees
-from typing import Callable, Any
 from time import time
 import orjson as oj
 import numpy as np
 from PIL import Image
 
 
-def timeit(method: Callable) -> Callable:
-    def timed(*args, **kw) -> Any:
+def timeit(method):
+    def timed(*args, **kw):
         time_start = time()
         result = method(*args, **kw)
         time_end = time()

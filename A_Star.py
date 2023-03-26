@@ -59,7 +59,7 @@ def is_valid_checkpoint(point):
     x, y = point[0], point[1]
     height = height_from_rect(x, y, GRID)
 
-    ALLOWANCE = 300 # Change this to change the stringency of checkpoint validity
+    ALLOWANCE = 275 # Change this to change the stringency of checkpoint validity
 
     for i in range(y, SIZE_CONSTANT):
         # TODO Swap this with Elevation to be Rubric-Accurate
@@ -77,7 +77,7 @@ def generate_comm_path(comm_path):
             continue
 
         # Define the bounds of the square, using max/min as point validity fail safes.
-        SEARCH_AREA = 50
+        SEARCH_AREA = 75
         left_bound = max(0, x - SEARCH_AREA)
         right_bound = min(SIZE_CONSTANT - 1, x + SEARCH_AREA)
         top_bound = max(0, y - SEARCH_AREA)
@@ -89,9 +89,9 @@ def generate_comm_path(comm_path):
                 test_point = (i, j)
                 if is_valid_checkpoint(test_point):
                     comm_path[index] = test_point
-                else:
-                    show_warning("Pathfinding Error", "No valid path with checkpoints was found.")
-                    quit(1)
+                #else:
+                #    show_warning("Pathfinding Error", "No valid path with checkpoints was found.")
+                #    quit(1)
 
 
     # Now we generate a new path.
@@ -100,8 +100,8 @@ def generate_comm_path(comm_path):
         (start_x, start_y), (goal_x, goal_y) = (comm_path[i][0], comm_path[i][1]), (comm_path[i+1][0], comm_path[i+1][1])
         global start_node
         global goal_node
-        start_node: Node = Node(start_x, start_y)
-        goal_node: Node = Node(goal_x, goal_y)
+        start_node = Node(start_x, start_y)
+        goal_node = Node(goal_x, goal_y)
 
         path_btw = astar()
         final_path.extend(path_btw)
@@ -169,7 +169,8 @@ def run_astar():
     (start_x, start_y), (goal_x, goal_y), checkpoints = \
         get_pathfinding_endpoints(fm.get_size_constant(), fm.images_path)
 
-    global start_node, goal_node
+    global start_node
+    global goal_node
     start_node = Node(start_x, start_y)
     goal_node = Node(goal_x, goal_y)
 
