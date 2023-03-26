@@ -6,15 +6,16 @@
     <a href="https://www.nasa.gov/stem/nextgenstem/moon/app_challenge.html"><img src="https://i.ibb.co/Hg7ZFrY/Group-13-2.png" alt="Instagram"></a>
     <a href="mailto:ADCTeamCartographer@gmail.com"><img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="e-mail"></a>
 
+    
   </p>
+  
 </div>
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-
 Welcome to the GitHub Repository for Team Cartographer's Application to the 2022-23 NASA App Development Challenge! Our team for this project from Anaheim, CA, is:<br>
-- <b> John B. ('23), Abhi A. ('23), Kion M. ('24), Kabir A. ('24), Natalie K. ('24), Chrysa N. ('24), Efe C. ('24) </b>
+- <b> John B. ('23), Abhi A. ('23), Kion M. ('24), Kabir A. ('24), Natalie K. ('24), Chrysa N. ('24), Efe C. ('24) </b><br>
 
 
 ## Acknowledgements and Thanks to:
@@ -54,7 +55,8 @@ This application will only work on Windows Operating Systems with Python 3.9+. F
 
 ## Button Functions
 
-Note that Key Bindings are not customizable. 
+<i>Note that Key Bindings are not customizable.</i> <br>
+<b>App Demo: https://streamable.com/fztsrg</b>
 
 - W, A, S, D -> General Movement
 - X -> Toggle First Person/3D Camera Views
