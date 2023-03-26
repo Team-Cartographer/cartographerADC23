@@ -25,6 +25,9 @@ Welcome to the GitHub Repository for Team Cartographer's Application to the 2022
 - Diana Ramirez, our ADC Lead Teacher<br>
 - Mrs. Leslie, Mr. Fawcett, Mr. Drake 
 
+## In-App Music Credits
+- Petter Amland 
+- John B. 
 
 <!-- GETTING STARTED -->
 
