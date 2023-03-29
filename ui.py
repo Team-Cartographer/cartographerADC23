@@ -229,5 +229,5 @@ def on_start():
 if __name__ == "__main__":
     # path_fetcher()
     # print(get_pathfinding_endpoints(1277, "C:/Users/Owner/PycharmProjects/NASA-ADC-App/Data/Images"))
-    on_start()
+    # on_start()
     pass
