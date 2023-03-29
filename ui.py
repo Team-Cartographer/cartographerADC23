@@ -23,7 +23,6 @@ def path_fetcher():
         ],
     ]
 
-
     window = sg.Window("PathFetcher", layout)
 
     while True:
@@ -67,7 +66,7 @@ def get_pathfinding_endpoints(SIZE_CONSTANT, IMAGES_PATH):
         ]
     ]
 
-    window = sg.Window("PathFetcher", layout, finalize=True)
+    window = sg.Window("A* UI", layout, finalize=True)
     window["-GraphIN-"].draw_image(IMAGES_PATH + "/interface_texture.png", location=(0, 0))
 
     while True:
@@ -147,7 +146,88 @@ def get_pathfinding_endpoints(SIZE_CONSTANT, IMAGES_PATH):
                     show_error("Incomplete Data Error", "Please select a start and end point")
 
 
+# on start functions and helper functions
+
+def new_site() -> int:
+    # 1 is back, 0 is successful completion
+    print("new site")
+    layout = [
+        [
+            sg.Button("Go Back", key="-Back-"),
+            sg.Button("New Site", key="-NewConfirm-")
+        ]
+    ]
+    window = sg.Window("Welcome", layout, element_justification='c', finalize=True)
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED or event == "Exit":
+            return 1
+        if event == "-Back-":
+            return 1
+        elif event == "-NewConfirm-":
+            print("Hello from new confirm")
+            return 0
+
+
+def load_site() -> int:
+    # 1 is back, 0 is successful completion
+    print("load site")
+    layout = [
+        [
+            sg.Button("Go Back", key="-Back-"),
+            sg.Button("New Site", key="-NewLoad-")
+        ]
+    ]
+    window = sg.Window("Welcome", layout, element_justification='c', finalize=True)
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED or event == "Exit":
+            return 1
+        if event == "-Back-":
+            return 1
+        elif event == "-NewLoad-":
+            print("Hello from new load")
+            return 0
+
+
+def on_start():
+    layout = [
+        [
+            sg.Text("The Team Cartographer Lunar Visualizer")
+        ],
+        [
+            sg.Button("Load a Site", key="-Load-"),
+            sg.Button("New Site", key="-New-")
+        ]
+    ]
+    window = sg.Window("Welcome", layout, element_justification='c', finalize=True)
+    while True:
+        event, values = window.read()
+        if event == "-Load-":
+            window.disappear()
+            check = load_site()
+            if check == 1:
+                window.reappear()
+            elif check == 0:
+                break
+            else:
+                show_error("load error", "you done goofed")
+        if event == "-New-":
+            window.disappear()
+            check = new_site()
+            if check == 1:
+                window.reappear()
+            elif check == 0:
+                break
+            else:
+                show_error("new error", "you done goofed")
+
+        if event == sg.WIN_CLOSED or event == "Exit":
+            break
+
+
 if __name__ == "__main__":
     # path_fetcher()
     # print(get_pathfinding_endpoints(1277, "C:/Users/Owner/PycharmProjects/NASA-ADC-App/Data/Images"))
+    on_start()
     pass
