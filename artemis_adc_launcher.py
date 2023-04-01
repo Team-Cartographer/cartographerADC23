@@ -45,8 +45,8 @@ if not path.exists(code_path + "/Data/Images/AStar_Path.png"):
 
     print("Running FileManager First-Time Setup")
     # runs file_manager.py
-    folder_creator_path = code_path + "/file_manager.py"
-    folder_creator_program = run([sys.executable, folder_creator_path])
+    file_manager_path = code_path + "/file_manager.py"
+    file_manager_program = run([sys.executable, file_manager_path])
     print("FileManager Setup Success")
 
     print("Running DataProcessor")
