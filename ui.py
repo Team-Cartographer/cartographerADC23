@@ -1,7 +1,8 @@
 # ui -> User Interface Helper File
-
+from __future__ import annotations
 import PySimpleGUI as sg
 from utils import show_error, are_you_sure
+from os import getcwd, listdir
 
 
 def path_fetcher():
@@ -29,24 +30,34 @@ def path_fetcher():
         event, values = window.read()
 
         if event == sg.WIN_CLOSED or event == "Exit":
+            window.close()
+            show_error("No Pathing Given", "Ending Program")
+            exit(0)
             break
+
         elif event == "Submit":
             # Latitude, Longitude, Height, Slope, Dist_Between_Points #
+            window.close()
             return values["-LatIN-"], values["-LongIN-"], values["-HeightIN-"], values["-SlopeIN-"]
 
 
-def get_pathfinding_endpoints(SIZE_CONSTANT, IMAGES_PATH):
+def get_pathfinding_endpoints(save):
     cur_state = 0  # 0 is no set, 1 is set start, 2 is set goal.
     # There should be an easier way to do this, but this works for now
+
+    SIZE_CONSTANT = save.size
 
     start_circle_pos = None
     end_circle_pos = None
     layout = [
 
         [
-            sg.Graph(canvas_size=(500, 500), graph_top_right=(SIZE_CONSTANT, 0),
-                     graph_bottom_left=(0, SIZE_CONSTANT), background_color=None,
-                     key="-GraphIN-", enable_events=True, drag_submits=False)
+            sg.Column(
+                [[
+                    sg.Graph(canvas_size=(500, 500), graph_top_right=(SIZE_CONSTANT, 0),
+                             graph_bottom_left=(0, SIZE_CONSTANT),  # background_color=None,
+                             key="-GraphIN-", enable_events=True, drag_submits=False)
+                ]], justification="center")
         ],
         [
             sg.Text("Current Start Position:"),
@@ -67,7 +78,7 @@ def get_pathfinding_endpoints(SIZE_CONSTANT, IMAGES_PATH):
     ]
 
     window = sg.Window("A* UI", layout, finalize=True)
-    window["-GraphIN-"].draw_image(IMAGES_PATH + "/interface_texture.png", location=(0, 0))
+    window["-GraphIN-"].draw_image(save.interface_texture_image, location=(0, 0))
 
     while True:
         event, values = window.read(timeout=500)
@@ -76,11 +87,11 @@ def get_pathfinding_endpoints(SIZE_CONSTANT, IMAGES_PATH):
             map_canvas = values["-Map-"]
 
             if map_canvas == 'Moon Texture':
-                window["-GraphIN-"].draw_image(IMAGES_PATH + "/interface_texture.png", location=(0, 0))
+                window["-GraphIN-"].draw_image(save.interface_texture_image, location=(0, 0))
             elif map_canvas == 'Slopemap':
-                window["-GraphIN-"].draw_image(IMAGES_PATH + "/interface_slopemap.png", location=(0, 0))
+                window["-GraphIN-"].draw_image(save.interface_slopemap_image, location=(0, 0))
             elif map_canvas == 'Heightkey':
-                window["-GraphIN-"].draw_image(IMAGES_PATH + "/interface_heightkey.png", location=(0, 0))
+                window["-GraphIN-"].draw_image(save.interface_heightkey_image, location=(0, 0))
             if start_circle_pos is not None:
                 window["-GraphIN-"].draw_circle(start_circle_pos, radius=10, fill_color="blue")
             if end_circle_pos is not None:
@@ -100,11 +111,11 @@ def get_pathfinding_endpoints(SIZE_CONSTANT, IMAGES_PATH):
                 map_canvas = values["-Map-"]
 
                 if map_canvas == 'Moon Texture':
-                    window["-GraphIN-"].draw_image(IMAGES_PATH + "/interface_texture.png", location=(0, 0))
+                    window["-GraphIN-"].draw_image(save.interface_texture_image, location=(0, 0))
                 elif map_canvas == 'Slopemap':
-                    window["-GraphIN-"].draw_image(IMAGES_PATH + "/interface_slopemap.png", location=(0, 0))
+                    window["-GraphIN-"].draw_image(save.interface_slopemap_image, location=(0, 0))
                 elif map_canvas == 'Heightkey':
-                    window["-GraphIN-"].draw_image(IMAGES_PATH + "/interface_heightkey.png", location=(0, 0))
+                    window["-GraphIN-"].draw_image(save.interface_heightkey_image, location=(0, 0))
                 if start_circle_pos is not None:
                     window["-GraphIN-"].draw_circle(start_circle_pos, radius=10, fill_color="blue")
                 if end_circle_pos is not None:
@@ -119,11 +130,11 @@ def get_pathfinding_endpoints(SIZE_CONSTANT, IMAGES_PATH):
                 map_canvas = values["-Map-"]
 
                 if map_canvas == 'Moon Texture':
-                    window["-GraphIN-"].draw_image(IMAGES_PATH + "/interface_texture.png", location=(0, 0))
+                    window["-GraphIN-"].draw_image(save.interface_texture_image, location=(0, 0))
                 elif map_canvas == 'Slopemap':
-                    window["-GraphIN-"].draw_image(IMAGES_PATH + "/interface_slopemap.png", location=(0, 0))
+                    window["-GraphIN-"].draw_image(save.interface_slopemap_image, location=(0, 0))
                 elif map_canvas == 'Heightkey':
-                    window["-GraphIN-"].draw_image(IMAGES_PATH + "/interface_heightkey.png", location=(0, 0))
+                    window["-GraphIN-"].draw_image(save.interface_heightkey_image, location=(0, 0))
                 if start_circle_pos is not None:
                     window["-GraphIN-"].draw_circle(start_circle_pos, radius=10, fill_color="blue")
                 if end_circle_pos is not None:
@@ -133,9 +144,8 @@ def get_pathfinding_endpoints(SIZE_CONSTANT, IMAGES_PATH):
                 cur_state = 0
 
         if event == sg.WIN_CLOSED or event == "Exit":
-            show_error("Incomplete Data Error", "By exiting the Pathfinding UI, A* did not receive endpoints for "
-                                                "pathfinding. Please manually run programs or use the Launcher again.")
-            return None
+            window.close()
+            raise TypeError("You closed A*")
 
         if event == "-Submit-":
             if are_you_sure("Endpoint Submission", "Are you sure these are the points you want?"):
@@ -148,46 +158,32 @@ def get_pathfinding_endpoints(SIZE_CONSTANT, IMAGES_PATH):
 
 # on start functions and helper functions
 
-def new_site() -> int:
-    # 1 is back, 0 is successful completion
-    print("new site")
+def load_site() -> tuple[str | None, int]:
+    save_folder = getcwd() + "/Saves"
+    files = listdir(save_folder)
+    #print(files)
+    parsed_sites = []
+    for file in files:
+        parsed_sites.append(file.removeprefix("Save_"))
+    #print(parsed_sites)
+
     layout = [
         [
-            sg.Button("Go Back", key="-Back-"),
-            sg.Button("New Site", key="-NewConfirm-")
+            sg.Combo(parsed_sites, key="-FileIN-", default_value=parsed_sites[0]), sg.OK("Submit", key="-Submit-")
         ]
     ]
-    window = sg.Window("Welcome", layout, element_justification='c', finalize=True)
+
+    window = sg.Window("Load Site", layout, finalize=True)
     while True:
         event, values = window.read()
-        if event == sg.WIN_CLOSED or event == "Exit":
-            return 1
-        if event == "-Back-":
-            return 1
-        elif event == "-NewConfirm-":
-            print("Hello from new confirm")
-            return 0
 
-
-def load_site() -> int:
-    # 1 is back, 0 is successful completion
-    print("load site")
-    layout = [
-        [
-            sg.Button("Go Back", key="-Back-"),
-            sg.Button("New Site", key="-NewLoad-")
-        ]
-    ]
-    window = sg.Window("Welcome", layout, element_justification='c', finalize=True)
-    while True:
-        event, values = window.read()
         if event == sg.WIN_CLOSED or event == "Exit":
-            return 1
-        if event == "-Back-":
-            return 1
-        elif event == "-NewLoad-":
-            print("Hello from new load")
-            return 0
+            window.close()
+            return None, 1
+
+        if event == "-Submit-":
+            window.close()
+            return getcwd() + "/Saves/Save_" + values["-FileIN-"], 0
 
 
 def on_start():
@@ -205,29 +201,43 @@ def on_start():
         event, values = window.read()
         if event == "-Load-":
             window.disappear()
-            check = load_site()
+            path, check = load_site()
             if check == 1:
                 window.reappear()
             elif check == 0:
-                break
+                window.close()
+                return path
             else:
                 show_error("load error", "you done goofed")
+
         if event == "-New-":
-            window.disappear()
-            check = new_site()
-            if check == 1:
-                window.reappear()
-            elif check == 0:
-                break
-            else:
-                show_error("new error", "you done goofed")
+            window.close()
+            return None
 
         if event == sg.WIN_CLOSED or event == "Exit":
-            break
+            window.close()
+            exit()
+
+
+def new_site_name() -> str:
+    layout = [
+        [
+            sg.Text("Insert site name "), sg.Input(key="-SaveNameIN-"), sg.OK("Submit")
+        ]
+    ]
+    window = sg.Window("New Site Name", layout)
+
+    while True:
+        event, values = window.read()
+
+        if event == sg.WIN_CLOSED or event == "Exit":
+            exit()
+
+        elif event == "Submit":
+            window.close()
+            return values["-SaveNameIN-"]
 
 
 if __name__ == "__main__":
-    # path_fetcher()
-    # print(get_pathfinding_endpoints(1277, "C:/Users/Owner/PycharmProjects/NASA-ADC-App/Data/Images"))
-    # on_start()
+    # print(new_site_name())
     pass

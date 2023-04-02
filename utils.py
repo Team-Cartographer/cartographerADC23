@@ -2,7 +2,6 @@ from __future__ import annotations
 import csv
 import tkinter as tk
 from tkinter import messagebox
-import os
 from time import time
 import orjson as oj
 import numpy as np
@@ -94,10 +93,6 @@ def get_specific_from_json(index, jsonpath):
     arr = parsed_arr[:, :, index]
     return arr
 
-def get_size_cons():
-    data = load_json("info.json")
-    return load_json("info.json")["SIZE_CONSTANT"]
-
 
 # ONLY FOR USE WITH DISPLAY.PY AND ASTAR.PY
 def get_azi_elev(x, y, data):
@@ -105,7 +100,7 @@ def get_azi_elev(x, y, data):
     return round(row[4], 5), round(row[5], 5)  # azimuth and elevation, respectively
 
 
-def resize(image_path: str, new_name: str, scale: float, transpose=False) -> str:
+def resize(image_path: str, path: str, scale: float, transpose=False) -> str:
     start = time()
 
     # Scale Images to Given Scale
@@ -116,14 +111,12 @@ def resize(image_path: str, new_name: str, scale: float, transpose=False) -> str
         # Transpose Images
         img = img.transpose(method=Image.FLIP_TOP_BOTTOM).rotate(-90)
 
-
     width, height = img.size
     processed = img.crop((1, 1, width - 2, height - 2))
 
     # Save Image and Return Path
-    path = os.getcwd() + f'/Data/Images/{new_name}.png'
     processed.save(path)
-    print(f"Resized {new_name}.png in {round(time() - start, 2)}s")
+    print(f"resized {path} in {round(time() - start, 2)}s")
 
     return path
 

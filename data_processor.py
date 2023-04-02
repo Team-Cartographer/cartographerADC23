@@ -1,12 +1,20 @@
 from numpy import sin, cos, degrees, radians, arctan2, column_stack, min, array_split, arange, loadtxt, sqrt, arcsin
-from constants import LUNAR_RADIUS, EARTH_X, EARTH_Y, EARTH_Z, EARTH_LAT, EARTH_LONG
 from utils import push_to_json, timeit
-from file_manager import FileManager
 from concurrent.futures import ProcessPoolExecutor
 
+# Data-Processing Constants
+LUNAR_RADIUS = 1737400
+EARTH_X = 361000 * 1000
+EARTH_Y = 0 * 1000
+EARTH_Z = -42100 * 1000
+EARTH_LAT = -0.11609607854640751
+EARTH_LONG = 1.5707963267948966
+
 @timeit
-def process_data():
-    latitude_list, longitude_list, height_list, height_list, slope_list = load_files()
+def process_data(save):
+    print('processing data')
+    latitude_list, longitude_list, height_list, height_list, slope_list = \
+        load_files(save.latitude_path, save.longitude_path, save.height_path, save.slope_path)
 
     latitude_radians = radians(latitude_list)
     longitude_radians = radians(longitude_list)
@@ -27,22 +35,22 @@ def process_data():
 
     processed_data = processed_data[processed_data[:, 1].argsort()]
 
-    formatted_data = format_array(processed_data)
+    formatted_data = format_array(processed_data, save.size)
     formatted_data = ndarray2list(formatted_data)
 
-    push_to_json(fm.astar_json_path, formatted_data)
+    push_to_json(save.astar_json, formatted_data)
 
 
 def load_file(file_path, delimiter=',', dtype=float):
     return loadtxt(file_path, delimiter=delimiter, dtype=dtype, encoding='utf-8')
 
 
-def load_files():
+def load_files(lat_path, long_path, height_path, slope_path):
     with ProcessPoolExecutor() as executor:
-        latitude_future = executor.submit(load_file, fm.latitude_path)
-        longitude_future = executor.submit(load_file, fm.longitude_path)
-        height_future = executor.submit(load_file, fm.height_path)
-        slope_future = executor.submit(load_file, fm.slope_path)
+        latitude_future = executor.submit(load_file, lat_path)
+        longitude_future = executor.submit(load_file, long_path)
+        height_future = executor.submit(load_file, height_path)
+        slope_future = executor.submit(load_file, slope_path)
 
         latitude_list = latitude_future.result()
         longitude_list = longitude_future.result()
@@ -79,8 +87,8 @@ def calculate_azimuth(latitude, longitude):
 
 
 @timeit
-def format_array(array):
-    num_arrays = len(array) // fm.size + (1 if len(array) % fm.size > 0 else 0)
+def format_array(array, size):
+    num_arrays = len(array) // size + (1 if len(array) % size > 0 else 0)
     formatted_array = array_split(array, num_arrays)
 
     for i in range(len(formatted_array)):
@@ -102,5 +110,5 @@ def ndarray2list(array):
 
 
 if __name__ == "__main__":
-    fm = FileManager()
-    process_data()
+    #process_data()
+    pass
