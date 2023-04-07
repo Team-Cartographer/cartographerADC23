@@ -59,6 +59,8 @@ This application will only work on Windows Operating Systems with Python 3.9+. F
 <b>App Demo: https://streamable.com/fztsrg</b>
 
 - W, A, S, D -> General Movement
+- R -> Reset Player Position
+- E -> Toggle Earth Entity
 - X -> Toggle First Person/3D Camera Views
 - 1 -> Moon Texture
 - 2 -> Path Texture

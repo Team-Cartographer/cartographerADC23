@@ -3,6 +3,7 @@ from __future__ import annotations
 import PySimpleGUI as sg
 from utils import show_error, are_you_sure
 from os import getcwd, listdir
+from sys import exit
 
 
 def path_fetcher():
@@ -41,6 +42,7 @@ def path_fetcher():
             return values["-LatIN-"], values["-LongIN-"], values["-HeightIN-"], values["-SlopeIN-"]
 
 
+# noinspection PyPep8Naming
 def get_pathfinding_endpoints(save):
     cur_state = 0  # 0 is no set, 1 is set start, 2 is set goal.
     # There should be an easier way to do this, but this works for now
@@ -161,11 +163,16 @@ def get_pathfinding_endpoints(save):
 def load_site() -> tuple[str | None, int]:
     save_folder = getcwd() + "/Saves"
     files = listdir(save_folder)
-    #print(files)
+
+    if len(files) == 0:
+        if are_you_sure("Save Loading Error", "No previous saves exist. Press OK to make a new save"):
+            return None, 0
+        else:
+            exit(0)
+
     parsed_sites = []
     for file in files:
         parsed_sites.append(file.removeprefix("Save_"))
-    #print(parsed_sites)
 
     layout = [
         [
@@ -208,7 +215,7 @@ def on_start():
                 window.close()
                 return path
             else:
-                show_error("load error", "you done goofed")
+                show_error("Load Error", "Something went wrong, and we aren't sure what. Please contact a dev.")
 
         if event == "-New-":
             window.close()
@@ -234,8 +241,22 @@ def new_site_name() -> str:
             exit()
 
         elif event == "Submit":
-            window.close()
-            return values["-SaveNameIN-"]
+            name = values["-SaveNameIN-"]
+            invalids = r'#%&{}\$!:@;<>*?/+`|=' + '\"\''
+            check = 0
+
+            for letter in name:
+                if letter in invalids:
+                    show_error("Save Error", f"Invalid File Name, Please remove: {letter}")
+                    check = 1
+                    break
+
+            if not check == 1:
+                window.close()
+                return name
+
+            check -= 1
+            window.reappear()
 
 
 if __name__ == "__main__":

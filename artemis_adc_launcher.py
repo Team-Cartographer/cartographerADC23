@@ -4,42 +4,42 @@ from os import getcwd, path
 from subprocess import run
 from time import time
 
-# 'welcome' print statements
+# welcome print statements
 print("Welcome to Team Cartographer's 2023 NASA ADC Application")
 print("GitHub: https://github.com/abhi-arya1/cartographerADC23")
 
 
 # Create a new virtual environment, given that there isn't one already.
-venv_folder = path.join(getcwd(), 'subprocess_venv')
+venv_folder = path.join(getcwd(), "subprocess_venv")
 if not path.exists(venv_folder):
 
     start = time()
 
-    print("creating virtual environment")
-    venv.create('subprocess_venv', with_pip=True)
+    print("Creating virtual environment")
+    venv.create("subprocess_venv", with_pip=True)
 
-    print("installing dependencies...")
+    print("Installing dependencies...")
 
     # Activate the virtual environment
-    activate_script = path.join(venv_folder, 'Scripts', 'activate.bat')
-    run(f'cmd /c "{activate_script}"', shell=True, check=True)
+    activate_script = path.join(venv_folder, "Scripts", "activate.bat")
+    run(f"cmd /c '{activate_script}'", shell=True, check=True)
 
     # Add pip installation names here for any new package.
     packages = ["Pillow", "numpy", "ursina", "PySimpleGUI", "orjson", "seaborn"]
     for package in packages:
-        run([sys.executable, '-m', 'pip', 'install', package], check=True)
+        run([sys.executable, "-m", "pip", "install", package], check=True)
         print(f"installed package: {package}")
 
     print(f"venv creation completed in {round(time()-start, 2)}s")
 
 
-print('running application')
+print("\nRunning application")
 
 # runs site_manager.py
 program_path = getcwd() + "/site_manager.py"
 program = run([sys.executable, program_path])
 
-print('deactivating')
+print("\nDeactivating")
 
 # end
-run('deactivate', shell=True, check=True)
+run("deactivate", shell=True, check=True)

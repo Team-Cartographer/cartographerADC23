@@ -1,5 +1,6 @@
-from numpy import sin, cos, degrees, radians, arctan2, column_stack, min, array_split, arange, loadtxt, sqrt, arcsin
-from utils import push_to_json, timeit
+from numpy import sin, cos, degrees, radians, arctan2, column_stack, min, \
+    array_split, arange, loadtxt, sqrt, arcsin, save
+from utils import timeit
 from concurrent.futures import ProcessPoolExecutor
 
 # Data-Processing Constants
@@ -10,11 +11,12 @@ EARTH_Z = -42100 * 1000
 EARTH_LAT = -0.11609607854640751
 EARTH_LONG = 1.5707963267948966
 
+
 @timeit
-def process_data(save):
-    print('processing data')
+def process_data(save_):
+    print("\nProcessing data")
     latitude_list, longitude_list, height_list, height_list, slope_list = \
-        load_files(save.latitude_path, save.longitude_path, save.height_path, save.slope_path)
+        load_files(save_.latitude_path, save_.longitude_path, save_.height_path, save_.slope_path)
 
     latitude_radians = radians(latitude_list)
     longitude_radians = radians(longitude_list)
@@ -35,14 +37,13 @@ def process_data(save):
 
     processed_data = processed_data[processed_data[:, 1].argsort()]
 
-    formatted_data = format_array(processed_data, save.size)
-    formatted_data = ndarray2list(formatted_data)
-
-    push_to_json(save.astar_json, formatted_data)
+    formatted_data = format_array(processed_data, save_.size)
+    save(save_.data_file, formatted_data)
 
 
-def load_file(file_path, delimiter=',', dtype=float):
-    return loadtxt(file_path, delimiter=delimiter, dtype=dtype, encoding='utf-8')
+# noinspection SpellCheckingInspection
+def load_file(file_path, delimiter=",", dtype=float):
+    return loadtxt(file_path, delimiter=delimiter, dtype=dtype, encoding="utf-8")
 
 
 def load_files(lat_path, long_path, height_path, slope_path):
@@ -86,6 +87,7 @@ def calculate_azimuth(latitude, longitude):
     return degrees(arctan2(c1, c2))
 
 
+# noinspection SpellCheckingInspection
 @timeit
 def format_array(array, size):
     num_arrays = len(array) // size + (1 if len(array) % size > 0 else 0)
@@ -104,11 +106,12 @@ def format_array(array, size):
     return formatted_array
 
 
+# noinspection SpellCheckingInspection
 @timeit
 def ndarray2list(array):
     return [arr.tolist() for arr in array]
 
 
 if __name__ == "__main__":
-    #process_data()
+    # process_data()
     pass

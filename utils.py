@@ -111,11 +111,11 @@ def resize(image_path: str, path: str, scale: float, transpose=False) -> str:
         # Transpose Images
         img = img.transpose(method=Image.FLIP_TOP_BOTTOM).rotate(-90)
 
-    width, height = img.size
-    processed = img.crop((1, 1, width - 2, height - 2))
+    #width, height = img.size
+    #processed = img.crop((1, 1, width - 1, height - 1))
 
     # Save Image and Return Path
-    processed.save(path)
+    img.save(path)
     print(f"resized {path} in {round(time() - start, 2)}s")
 
     return path

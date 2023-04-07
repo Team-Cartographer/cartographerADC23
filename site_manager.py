@@ -1,6 +1,6 @@
 import ui
 import os
-from utils import file2list, push_to_json, load_json, are_you_sure
+from utils import file2list, push_to_json, load_json
 from data_processor import process_data
 from cartographer import create_images
 from a_star import run_astar
@@ -10,16 +10,14 @@ from time import time
 
 
 class Save:
-    # If "load=False", then the declared folder_path when making the save is just a path to /Saves/
+    # If "load=False", then the declared folder_path when making the save is just a path to /Saves
     def __init__(self, folder_path: str, load: bool = False):
         if load:
             self.folder_path = folder_path
             self.site_name = os.path.basename(folder_path).split('_')[-1].strip()  # Parse name from <folder_path>
-            print(f'loading {self.site_name} visualization')
         else:
-            site_name = ui.new_site_name()
-            self.folder_path = folder_path + "/Save_" + site_name
-            self.site_name = site_name
+            self.site_name = ui.new_site_name()
+            self.folder_path = folder_path + "/Save_" + self.site_name
             self.size = None
 
         self.data_folder = self.folder_path + "/Data"
@@ -34,8 +32,8 @@ class Save:
         self.raw_heightmap_image = self.images_folder + "/RAW_heightmap.png"
         self.slopemap_image = self.images_folder + "/slopemap.png"
         self.processed_heightmap = self.images_folder + "/processed_heightmap.png"
-        self.info_json = self.data_folder + '/info.json'
-        self.astar_json = self.data_folder + "/AStarRawData.json"
+        self.info_json = self.data_folder + "/info.json"
+        self.data_file = self.data_folder + "/AStarRawData.npy"
         self.latitude_path, self.longitude_path, self.height_path, self.slope_path = None, None, None, None
 
         if load:
@@ -62,6 +60,7 @@ class Save:
 
                 "SIZE_CONSTANT": len(file2list(lat)),
             }
+
         push_to_json(self.info_json, data)
 
         self.latitude_path, self.longitude_path, self.height_path, self.slope_path = lat, long, ht, slope
@@ -90,29 +89,32 @@ def check_save():
     else:
         save_ = Save(folder_path=save_folder, load=False)
 
-    if save_ is None:
-        exit(1)
-    else:
+    if save_:
         return save_
+
+    exit(1)
 
 
 def run_smpy():
     save = check_save()
+
     # Since Display is a script, run it via Subprocess.
+    print(f'loading {save.site_name} visualization')
+
     result = run([sys.executable, 'display.py'] + [save.folder_path, str(True)], text=True, capture_output=True)
+    # print(result.stdout)
+
+    print(f'cleared temporary files and paths')
     print(f'ended {save.site_name} visualization.')
-    if result.returncode == 2:
-        return True
-    else:
+
+    if not result.returncode == 2:
         return False
+
+    return True
 
 
 if __name__ == '__main__':
-
-    # rerun the file until the user wants to quit
     while True:
         reset = run_smpy()
-        if reset:
-            continue
-        else:
+        if not reset:
             break

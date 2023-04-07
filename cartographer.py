@@ -1,11 +1,11 @@
 from concurrent.futures import ProcessPoolExecutor
 
 from PIL import Image
-from utils import resize, get_specific_from_json
+from utils import resize
 import seaborn as sb
+import numpy as np
 import matplotlib.pyplot as plt
 from time import time
-import random
 
 
 Image.MAX_IMAGE_PIXELS = None
@@ -20,40 +20,47 @@ def sb_heatmap(arr, cmap, path):
     sb.heatmap(arr, square=True, cbar=False, xticklabels=False,
                yticklabels=False, cmap=cmap)
     plt.tight_layout()
-    plt.savefig(path, dpi=2048, transparent=True, format='png', bbox_inches='tight', pad_inches=0)
+    plt.savefig(path, dpi=2048, transparent=True, format="png", bbox_inches="tight", pad_inches=0)
 
     # Convert to RGBA for Ursina.
-    print(f'{path} created in {round(time() - start_time, 2)}s')
+    print(f"{path} created in {round(time() - start_time, 2)}s")
 
     return path
 
 
 def create_surface_texture(save, slopes):
-    print(f'creating surface texture')
+    print(f"creating surface texture")
     start = time()
-    texture = Image.new("RGBA", (save.size, save.size))
 
-    for y in range(len(slopes)):
-        for x in range(len(slopes[y])):
-            color = 255
+    max_value_index = np.unravel_index(slopes.argmax(), slopes.shape)
+    max_value = slopes[max_value_index[0]][max_value_index[1]]
 
-            for i in range(int(slopes[y][x])):
-                color -= random.randint(2, 5)
+    colors = np.full(slopes.shape, 255.0)
+    for i in range(int(max_value)):
+        random_array = np.random.uniform(low=2, high=5, size=slopes.shape)
 
-            if color < 0:
-                color = 0
+        slopes -= 1
+        non_zero_mask = slopes > 0
+        colors = np.where(non_zero_mask, colors - random_array, colors)
 
-            texture.putpixel((x, y), (color, color, color))
+    colors[colors < 0] = 0
 
-    print(f'{save.moon_surface_texture_image} created in {round(time()-start, 2)}s')
+    # Multiplying by 3 gives us (color, color, color) [Not exactly but it kind of represents the RGB values]
+    image_array = np.stack([colors] * 3, axis=-1)
+    texture = Image.fromarray(np.uint8(image_array), mode="RGB")
+
+    print(f"{save.moon_surface_texture_image} created in {round(time() - start, 2)}s")
     texture.save(save.moon_surface_texture_image)
 
 
 # noinspection SpellCheckingInspection
 # Creates RAW_Heightmap, Slopemap, and Heightkey with Threading
 def draw_maps(save):
-    heights = get_specific_from_json(8, save.astar_json)
-    slopes = get_specific_from_json(3, save.astar_json)
+
+    parsed_arr = np.load(save.data_file)
+    heights = parsed_arr[:, :, 8]
+    slopes = parsed_arr[:, :, 3]
+
     with ProcessPoolExecutor() as exc:
 
         raw_heightmap_future = exc.submit(sb_heatmap, heights, "gist_gray", save.raw_heightmap_image)
@@ -69,8 +76,9 @@ def draw_maps(save):
         return raw_heightmap, heightkey, slopemap, slopemap, texture
 
 
+# noinspection PyUnusedLocal
 def create_images(save):
-    print('creating all images')
+    print("creating all images")
     start = time()
 
     # Create the essential images.
@@ -129,7 +137,7 @@ def create_images(save):
         scale=500
     )
 
-    print(f'cartographer created images in {round(time() - start, 2)}s')
+    print(f"cartographer created images in {round(time() - start, 2)}s")
 
 
 if __name__ == "__main__":
