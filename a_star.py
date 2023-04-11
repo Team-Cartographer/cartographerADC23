@@ -73,7 +73,7 @@ class BreakIt(Exception):
 @timeit
 def generate_comm_path(comm_path: List[Tuple[int, int]]) -> Tuple[List[Tuple[int, int, int]], List[Tuple[int, int]]]:
     for index, point in enumerate(comm_path):
-        print(f"\rgenerating communication checkpoints: {round(index / len(comm_path) * 100, 2)}% complete", end="")
+        print(f"\rGenerating communication checkpoints: {round(index / len(comm_path) * 100, 2)}% complete", end="")
 
         x, y = point[0], point[1]
         # If a point is already valid, then just leave it.
@@ -108,6 +108,8 @@ def generate_comm_path(comm_path: List[Tuple[int, int]]) -> Tuple[List[Tuple[int
 
     # Now we generate a new path.
     final_path: List[Tuple[int, int, int]] = []
+    comm_path = sorted(comm_path, key=lambda ele: (ele[0], ele[1]))
+    
     for i in range(len(comm_path) - 1):
         (start_x, start_y), (goal_x, goal_y) = \
             (comm_path[i][0], comm_path[i][1]), (comm_path[i+1][0], comm_path[i+1][1])
@@ -161,7 +163,7 @@ def update_image(image_path: str, mvmt_path: List[tuple], comm_path: List[tuple]
     path: str = image_path
     img: Image.Image = Image.open(path)
 
-    print("updating path image")
+    print("Updating path image")
     for i in range(len(mvmt_path)):
         color: tuple = (0, 0, 255)
         x: int = mvmt_path[i][0]
@@ -182,7 +184,7 @@ def update_image(image_path: str, mvmt_path: List[tuple], comm_path: List[tuple]
 # noinspection SpellCheckingInspection
 # noinspection PyGlobalUndefined
 def run_astar(sv) -> None:
-    print("finding a suitable lunar path")
+    print("Finding a suitable lunar path")
     global save
     save = sv
 
@@ -199,7 +201,7 @@ def run_astar(sv) -> None:
     goal_node = Node(goal_x, goal_y)
 
     final_path = astar()
-    print("initial path generated")
+    print("Initial path generated")
     sub_10_path = None
 
     if checkpoints:
@@ -210,7 +212,7 @@ def run_astar(sv) -> None:
     if final_path is not None:
         update_image(save.moon_surface_texture_image, final_path, sub_10_path)
     else:
-        show_warning("A* Pathfinding Error", "No Valid Path found between points.")
+        show_warning("Congrats on finding a bug!", "This shouldn't happen, contact a developer ASAP!")
 
     if checkpoints:
         print("Created Path with Communication Checkpoints")

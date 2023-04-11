@@ -28,9 +28,9 @@ if not path.exists(venv_folder):
     packages = ["Pillow", "numpy", "ursina", "PySimpleGUI", "orjson", "seaborn"]
     for package in packages:
         run([sys.executable, "-m", "pip", "install", package], check=True)
-        print(f"installed package: {package}")
+        print(f"Installed package: {package}")
 
-    print(f"venv creation completed in {round(time()-start, 2)}s")
+    print(f"Venv creation completed in {round(time()-start, 2)}s")
 
 
 print("\nRunning application")

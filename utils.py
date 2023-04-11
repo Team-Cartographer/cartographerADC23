@@ -19,6 +19,7 @@ def timeit(method):
     return timed
 
 
+@timeit
 def load_json(json_path: str):
     with open(json_path, 'rb') as f:
         data = oj.loads(f.read())

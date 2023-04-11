@@ -15,16 +15,18 @@
 ## About The Project
 
 Welcome to the GitHub Repository for Team Cartographer's Application to the 2022-23 NASA App Development Challenge! Our team for this project from Anaheim, CA, is:<br>
-- <b> John B. ('23), Abhi A. ('23), Kion M. ('24), Kabir A. ('24), Natalie K. ('24), Chrysa N. ('24), Efe C. ('24) </b><br>
+- <b> John B. ('23), Abhi A. ('23), Kion M. ('24), Kabir A. ('24), Natalie K. ('24), Efe C. ('24) </b><br>
 
 
 ## Acknowledgements and Thanks to:
 - James Ristow, NASA Kennedy Space Center<br>
 - Alexandre Tolstenko, Champlain College Division of IT and Science <br>
+- Nchima Kapoma, New School Parsons College of Design
 - Dr. Brian Welch, NASA Goddard Flight Center<br>
 - Petter Amland, Creator of Python's <a href="https://www.ursinaengine.org/">Ursina</a> Library<br>
 - Diana Ramirez, our ADC Lead Teacher<br>
 - Mrs. Leslie, Mr. Fawcett, Mr. Drake 
+- Chrysa N., Khiet H. 
 
 ## In-App Music Credits
 - Petter Amland 

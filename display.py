@@ -168,8 +168,7 @@ player.cursor.scale = 0.00000000001  # Hides the Cursor from the App Display
 
 # Music Functionality --------------
 track_list: list = ["assets/Night_Sky-Petter_Amland.mp3", "assets/Buffalo-Petter_Amland.mp3.mp3",
-                    "assets/Seraph-Petter_Amland.mp3", "assets/Lonely_Wasteland-John_Bouyer_ft._Natalie_Kwok.mp3",
-                    "assets/Sonata_in-C-Sharp_Minor-John_Bouyer.mp3"]
+                    "assets/Seraph-Petter_Amland.mp3"]
 menu_track_list: list = ["assets/Lonely_Wasteland-John_Bouyer_ft._Natalie_Kwok.mp3", "OSU!_Pause_Menu_Track.mp3"]
 
 run_music = Audio(
