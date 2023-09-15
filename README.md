@@ -72,6 +72,8 @@ This application will only work on Windows Operating Systems with Python 3.9+. F
 - ESC -> Pause/Main Menu Access
 - LShift+Q -> Quit Application
 
+<!-- Other Projects -->
+
 ## Other Projects from Team Cartographer
 
 NASA & JAXA KIBO Robot Programming Challenge 2023
