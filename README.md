@@ -74,8 +74,5 @@ This application will only work on Windows Operating Systems with Python 3.9+. F
 
 <!-- Other Projects -->
 
-## Other Projects from Team Cartographer
-
-<a href="https://github.com/abhi-arya1/Kibo-RPC">NASA & JAXA KIBO Robot Programming Challenge 2023</a>
-
-<i>We placed top 10 in the nation</i>
+## Other Team Cartographer Projects 
+<a href="https://github.com/abhi-arya1/Kibo-RPC">2023 NASA & JAXA Kibo Robot Programming Challenge 2023</a> - Top 10 Nationwide
