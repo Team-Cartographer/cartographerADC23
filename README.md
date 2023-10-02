@@ -45,7 +45,7 @@ This application will only work on Windows Operating Systems with Python 3.9+. F
 ### Installation
 
 1. Download the Repository
-2. Make sure you have any Regional Data Files from the <a href="https://www.nasa.gov/stem/nextgenstem/moon/nasa-2023-adc-handbook.html">ADC Website</a>
+2. Make sure you have any Regional Data Files from the <a href="https://drive.google.com/drive/folders/1L8RiQA2QQS9CjtB4OeUm_-T7awyu0WrV?usp=sharing">Team Cartographer Google Drive</a>. Unfortunately, we only have access to the data for the Shackleton Crater region
 3. Run <b>Artemis_ADC_Launcher.py</b>, and have fun exploring the moon!
 
 
