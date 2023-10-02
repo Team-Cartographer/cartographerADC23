@@ -20,10 +20,6 @@ if not path.exists(venv_folder):
 
     print("Installing dependencies...")
 
-    # Activate the virtual environment
-    activate_script = path.join(venv_folder, "Scripts", "activate.bat")
-    run(f"cmd /c '{activate_script}'", shell=True, check=True)
-
     # Add pip installation names here for any new package.
     packages = ["Pillow", "numpy", "ursina", "PySimpleGUI", "orjson", "seaborn"]
     for package in packages:
@@ -40,6 +36,3 @@ program_path = getcwd() + "/site_manager.py"
 program = run([sys.executable, program_path])
 
 print("\nDeactivating")
-
-# end
-run("deactivate", shell=True, check=True)
