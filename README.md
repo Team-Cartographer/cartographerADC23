@@ -74,6 +74,6 @@ This application will only work on Windows Operating Systems with Python 3.9+. F
 
 <!-- Other Projects -->
 
-## Other Team Cartographer Projects 
-<a href="https://github.com/abhi-arya1/Kibo-RPC">2023 NASA & JAXA Kibo Robot Programming Challenge 2023</a> - Top 10 Nationwide<br>
-<a href="https://github.com/Turfader/Team-Cartographer-Space-Apps-Challenge-2023">2023 NASA Space Apps Challenge: The Oracle of DSCOVR</a> - Upcoming
+<h3>
+  Other Team Cartographer Projects can be found at the <a href="https://github.com/Team-Cartographer">Team Cartographer GitHub Teams Page</a>
+</h3>
