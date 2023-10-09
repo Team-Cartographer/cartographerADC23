@@ -17,6 +17,8 @@
 Welcome to the GitHub Repository for Team Cartographer's Application to the 2022-23 NASA App Development Challenge <b>(Please note that this is a Public version of a Private repository)</b>! Our team for this project from Anaheim, CA, is:<br>
 - <b> John B. ('23), Abhi A. ('23), Kion M. ('24), Kabir A. ('24), Natalie K. ('24), Efe C. ('24) </b><br>
 
+Here is the link to our <a href="https://bit.ly/ADCFINALVIDEO">Final Submission Video</a><br> 
+
 
 ## Acknowledgements and Thanks to:
 - James Ristow, NASA Kennedy Space Center<br>
