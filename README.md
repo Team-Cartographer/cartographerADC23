@@ -18,6 +18,7 @@ Welcome to the GitHub Repository for Team Cartographer's Application to the 2022
 - <b> John B. ('23), Abhi A. ('23), Kion M. ('24), Kabir A. ('24), Natalie K. ('24), Efe C. ('24) </b><br>
 
 Here is the link to our <a href="https://bit.ly/ADCFINALVIDEO">Final Submission Video</a><br> 
+Here is the link to the <a href="https://youtu.be/WkwULe0h5-g?t=420">vlog of our trip and subsequent presentation</a>, on our school's news channel page. 
 
 
 ## Acknowledgements and Thanks to:
